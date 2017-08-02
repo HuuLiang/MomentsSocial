@@ -1,0 +1,33 @@
+//
+//  MSPrefixHeader.pch
+//  MomentsSocial
+//
+//  Created by Liang on 2017/7/25.
+//  Copyright © 2017年 Liang. All rights reserved.
+//
+
+#ifndef MSPrefixHeader_pch
+#define MSPrefixHeader_pch
+
+
+#import <objc/runtime.h>
+#import <Masonry.h>
+#import <Aspects.h>
+#import <BlocksKit.h>
+#import <BlocksKit+UIKit.h>
+#import <UIImageView+WebCache.h>
+#import <UIButton+WebCache.h>
+#import <QBDefines.h>
+#import "JKDBModel.h"
+
+
+#import "MSCommonDef.h"
+#import "MSExtensions.h"
+#import "MSConfig.h"
+#import "MSConfiguration.h"
+#import "MSUtil.h"
+#import "MSHudManager.h"
+#import "MSPopupHelper.h"
+
+
+#endif /* MSPrefixHeader_pch */

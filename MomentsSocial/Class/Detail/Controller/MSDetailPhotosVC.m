@@ -1,0 +1,65 @@
+//
+//  MSDetailPhotosVC.m
+//  MomentsSocial
+//
+//  Created by Liang on 2017/8/1.
+//  Copyright © 2017年 Liang. All rights reserved.
+//
+
+#import "MSDetailPhotosVC.h"
+#import "MSDetailPhotoCell.h"
+
+static NSString *const kMSDetailPhotoCellReusableIdentifier = @"kMSDetailPhotoCellReusableIdentifier";
+
+@interface MSDetailPhotosVC () <UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
+@property (nonatomic) UICollectionView *collectionView;
+@end
+
+@implementation MSDetailPhotosVC
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.minimumLineSpacing = kWidth(20);
+    layout.minimumInteritemSpacing = kWidth(10);
+    layout.sectionInset = UIEdgeInsetsMake(kWidth(20), kWidth(20), kWidth(20), kWidth(20));
+    CGFloat itemWidth = (kScreenWidth - kWidth(60))/3;
+    layout.itemSize = CGSizeMake(floorf(itemWidth), floorf(itemWidth));
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+    _collectionView.delegate = self;
+    _collectionView.dataSource = self;
+    _collectionView.backgroundColor = kColor(@"#ffffff");
+    [_collectionView registerClass:[MSDetailPhotoCell class] forCellWithReuseIdentifier:kMSDetailPhotoCellReusableIdentifier];
+    [self.view addSubview:_collectionView];
+    
+    {
+        [_collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+    }
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark - UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return 10;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    MSDetailPhotoCell *cell= [collectionView dequeueReusableCellWithReuseIdentifier:kMSDetailPhotoCellReusableIdentifier forIndexPath:indexPath];
+    if (indexPath.item < 10) {
+        cell.imgUrl = @"";
+    }
+    return cell;
+}
+
+@end
