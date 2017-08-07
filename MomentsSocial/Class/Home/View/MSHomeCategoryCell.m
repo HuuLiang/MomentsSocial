@@ -29,7 +29,7 @@
         self.mainImgV = [[UIImageView alloc] init];
         _mainImgV.layer.cornerRadius = kWidth(56);
         _mainImgV.layer.borderColor = kColor(@"#F0F0F0").CGColor;
-        _mainImgV.layer.borderWidth = 4.0f;
+        _mainImgV.layer.borderWidth = kWidth(4);
         _mainImgV.layer.masksToBounds = YES;
         [self.contentView addSubview:_mainImgV];
 
@@ -39,7 +39,7 @@
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:_titleLabel];
         
-        self.vipLevel = [[UIImageView alloc] init];
+        self.vipImgV = [[UIImageView alloc] init];
         [self addSubview:_vipImgV];
         
         self.descLabel = [[UILabel alloc] init];

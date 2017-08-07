@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		54904C88179BD4859E2EC538 /* libPods-MomentsSocial.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B83407705A9EFDEC7F13EA /* libPods-MomentsSocial.a */; };
+		EC0CAA881F341D3E00B1C669 /* MSCheckInUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC0CAA871F341D3E00B1C669 /* MSCheckInUserCell.m */; };
 		EC35531E1F31827500370A36 /* MSSendMomentsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EC35531D1F31827500370A36 /* MSSendMomentsVC.m */; };
 		EC3553211F31B0A100370A36 /* MSSendMomentHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3553201F31B0A100370A36 /* MSSendMomentHeaderView.m */; };
 		EC35532A1F31B6E600370A36 /* QBDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3553251F31B6E600370A36 /* QBDataManager.m */; };
@@ -20,7 +21,23 @@
 		EC3CB36D1F2F0DA20086F373 /* MSMomentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3CB36C1F2F0DA20086F373 /* MSMomentsCell.m */; };
 		EC3CC1DA1F2F2ECE0086F373 /* MSMomentsContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3CC1D91F2F2ECE0086F373 /* MSMomentsContentView.m */; };
 		EC3CC1DD1F2F606D0086F373 /* MSMomentsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3CC1DC1F2F606D0086F373 /* MSMomentsModel.m */; };
-		ECA6E5271F283F480076E607 /* MSHomeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA6E5261F283F480076E607 /* MSHomeModel.m */; };
+		EC848DB61F32BD1300B47E37 /* MSSystemConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DB51F32BD1300B47E37 /* MSSystemConfigModel.m */; };
+		EC848DBC1F32CBD300B47E37 /* MSCircleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DBB1F32CBD300B47E37 /* MSCircleModel.m */; };
+		EC848DC01F33036F00B47E37 /* QBPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DBF1F33036F00B47E37 /* QBPhotoManager.m */; };
+		EC848DC91F330B4A00B47E37 /* MSSettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DC81F330B4A00B47E37 /* MSSettingVC.m */; };
+		EC848DCC1F330BD100B47E37 /* MSSettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DCB1F330BD100B47E37 /* MSSettingCell.m */; };
+		EC848DCF1F330D9200B47E37 /* MSAboutUsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DCE1F330D9200B47E37 /* MSAboutUsVC.m */; };
+		EC848DD21F330ECD00B47E37 /* MSAutoActivateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DD11F330ECD00B47E37 /* MSAutoActivateVC.m */; };
+		EC848DD91F33242900B47E37 /* MSCheckInVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DD81F33242900B47E37 /* MSCheckInVC.m */; };
+		EC848DDC1F33253400B47E37 /* MSCheckInHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DDB1F33253400B47E37 /* MSCheckInHeaderView.m */; };
+		EC848DE51F334CD300B47E37 /* MSCheckInFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DE41F334CD300B47E37 /* MSCheckInFooterView.m */; };
+		ECA8A9431F37FC8200BABFF9 /* MSShakeUserView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA8A9421F37FC8200BABFF9 /* MSShakeUserView.m */; };
+		ECA8A9461F38449500BABFF9 /* MSDiscoverModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA8A9451F38449500BABFF9 /* MSDiscoverModel.m */; };
+		ECA8A9491F3870B400BABFF9 /* MSCommentsListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA8A9481F3870B400BABFF9 /* MSCommentsListVC.m */; };
+		ECA8A94C1F38716700BABFF9 /* MSCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA8A94B1F38716700BABFF9 /* MSCommentCell.m */; };
+		ECA8A94F1F389B8500BABFF9 /* MSCommentsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA8A94E1F389B8500BABFF9 /* MSCommentsModel.m */; };
+		ECB4199E1F35CC3600FE87F1 /* MSUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB4199D1F35CC3600FE87F1 /* MSUserModel.m */; };
+		ECB419A41F35CDB400FE87F1 /* MSDisFuctionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB419A31F35CDB400FE87F1 /* MSDisFuctionModel.m */; };
 		ECB58CB51F2AD85E0074E6D8 /* MSMineInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB58CB41F2AD85E0074E6D8 /* MSMineInfoView.m */; };
 		ECB58CB81F2AE4170074E6D8 /* MSMineSettingView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB58CB71F2AE4170074E6D8 /* MSMineSettingView.m */; };
 		ECB58CBB1F2B141D0074E6D8 /* MSMineVipDescView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB58CBA1F2B141D0074E6D8 /* MSMineVipDescView.m */; };
@@ -173,7 +190,6 @@
 		ECC11AF11F26E9F60093E3EE /* MSMineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC11AF01F26E9F60093E3EE /* MSMineViewController.m */; };
 		ECC11AFE1F26EE830093E3EE /* MSConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC11AFD1F26EE830093E3EE /* MSConfiguration.m */; };
 		ECC11B011F26EED30093E3EE /* MSHudManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC11B001F26EED30093E3EE /* MSHudManager.m */; };
-		ECC11B041F26EFB90093E3EE /* MSRegexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC11B031F26EFB90093E3EE /* MSRegexUtil.m */; };
 		ECC11B071F26EFFB0093E3EE /* MSUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC11B061F26EFFB0093E3EE /* MSUtil.m */; };
 		ECC11B0A1F26F3DB0093E3EE /* MSReqManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC11B091F26F3DB0093E3EE /* MSReqManager.m */; };
 		ECC11B0D1F26F8AD0093E3EE /* MSActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC11B0C1F26F8AD0093E3EE /* MSActivityModel.m */; };
@@ -199,7 +215,7 @@
 		ECFCAB6D1F29865600DC2948 /* MSHomeMomentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFCAB6C1F29865600DC2948 /* MSHomeMomentsCell.m */; };
 		ECFCAB701F298EB400DC2948 /* MSHomeCategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFCAB6F1F298EB400DC2948 /* MSHomeCategoryCell.m */; };
 		ECFCAB761F29BDAE00DC2948 /* MSHomeCollectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFCAB751F29BDAE00DC2948 /* MSHomeCollectionHeaderView.m */; };
-		ECFCAB791F29C63900DC2948 /* MSComentsListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFCAB781F29C63900DC2948 /* MSComentsListVC.m */; };
+		ECFCAB791F29C63900DC2948 /* MSMomentsListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFCAB781F29C63900DC2948 /* MSMomentsListVC.m */; };
 		ECFCAB7C1F29C6AD00DC2948 /* MSMomentsListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFCAB7B1F29C6AD00DC2948 /* MSMomentsListCell.m */; };
 		ECFCAB7F1F29D2F000DC2948 /* MSSectionBackgroundFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFCAB7E1F29D2F000DC2948 /* MSSectionBackgroundFlowLayout.m */; };
 		ECFCAB821F29D79D00DC2948 /* UIView+gradient.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFCAB811F29D79D00DC2948 /* UIView+gradient.m */; };
@@ -213,6 +229,8 @@
 		6610F2710CA682D67A93D14A /* Pods-MomentsSocial.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MomentsSocial.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MomentsSocial/Pods-MomentsSocial.debug.xcconfig"; sourceTree = "<group>"; };
 		7940D952299396DC8FB49EE7 /* Pods-MomentsSocial.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MomentsSocial.release.xcconfig"; path = "Pods/Target Support Files/Pods-MomentsSocial/Pods-MomentsSocial.release.xcconfig"; sourceTree = "<group>"; };
 		E6B83407705A9EFDEC7F13EA /* libPods-MomentsSocial.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MomentsSocial.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC0CAA861F341D3E00B1C669 /* MSCheckInUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCheckInUserCell.h; sourceTree = "<group>"; };
+		EC0CAA871F341D3E00B1C669 /* MSCheckInUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCheckInUserCell.m; sourceTree = "<group>"; };
 		EC35531C1F31827500370A36 /* MSSendMomentsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSendMomentsVC.h; sourceTree = "<group>"; };
 		EC35531D1F31827500370A36 /* MSSendMomentsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSSendMomentsVC.m; sourceTree = "<group>"; };
 		EC35531F1F31B0A100370A36 /* MSSendMomentHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSendMomentHeaderView.h; sourceTree = "<group>"; };
@@ -237,8 +255,40 @@
 		EC3CC1D91F2F2ECE0086F373 /* MSMomentsContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSMomentsContentView.m; sourceTree = "<group>"; };
 		EC3CC1DB1F2F606D0086F373 /* MSMomentsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMomentsModel.h; sourceTree = "<group>"; };
 		EC3CC1DC1F2F606D0086F373 /* MSMomentsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSMomentsModel.m; sourceTree = "<group>"; };
-		ECA6E5251F283F480076E607 /* MSHomeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSHomeModel.h; sourceTree = "<group>"; };
-		ECA6E5261F283F480076E607 /* MSHomeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSHomeModel.m; sourceTree = "<group>"; };
+		EC848DB41F32BD1300B47E37 /* MSSystemConfigModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSystemConfigModel.h; sourceTree = "<group>"; };
+		EC848DB51F32BD1300B47E37 /* MSSystemConfigModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSSystemConfigModel.m; sourceTree = "<group>"; };
+		EC848DBA1F32CBD300B47E37 /* MSCircleModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCircleModel.h; sourceTree = "<group>"; };
+		EC848DBB1F32CBD300B47E37 /* MSCircleModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCircleModel.m; sourceTree = "<group>"; };
+		EC848DBE1F33036F00B47E37 /* QBPhotoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBPhotoManager.h; sourceTree = "<group>"; };
+		EC848DBF1F33036F00B47E37 /* QBPhotoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBPhotoManager.m; sourceTree = "<group>"; };
+		EC848DC71F330B4A00B47E37 /* MSSettingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSettingVC.h; sourceTree = "<group>"; };
+		EC848DC81F330B4A00B47E37 /* MSSettingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSSettingVC.m; sourceTree = "<group>"; };
+		EC848DCA1F330BD100B47E37 /* MSSettingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSettingCell.h; sourceTree = "<group>"; };
+		EC848DCB1F330BD100B47E37 /* MSSettingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSSettingCell.m; sourceTree = "<group>"; };
+		EC848DCD1F330D9200B47E37 /* MSAboutUsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAboutUsVC.h; sourceTree = "<group>"; };
+		EC848DCE1F330D9200B47E37 /* MSAboutUsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSAboutUsVC.m; sourceTree = "<group>"; };
+		EC848DD01F330ECD00B47E37 /* MSAutoActivateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAutoActivateVC.h; sourceTree = "<group>"; };
+		EC848DD11F330ECD00B47E37 /* MSAutoActivateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSAutoActivateVC.m; sourceTree = "<group>"; };
+		EC848DD71F33242900B47E37 /* MSCheckInVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCheckInVC.h; sourceTree = "<group>"; };
+		EC848DD81F33242900B47E37 /* MSCheckInVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCheckInVC.m; sourceTree = "<group>"; };
+		EC848DDA1F33253400B47E37 /* MSCheckInHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCheckInHeaderView.h; sourceTree = "<group>"; };
+		EC848DDB1F33253400B47E37 /* MSCheckInHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCheckInHeaderView.m; sourceTree = "<group>"; };
+		EC848DE31F334CD300B47E37 /* MSCheckInFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCheckInFooterView.h; sourceTree = "<group>"; };
+		EC848DE41F334CD300B47E37 /* MSCheckInFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCheckInFooterView.m; sourceTree = "<group>"; };
+		ECA8A9411F37FC8200BABFF9 /* MSShakeUserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSShakeUserView.h; sourceTree = "<group>"; };
+		ECA8A9421F37FC8200BABFF9 /* MSShakeUserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSShakeUserView.m; sourceTree = "<group>"; };
+		ECA8A9441F38449500BABFF9 /* MSDiscoverModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSDiscoverModel.h; sourceTree = "<group>"; };
+		ECA8A9451F38449500BABFF9 /* MSDiscoverModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSDiscoverModel.m; sourceTree = "<group>"; };
+		ECA8A9471F3870B400BABFF9 /* MSCommentsListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCommentsListVC.h; sourceTree = "<group>"; };
+		ECA8A9481F3870B400BABFF9 /* MSCommentsListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCommentsListVC.m; sourceTree = "<group>"; };
+		ECA8A94A1F38716700BABFF9 /* MSCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCommentCell.h; sourceTree = "<group>"; };
+		ECA8A94B1F38716700BABFF9 /* MSCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCommentCell.m; sourceTree = "<group>"; };
+		ECA8A94D1F389B8500BABFF9 /* MSCommentsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCommentsModel.h; sourceTree = "<group>"; };
+		ECA8A94E1F389B8500BABFF9 /* MSCommentsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCommentsModel.m; sourceTree = "<group>"; };
+		ECB4199C1F35CC3600FE87F1 /* MSUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSUserModel.h; sourceTree = "<group>"; };
+		ECB4199D1F35CC3600FE87F1 /* MSUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSUserModel.m; sourceTree = "<group>"; };
+		ECB419A21F35CDB400FE87F1 /* MSDisFuctionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSDisFuctionModel.h; sourceTree = "<group>"; };
+		ECB419A31F35CDB400FE87F1 /* MSDisFuctionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSDisFuctionModel.m; sourceTree = "<group>"; };
 		ECB58CB31F2AD85E0074E6D8 /* MSMineInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMineInfoView.h; sourceTree = "<group>"; };
 		ECB58CB41F2AD85E0074E6D8 /* MSMineInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSMineInfoView.m; sourceTree = "<group>"; };
 		ECB58CB61F2AE4170074E6D8 /* MSMineSettingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMineSettingView.h; sourceTree = "<group>"; };
@@ -510,8 +560,6 @@
 		ECC11AFD1F26EE830093E3EE /* MSConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSConfiguration.m; sourceTree = "<group>"; };
 		ECC11AFF1F26EED30093E3EE /* MSHudManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSHudManager.h; sourceTree = "<group>"; };
 		ECC11B001F26EED30093E3EE /* MSHudManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSHudManager.m; sourceTree = "<group>"; };
-		ECC11B021F26EFB90093E3EE /* MSRegexUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSRegexUtil.h; sourceTree = "<group>"; };
-		ECC11B031F26EFB90093E3EE /* MSRegexUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSRegexUtil.m; sourceTree = "<group>"; };
 		ECC11B051F26EFFB0093E3EE /* MSUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSUtil.h; sourceTree = "<group>"; };
 		ECC11B061F26EFFB0093E3EE /* MSUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSUtil.m; sourceTree = "<group>"; };
 		ECC11B081F26F3DB0093E3EE /* MSReqManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSReqManager.h; sourceTree = "<group>"; };
@@ -561,8 +609,8 @@
 		ECFCAB6F1F298EB400DC2948 /* MSHomeCategoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSHomeCategoryCell.m; sourceTree = "<group>"; };
 		ECFCAB741F29BDAE00DC2948 /* MSHomeCollectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSHomeCollectionHeaderView.h; sourceTree = "<group>"; };
 		ECFCAB751F29BDAE00DC2948 /* MSHomeCollectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSHomeCollectionHeaderView.m; sourceTree = "<group>"; };
-		ECFCAB771F29C63900DC2948 /* MSComentsListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSComentsListVC.h; sourceTree = "<group>"; };
-		ECFCAB781F29C63900DC2948 /* MSComentsListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSComentsListVC.m; sourceTree = "<group>"; };
+		ECFCAB771F29C63900DC2948 /* MSMomentsListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMomentsListVC.h; sourceTree = "<group>"; };
+		ECFCAB781F29C63900DC2948 /* MSMomentsListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSMomentsListVC.m; sourceTree = "<group>"; };
 		ECFCAB7A1F29C6AD00DC2948 /* MSMomentsListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMomentsListCell.h; sourceTree = "<group>"; };
 		ECFCAB7B1F29C6AD00DC2948 /* MSMomentsListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSMomentsListCell.m; sourceTree = "<group>"; };
 		ECFCAB7D1F29D2F000DC2948 /* MSSectionBackgroundFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSectionBackgroundFlowLayout.h; sourceTree = "<group>"; };
@@ -611,6 +659,7 @@
 		EC3553221F31B6A000370A36 /* QBTools */ = {
 			isa = PBXGroup;
 			children = (
+				EC848DBD1F33036F00B47E37 /* ImagePicker */,
 				EC3553231F31B6E600370A36 /* QBDataModule */,
 			);
 			path = QBTools;
@@ -654,6 +703,8 @@
 				EC3CB3691F2F09FE0086F373 /* MSMomentsVC.m */,
 				EC35531C1F31827500370A36 /* MSSendMomentsVC.h */,
 				EC35531D1F31827500370A36 /* MSSendMomentsVC.m */,
+				ECA8A9471F3870B400BABFF9 /* MSCommentsListVC.h */,
+				ECA8A9481F3870B400BABFF9 /* MSCommentsListVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -663,6 +714,8 @@
 			children = (
 				EC3CC1DB1F2F606D0086F373 /* MSMomentsModel.h */,
 				EC3CC1DC1F2F606D0086F373 /* MSMomentsModel.m */,
+				ECA8A94D1F389B8500BABFF9 /* MSCommentsModel.h */,
+				ECA8A94E1F389B8500BABFF9 /* MSCommentsModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -676,6 +729,107 @@
 				EC3CC1D91F2F2ECE0086F373 /* MSMomentsContentView.m */,
 				EC35531F1F31B0A100370A36 /* MSSendMomentHeaderView.h */,
 				EC3553201F31B0A100370A36 /* MSSendMomentHeaderView.m */,
+				ECA8A94A1F38716700BABFF9 /* MSCommentCell.h */,
+				ECA8A94B1F38716700BABFF9 /* MSCommentCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		EC848DBD1F33036F00B47E37 /* ImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				EC848DBE1F33036F00B47E37 /* QBPhotoManager.h */,
+				EC848DBF1F33036F00B47E37 /* QBPhotoManager.m */,
+			);
+			path = ImagePicker;
+			sourceTree = "<group>";
+		};
+		EC848DC11F330B2800B47E37 /* SubMVCs */ = {
+			isa = PBXGroup;
+			children = (
+				EC848DC21F330B2800B47E37 /* AboutUs */,
+				EC848DC31F330B2800B47E37 /* AutoActivate */,
+			);
+			path = SubMVCs;
+			sourceTree = "<group>";
+		};
+		EC848DC21F330B2800B47E37 /* AboutUs */ = {
+			isa = PBXGroup;
+			children = (
+				EC848DCD1F330D9200B47E37 /* MSAboutUsVC.h */,
+				EC848DCE1F330D9200B47E37 /* MSAboutUsVC.m */,
+			);
+			path = AboutUs;
+			sourceTree = "<group>";
+		};
+		EC848DC31F330B2800B47E37 /* AutoActivate */ = {
+			isa = PBXGroup;
+			children = (
+				EC848DC41F330B2800B47E37 /* Controller */,
+				EC848DC51F330B2800B47E37 /* Model */,
+				EC848DC61F330B2800B47E37 /* View */,
+			);
+			path = AutoActivate;
+			sourceTree = "<group>";
+		};
+		EC848DC41F330B2800B47E37 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				EC848DD01F330ECD00B47E37 /* MSAutoActivateVC.h */,
+				EC848DD11F330ECD00B47E37 /* MSAutoActivateVC.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		EC848DC51F330B2800B47E37 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		EC848DC61F330B2800B47E37 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		EC848DD31F33241700B47E37 /* CheckIn */ = {
+			isa = PBXGroup;
+			children = (
+				EC848DD41F33241700B47E37 /* Controller */,
+				EC848DD51F33241700B47E37 /* Model */,
+				EC848DD61F33241700B47E37 /* View */,
+			);
+			path = CheckIn;
+			sourceTree = "<group>";
+		};
+		EC848DD41F33241700B47E37 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				EC848DD71F33242900B47E37 /* MSCheckInVC.h */,
+				EC848DD81F33242900B47E37 /* MSCheckInVC.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		EC848DD51F33241700B47E37 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		EC848DD61F33241700B47E37 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				EC848DDA1F33253400B47E37 /* MSCheckInHeaderView.h */,
+				EC848DDB1F33253400B47E37 /* MSCheckInHeaderView.m */,
+				EC848DE31F334CD300B47E37 /* MSCheckInFooterView.h */,
+				EC848DE41F334CD300B47E37 /* MSCheckInFooterView.m */,
+				EC0CAA861F341D3E00B1C669 /* MSCheckInUserCell.h */,
+				EC0CAA871F341D3E00B1C669 /* MSCheckInUserCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -829,6 +983,8 @@
 		ECC118F71F26DA6E0093E3EE /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				ECB4199C1F35CC3600FE87F1 /* MSUserModel.h */,
+				ECB4199D1F35CC3600FE87F1 /* MSUserModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -867,16 +1023,16 @@
 		ECC119201F26DA870093E3EE /* System */ = {
 			isa = PBXGroup;
 			children = (
+				ECC11B081F26F3DB0093E3EE /* MSReqManager.h */,
+				ECC11B091F26F3DB0093E3EE /* MSReqManager.m */,
 				ECC11B0B1F26F8AD0093E3EE /* MSActivityModel.h */,
 				ECC11B0C1F26F8AD0093E3EE /* MSActivityModel.m */,
+				EC848DB41F32BD1300B47E37 /* MSSystemConfigModel.h */,
+				EC848DB51F32BD1300B47E37 /* MSSystemConfigModel.m */,
 				ECC11AFC1F26EE830093E3EE /* MSConfiguration.h */,
 				ECC11AFD1F26EE830093E3EE /* MSConfiguration.m */,
 				ECC11AFF1F26EED30093E3EE /* MSHudManager.h */,
 				ECC11B001F26EED30093E3EE /* MSHudManager.m */,
-				ECC11B021F26EFB90093E3EE /* MSRegexUtil.h */,
-				ECC11B031F26EFB90093E3EE /* MSRegexUtil.m */,
-				ECC11B081F26F3DB0093E3EE /* MSReqManager.h */,
-				ECC11B091F26F3DB0093E3EE /* MSReqManager.m */,
 				ECD953621F306FF5006F5737 /* MSPopupHelper.h */,
 				ECD953631F306FF5006F5737 /* MSPopupHelper.m */,
 			);
@@ -1436,6 +1592,10 @@
 		ECC11ADC1F26E9650093E3EE /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				ECA8A9441F38449500BABFF9 /* MSDiscoverModel.h */,
+				ECA8A9451F38449500BABFF9 /* MSDiscoverModel.m */,
+				ECB419A21F35CDB400FE87F1 /* MSDisFuctionModel.h */,
+				ECB419A31F35CDB400FE87F1 /* MSDisFuctionModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1465,8 +1625,8 @@
 			children = (
 				ECC11AE61F26E9960093E3EE /* MSHomeViewController.h */,
 				ECC11AE71F26E9960093E3EE /* MSHomeViewController.m */,
-				ECFCAB771F29C63900DC2948 /* MSComentsListVC.h */,
-				ECFCAB781F29C63900DC2948 /* MSComentsListVC.m */,
+				ECFCAB771F29C63900DC2948 /* MSMomentsListVC.h */,
+				ECFCAB781F29C63900DC2948 /* MSMomentsListVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1474,8 +1634,8 @@
 		ECC11AE01F26E9650093E3EE /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				ECA6E5251F283F480076E607 /* MSHomeModel.h */,
-				ECA6E5261F283F480076E607 /* MSHomeModel.m */,
+				EC848DBA1F32CBD300B47E37 /* MSCircleModel.h */,
+				EC848DBB1F32CBD300B47E37 /* MSCircleModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1501,6 +1661,7 @@
 				ECC11AE31F26E9650093E3EE /* Controller */,
 				ECC11AE41F26E9650093E3EE /* Model */,
 				ECC11AE51F26E9650093E3EE /* View */,
+				EC848DC11F330B2800B47E37 /* SubMVCs */,
 			);
 			path = Mine;
 			sourceTree = "<group>";
@@ -1510,6 +1671,8 @@
 			children = (
 				ECC11AEF1F26E9F60093E3EE /* MSMineViewController.h */,
 				ECC11AF01F26E9F60093E3EE /* MSMineViewController.m */,
+				EC848DC71F330B4A00B47E37 /* MSSettingVC.h */,
+				EC848DC81F330B4A00B47E37 /* MSSettingVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1530,6 +1693,8 @@
 				ECB58CB71F2AE4170074E6D8 /* MSMineSettingView.m */,
 				ECB58CB91F2B141D0074E6D8 /* MSMineVipDescView.h */,
 				ECB58CBA1F2B141D0074E6D8 /* MSMineVipDescView.m */,
+				EC848DCA1F330BD100B47E37 /* MSSettingCell.h */,
+				EC848DCB1F330BD100B47E37 /* MSSettingCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1601,6 +1766,8 @@
 			children = (
 				ECD9536C1F308BA2006F5737 /* MSShakeView.h */,
 				ECD9536D1F308BA2006F5737 /* MSShakeView.m */,
+				ECA8A9411F37FC8200BABFF9 /* MSShakeUserView.h */,
+				ECA8A9421F37FC8200BABFF9 /* MSShakeUserView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1608,6 +1775,7 @@
 		ECFCAB861F29F02B00DC2948 /* SubMVCs */ = {
 			isa = PBXGroup;
 			children = (
+				EC848DD31F33241700B47E37 /* CheckIn */,
 				ECFCAB871F29F02B00DC2948 /* Near */,
 				ECD953651F308B1B006F5737 /* Shake */,
 			);
@@ -1824,25 +1992,29 @@
 				ECC11A6A1F26DA870093E3EE /* XHDisplayMediaViewController.m in Sources */,
 				ECC11B281F2724450093E3EE /* NSDate+timeStamp.m in Sources */,
 				ECC118F41F26D8150093E3EE /* AppDelegate+Configurations.m in Sources */,
+				EC0CAA881F341D3E00B1C669 /* MSCheckInUserCell.m in Sources */,
 				ECC11A581F26DA870093E3EE /* NSString+XHMD5.m in Sources */,
-				ECA6E5271F283F480076E607 /* MSHomeModel.m in Sources */,
 				ECC11A711F26DA870093E3EE /* XHMessageAvatarFactory.m in Sources */,
 				ECC11B2B1F2724450093E3EE /* NSString+dataEncrypt.m in Sources */,
-				ECFCAB791F29C63900DC2948 /* MSComentsListVC.m in Sources */,
+				ECFCAB791F29C63900DC2948 /* MSMomentsListVC.m in Sources */,
 				ECC11A6E1F26DA870093E3EE /* XHFileAttribute.m in Sources */,
 				ECC11AEB1F26E9D70093E3EE /* MSDiscoverViewController.m in Sources */,
+				ECA8A9431F37FC8200BABFF9 /* MSShakeUserView.m in Sources */,
 				ECC11A7A1F26DA870093E3EE /* XHShareMenuItem.m in Sources */,
 				ECD9536E1F308BA2006F5737 /* MSShakeView.m in Sources */,
 				ECC11B291F2724450093E3EE /* NSObject+BaseRepresentation.m in Sources */,
 				ECC11AC81F26DA870093E3EE /* SDCollectionViewCell.m in Sources */,
 				ECC11B311F2724450093E3EE /* UIView+FrameEx.m in Sources */,
 				ECB58CB51F2AD85E0074E6D8 /* MSMineInfoView.m in Sources */,
+				EC848DBC1F32CBD300B47E37 /* MSCircleModel.m in Sources */,
 				ECC11A811F26DA870093E3EE /* SELinkText.m in Sources */,
 				ECC11A561F26DA870093E3EE /* JKDBModel.m in Sources */,
 				ECC11A5C1F26DA870093E3EE /* UIImage+Utility.m in Sources */,
+				EC848DD91F33242900B47E37 /* MSCheckInVC.m in Sources */,
 				ECC11AC91F26DA870093E3EE /* SDCycleScrollView.m in Sources */,
 				ECC11A661F26DA870093E3EE /* XHVoiceCommonHelper.m in Sources */,
 				ECC11A931F26DA870093E3EE /* XHMessageTextView.m in Sources */,
+				ECB419A41F35CDB400FE87F1 /* MSDisFuctionModel.m in Sources */,
 				ECC11A431F26DA870093E3EE /* NSArray+Log.m in Sources */,
 				ECC11AC71F26DA870093E3EE /* TAPageControl.m in Sources */,
 				ECC118D91F26D0760093E3EE /* AppDelegate.m in Sources */,
@@ -1857,12 +2029,14 @@
 				ECC11A921F26DA870093E3EE /* XHMessageInputView.m in Sources */,
 				ECD9536B1F308B3F006F5737 /* MSShakeVC.m in Sources */,
 				ECC11A781F26DA870093E3EE /* XHEmotionManager.m in Sources */,
+				EC848DC01F33036F00B47E37 /* QBPhotoManager.m in Sources */,
 				EC35532B1F31B6E600370A36 /* QBDataResponse.m in Sources */,
 				ECC11A6D1F26DA870093E3EE /* XHCacheManager.m in Sources */,
 				EC35532A1F31B6E600370A36 /* QBDataManager.m in Sources */,
 				ECC11A7D1F26DA870093E3EE /* LKBadgeView.m in Sources */,
 				ECC11A521F26DA870093E3EE /* ActionSheetStringPicker.m in Sources */,
 				ECB58CCB1F2B29ED0074E6D8 /* MSDetailPhotosCell.m in Sources */,
+				ECA8A94F1F389B8500BABFF9 /* MSCommentsModel.m in Sources */,
 				EC35532C1F31B6E600370A36 /* QBNetworkInfo.m in Sources */,
 				EC3CC1DA1F2F2ECE0086F373 /* MSMomentsContentView.m in Sources */,
 				ECC11B331F2724450093E3EE /* UIView+RoundCorner.m in Sources */,
@@ -1870,6 +2044,7 @@
 				ECC11A651F26DA870093E3EE /* XHPhotographyHelper.m in Sources */,
 				EC3553211F31B0A100370A36 /* MSSendMomentHeaderView.m in Sources */,
 				ECC11A5B1F26DA870093E3EE /* UIImage+RoundedCorner.m in Sources */,
+				EC848DB61F32BD1300B47E37 /* MSSystemConfigModel.m in Sources */,
 				ECC11A511F26DA870093E3EE /* ActionSheetMultipleStringPicker.m in Sources */,
 				ECB58CB81F2AE4170074E6D8 /* MSMineSettingView.m in Sources */,
 				ECC11A541F26DA870093E3EE /* SWActionSheet.m in Sources */,
@@ -1879,13 +2054,17 @@
 				ECC11A731F26DA870093E3EE /* XHMessageVideoConverPhotoFactory.m in Sources */,
 				ECC11B301F2724450093E3EE /* UIScrollView+Refresh.m in Sources */,
 				ECD953641F306FF5006F5737 /* MSPopupHelper.m in Sources */,
+				EC848DD21F330ECD00B47E37 /* MSAutoActivateVC.m in Sources */,
 				ECB58CD11F2B33050074E6D8 /* MSDetailFooterView.m in Sources */,
+				EC848DE51F334CD300B47E37 /* MSCheckInFooterView.m in Sources */,
 				ECC11A621F26DA870093E3EE /* XHConfigurationHelper.m in Sources */,
 				ECC11B2F1F2724450093E3EE /* UIImage+Resource.m in Sources */,
 				ECFCAB821F29D79D00DC2948 /* UIView+gradient.m in Sources */,
 				ECC11A501F26DA870093E3EE /* ActionSheetLocalePicker.m in Sources */,
 				ECC11A891F26DA870093E3EE /* SETextMagnifierRanged.m in Sources */,
 				ECC11AC41F26DA870093E3EE /* TAAbstractDotView.m in Sources */,
+				EC848DCF1F330D9200B47E37 /* MSAboutUsVC.m in Sources */,
+				ECA8A94C1F38716700BABFF9 /* MSCommentCell.m in Sources */,
 				ECC11AC51F26DA870093E3EE /* TAAnimatedDotView.m in Sources */,
 				ECC11A5D1F26DA870093E3EE /* UIImage+XHRounded.m in Sources */,
 				ECC11AEE1F26E9E80093E3EE /* MSContactViewController.m in Sources */,
@@ -1919,7 +2098,8 @@
 				ECC11A991F26DA870093E3EE /* XHShareMenuView.m in Sources */,
 				EC3CB2C01F2EDEF10086F373 /* MSDetailInfoHeaderView.m in Sources */,
 				ECC11A821F26DA870093E3EE /* SESelectionGrabber.m in Sources */,
-				ECC11B041F26EFB90093E3EE /* MSRegexUtil.m in Sources */,
+				EC848DC91F330B4A00B47E37 /* MSSettingVC.m in Sources */,
+				ECA8A9491F3870B400BABFF9 /* MSCommentsListVC.m in Sources */,
 				ECFCAB851F29E7D700DC2948 /* MSDiscoverCell.m in Sources */,
 				ECC11B0D1F26F8AD0093E3EE /* MSActivityModel.m in Sources */,
 				ECC11AD51F26E7610093E3EE /* MSTabBarController.m in Sources */,
@@ -1939,10 +2119,12 @@
 				ECC11A5F1F26DA870093E3EE /* UIView+XHRemoteImage.m in Sources */,
 				ECC11A831F26DA870093E3EE /* SETextAttachment.m in Sources */,
 				ECC11A861F26DA870093E3EE /* SETextInput.m in Sources */,
+				EC848DCC1F330BD100B47E37 /* MSSettingCell.m in Sources */,
 				ECC11A591F26DA870093E3EE /* UIImage+Alpha.m in Sources */,
 				ECC11ACA1F26DA870093E3EE /* UIView+SDExtension.m in Sources */,
 				ECB58CD41F2B34FB0074E6D8 /* MSDetailSectionHeaderView.m in Sources */,
 				ECC11A961F26DA870093E3EE /* XHEmotionCollectionViewFlowLayout.m in Sources */,
+				ECB4199E1F35CC3600FE87F1 /* MSUserModel.m in Sources */,
 				ECC11A771F26DA870093E3EE /* XHEmotion.m in Sources */,
 				ECC11A851F26DA870093E3EE /* SETextGeometry.m in Sources */,
 				ECC11A741F26DA870093E3EE /* XHMessageVoiceFactory.m in Sources */,
@@ -1953,6 +2135,7 @@
 				ECC11A571F26DA870093E3EE /* NSString+MessageInputView.m in Sources */,
 				ECFCAB8D1F29F2A200DC2948 /* MSNearViewController.m in Sources */,
 				ECC11A7E1F26DA870093E3EE /* SECompatibility.m in Sources */,
+				EC848DDC1F33253400B47E37 /* MSCheckInHeaderView.m in Sources */,
 				ECC11A751F26DA870093E3EE /* XHVideoOutputSampleBufferFactory.m in Sources */,
 				ECFCAB6D1F29865600DC2948 /* MSHomeMomentsCell.m in Sources */,
 				ECB58CC21F2B24520074E6D8 /* MSDetailViewController.m in Sources */,
@@ -1964,6 +2147,7 @@
 				ECC11A4D1F26DA870093E3EE /* ActionSheetCustomPicker.m in Sources */,
 				ECC11A5E1F26DA870093E3EE /* UIScrollView+XHkeyboardControl.m in Sources */,
 				ECC11A841F26DA870093E3EE /* SETextEditingCaret.m in Sources */,
+				ECA8A9461F38449500BABFF9 /* MSDiscoverModel.m in Sources */,
 				ECB58CCE1F2B30DD0074E6D8 /* UIButton+iconSpacing.m in Sources */,
 				ECC11A7B1F26DA870093E3EE /* FLAnimatedImage.m in Sources */,
 				ECC11A7F1F26DA870093E3EE /* SEConstants.m in Sources */,

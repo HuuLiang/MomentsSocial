@@ -16,6 +16,9 @@
 + (BOOL)isRegisteredUUID;
 + (void)setRegisteredWithUUID:(NSString *)uuid;
 
++ (void)registerUserId:(NSString *)userId;
++ (NSString *)currentUserId;
+
 + (BOOL)isIpad;
 + (NSString *)appVersion;
 + (NSString *)deviceName;

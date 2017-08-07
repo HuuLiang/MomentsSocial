@@ -18,4 +18,6 @@ typedef NS_ENUM(NSInteger,MSShakeStatus) {
 
 @property (nonatomic) MSShakeStatus shakeStatus;
 
+//@property (nonatomic) MSAction startFetchAction;
+
 @end

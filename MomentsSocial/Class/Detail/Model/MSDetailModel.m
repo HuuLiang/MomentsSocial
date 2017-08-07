@@ -10,4 +10,8 @@
 
 @implementation MSDetailModel
 
+- (Class)userClass {
+    return [MSUserModel class];
+}
+
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "MSBaseViewController.h"
+#import "MSDetailViewController.h"
 
 @interface MSBaseViewController ()
 
@@ -34,7 +35,10 @@
     [super didReceiveMemoryWarning];
 }
 
-
+- (void)pushIntoDetailVCWithUserId:(NSString *)userId {
+    MSDetailViewController *detailVC = [[MSDetailViewController alloc] initWithUserId:userId];
+    [self.navigationController pushViewController:detailVC animated:YES];
+}
 
 
 @end

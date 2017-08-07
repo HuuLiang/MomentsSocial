@@ -13,6 +13,7 @@
 static NSString *const kRegisterKeyName           = @"MS_register_keyname";
 
 static NSString *const KMSUserVipLevelKeyName     = @"KMSUserVipLevelKeyName";
+static NSString *const kMSUserIdKeyName           = @"kMSUser_id_keyname";
 
 @implementation MSUtil
 
@@ -41,6 +42,16 @@ static NSString *const KMSUserVipLevelKeyName     = @"KMSUserVipLevelKeyName";
 + (void)setRegisteredWithUUID:(NSString *)uuid {
     [[NSUserDefaults standardUserDefaults] setObject:uuid forKey:kRegisterKeyName];
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+#pragma mark - userId
++ (void)registerUserId:(NSString *)userId {
+    [[NSUserDefaults standardUserDefaults] setObject:userId forKey:kMSUserIdKeyName];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (NSString *)currentUserId {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:kMSUserIdKeyName];
 }
 
 

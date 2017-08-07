@@ -9,11 +9,15 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger , MSMomentsType) {
-    MSMomentsTypePhotos,
+    MSMomentsTypePhotos = 1,
     MSMomentsTypeVideo
 };
 
 @interface MSMomentsCell : UITableViewCell
+
+@property (nonatomic) MSAction commentAction;
+
+@property (nonatomic) MSAction greetAction;
 
 @property (nonatomic) NSString *userImgUrl;
 
@@ -28,6 +32,8 @@ typedef NS_ENUM(NSInteger , MSMomentsType) {
 @property (nonatomic) NSInteger attentionCount;
 
 @property (nonatomic) MSMomentsType momentsType;
+
+@property (nonatomic) BOOL greeted;
 
 @property (nonatomic) id dataSource;
 

@@ -8,9 +8,7 @@
 
 #import "MSReqManager.h"
 #import "QBDataManager.h"
-
-#import "MSActivityModel.h"
-#import "MSHomeModel.h"
+#import "QBDataResponse.h"
 
 @implementation MSReqManager
 
@@ -24,6 +22,14 @@
     return _manager;
 }
 
+- (NSDictionary *)params {
+    NSDictionary *baseParams = @{@"appId":MS_REST_APPID,
+                                 @"channelNo":MS_CHANNEL_NO,
+                                 @"appVersion":MS_REST_APP_VERSION,
+                                 @"cVersion":MS_CONTENT_VERSION};
+    return baseParams;
+}
+
 - (BOOL)checkResponseCodeObject:(id)obj error:(NSError *)error {
     QBLog(@"obj=%@ error = %@",obj,error);
     
@@ -35,20 +41,119 @@
     NSInteger respCode = [resp.code integerValue];
     if (respCode == 200) {
         return YES;
-    } else {
+    } else if (respCode == 300) {
+        [[MSHudManager manager] showHudWithText:@"参数不正确"];
+        return NO;
+    } else if (respCode == 301) {
+        [[MSHudManager manager] showHudWithText:@"用户不存在"];
+        return NO;
+    } else if (respCode == 307) {
+        [[MSHudManager manager] showHudWithText:@"更新失败"];
+        return NO;
+    } else if (respCode == 400) {
+        [[MSHudManager manager] showHudWithText:@"解密失败"];
+        return NO;
+    } else if (respCode == 401) {
+        [[MSHudManager manager] showHudWithText:@"签名不通过"];
+        return NO;
+    } else if (respCode == 500) {
+        [[MSHudManager manager] showHudWithText:@"系统异常"];
         return NO;
     }
+    return NO;
 }
 
 
-- (void)registerUUIDWithCompletionHandler:(MSCompletionHandler)handler {
-    [[QBDataManager manager] requestUrl:MS_ACTIVATION_URL withParams:nil class:[MSActivityModel class] handler:^(MSActivityModel * obj, NSError *error) {
-        handler([self checkResponseCodeObject:obj error:error],obj.uuid);
+- (void)registerUUIDClass:(Class)classModel completionHandler:(MSCompletionHandler)handler {
+    [[QBDataManager manager] requestUrl:MS_ACTIVATION_URL withParams:[self params] class:classModel handler:^(id obj, NSError *error) {
+        handler([self checkResponseCodeObject:obj error:error],obj);
     }];
 }
 
-- (void)fetchHomeInfoWithCompletionHandler:(MSCompletionHandler)handler {
-    [[QBDataManager manager] requestUrl:MS_HOME_URL withParams:nil class:[MSHomeModel class] handler:^(id obj, NSError *error) {
+- (void)fetchSystemConfigInfoClass:(Class)classModel completionHandler:(MSCompletionHandler)handler {
+    [[QBDataManager manager] requestUrl:MS_SYSTEMCONFIG_URL withParams:[self params] class:classModel handler:^(id obj, NSError *error) {
+        handler([self checkResponseCodeObject:obj error:error],obj);
+    }];
+}
+
+- (void)fetchCircleInfoWithCircleId:(NSInteger)circleId Class:(Class)classModel completionHandler:(MSCompletionHandler)handler {
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[self params]];
+    if (circleId != NSNotFound) {
+        [params addEntriesFromDictionary:@{@"circleId":@(circleId)}];
+    }
+
+    [[QBDataManager manager] requestUrl:MS_HOME_URL withParams:params class:classModel handler:^(id obj, NSError *error) {
+        handler([self checkResponseCodeObject:obj error:error],obj);
+    }];
+}
+
+- (void)fetchMomentsListInfoWithCircleId:(NSInteger)circleId class:(Class)classModel completionHandler:(MSCompletionHandler)handler {
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[self params]];
+    if (circleId != NSNotFound) {
+        [params addEntriesFromDictionary:@{@"circleId":@(circleId)}];
+    }
+    
+    [[QBDataManager manager] requestUrl:MS_MOMENTS_URL withParams:params class:classModel handler:^(id obj, NSError *error) {
+        handler([self checkResponseCodeObject:obj error:error],obj);
+    }];
+}
+
+- (void)fetchDayHouseInfoClass:(Class)classModel completionHandler:(MSCompletionHandler)handler {
+    [[QBDataManager manager] requestUrl:MS_DAYHOUSE_URL withParams:[self params] class:classModel handler:^(id obj, NSError *error) {
+        handler([self checkResponseCodeObject:obj error:error],obj);
+    }];
+}
+
+/** 批量推送 */
+- (void)fetchPushUserInfoWithPage:(NSInteger)page size:(NSInteger)pageSize Class:(Class)classModel completionHandler:(MSCompletionHandler)handler {
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[self params]];
+    [params addEntriesFromDictionary:@{@"page":@(page),
+                                       @"pageSize":@(pageSize)}];
+    
+    [[QBDataManager manager] requestUrl:MS_PUSHUSER_URL withParams:params class:classModel handler:^(id obj, NSError *error) {
+        handler([self checkResponseCodeObject:obj error:error],obj);
+    }];
+}
+
+/** 摇一摇 附近的人 */
+- (void)fetchNearShakeInfoWithNumber:(NSInteger)userCount Class:(Class)classModel completionHandler:(MSCompletionHandler)handler {
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[self params]];
+    [params addEntriesFromDictionary:@{@"number":@(userCount)}];
+    
+    [[QBDataManager manager] requestUrl:MS_NEARSHAKE_URL withParams:params class:classModel handler:^(id obj, NSError *error) {
+        handler([self checkResponseCodeObject:obj error:error],obj);
+    }];
+}
+
+- (void)fetchDetailInfoWithUserId:(NSString *)userId Class:(Class)classModel completionHandler:(MSCompletionHandler)handler {
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[self params]];
+    [params addEntriesFromDictionary:@{@"userId":userId}];
+    
+    [[QBDataManager manager] requestUrl:MS_USER_URL withParams:params class:classModel handler:^(id obj, NSError *error) {
+        handler([self checkResponseCodeObject:obj error:error],obj);
+    }];
+}
+
+- (void)fetchDiscoverInfoClass:(Class)classModel completionHandler:(MSCompletionHandler)handler {
+    [[QBDataManager manager] requestUrl:MS_DISCOVER_URL withParams:[self params] class:classModel handler:^(id obj, NSError *error) {
+        handler([self checkResponseCodeObject:obj error:error],obj);
+    }];
+}
+
+- (void)fetchCommentsWithMomentId:(NSInteger)momentId Class:(Class)classModel completionHandler:(MSCompletionHandler)handler {
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[self params]];
+    [params addEntriesFromDictionary:@{@"moodId":@(momentId)}];
+    
+    [[QBDataManager manager] requestUrl:MS_COMMENT_URL withParams:params class:classModel handler:^(id obj, NSError *error) {
+        handler([self checkResponseCodeObject:obj error:error],obj);
+    }];
+}
+
+- (void)greetMomentWithMoodId:(NSInteger)moodId Class:(Class)classModel completionHandler:(MSCompletionHandler)handler {
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[self params]];
+    [params addEntriesFromDictionary:@{@"moodId":@(moodId)}];
+    
+    [[QBDataManager manager] requestUrl:MS_GREETED_URL withParams:params class:classModel handler:^(id obj, NSError *error) {
         handler([self checkResponseCodeObject:obj error:error],obj);
     }];
 }

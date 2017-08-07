@@ -1,33 +1,41 @@
 //
-//  MSComentsListVC.m
+//  MSMomentsListVC.m
 //  MomentsSocial
 //
 //  Created by Liang on 2017/7/27.
 //  Copyright © 2017年 Liang. All rights reserved.
 //
 
-#import "MSComentsListVC.h"
+#import "MSMomentsListVC.h"
 #import "MSReqManager.h"
 #import "MSMomentsListCell.h"
+#import "MSCircleModel.h"
+#import "MSReqManager.h"
+#import "MSMomentsVC.h"
 
 static NSString *const kMSMomentsListCellReusableIdentifier = @"kMSMomentsListCellReusableIdentifier";
 
-@interface MSComentsListVC () <UITableViewDelegate,UITableViewDataSource>
+@interface MSMomentsListVC () <UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic) UITableView *tableView;
+@property (nonatomic) MSCircleInfo *circleInfo;
+@property (nonatomic) MSCircleModel *response;
 @end
 
-@implementation MSComentsListVC
+@implementation MSMomentsListVC
+QBDefineLazyPropertyInitialization(MSCircleModel, response)
 
-- (instancetype)initWithMomentInfo:(NSString *)info {
+- (instancetype)initWithCircleInfo:(MSCircleInfo *)info {
     self = [super init];
     if (self) {
-        
+        _circleInfo = info;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.title = self.circleInfo.name;
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     _tableView.delegate = self;
@@ -48,7 +56,7 @@ static NSString *const kMSMomentsListCellReusableIdentifier = @"kMSMomentsListCe
     @weakify(self);
     [_tableView QB_addPullToRefreshWithHandler:^{
         @strongify(self);
-        [self fetchAllMomentsWithCategoryId:@""];
+        [self fetchCircleListInfo];
     }];
     
     [_tableView QB_triggerPullToRefresh];
@@ -62,27 +70,44 @@ static NSString *const kMSMomentsListCellReusableIdentifier = @"kMSMomentsListCe
     [self.tableView QB_endPullToRefresh];
 }
 
+- (void)fetchCircleListInfo {
+    @weakify(self);
+    [[MSReqManager manager] fetchCircleInfoWithCircleId:self.circleInfo.circleId Class:[MSCircleModel class] completionHandler:^(BOOL success, MSCircleModel * obj) {
+        @strongify(self);
+        [self.tableView QB_endPullToRefresh];
+        if (success) {
+            self.response = obj;
+            [self.tableView reloadData];
+        }
+    }];
+}
+
 
 #pragma mark - UITableViewDelegate,UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    return self.response.circle.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MSMomentsListCell *cell = [tableView dequeueReusableCellWithIdentifier:kMSMomentsListCellReusableIdentifier forIndexPath:indexPath];
-    if (indexPath.row < 10) {
-        cell.imgUrl = @"";
-        cell.title = @"房事羞羞哒";
-        cell.subTitle = @"默默的美美的发了一张照片【照片】";
-        cell.count = 1111;
-        cell.vipLevel = 0;
+    if (indexPath.row < self.response.circle.count) {
+        MSCircleInfo *info = self.response.circle[indexPath.row];
+        cell.imgUrl = info.circleImg;
+        cell.title = info.name;
+        cell.subTitle = info.circleDesc;
+        cell.count = info.number;
+        cell.vipLevel = info.vipLv;
     }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    if (indexPath.item < self.response.circle.count) {
+        MSCircleInfo *info = self.response.circle[indexPath.row];
+        MSMomentsVC *momentsVC = [[MSMomentsVC alloc] initWithCircleInfo:info];
+        [self.navigationController pushViewController:momentsVC animated:YES];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

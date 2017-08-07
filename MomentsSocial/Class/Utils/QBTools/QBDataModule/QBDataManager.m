@@ -10,11 +10,11 @@
 #import "AFNetworking.h"
 #import "QBDataResponse.h"
 
-static NSString *const kEncryptionPasssword = @"gqi*&^R8*TfB2";
+static NSString *const kEncryptionPasssword = @"kj73H*&3rB38";
 
-NSString *const kSAShareErrorDomain           = @"com.sharead.errordomain";
-NSString *const kSAShareAdErrorMessageKeyName = @"com.sharead.errordomain.errormessage";
-NSString *const kSAShareLogicErrorCodeKeyName = @"com.sharead.errordomain.logicerrorcode";
+NSString *const kSAShareErrorDomain           = @"com.momentsSocial.errordomain";
+NSString *const kSAShareAdErrorMessageKeyName = @"com.momentsSocial.errordomain.errormessage";
+NSString *const kSAShareLogicErrorCodeKeyName = @"com.momentsSocial.errordomain.logicerrorcode";
 
 @implementation QBDataConfiguration
 + (instancetype)configuration {

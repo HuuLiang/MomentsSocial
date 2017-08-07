@@ -8,18 +8,30 @@
 
 #import "QBDataResponse.h"
 
-@interface MSMomentModel : NSObject
+@interface MSMomentCommentsInfo : NSObject
 @property (nonatomic) NSString *content;
-@property (nonatomic) NSInteger momentsType;
-@property (nonatomic) NSInteger photosCount;
-@property (nonatomic) NSArray *dataSource;
-@property (nonatomic) NSString *nick1;
-@property (nonatomic) NSString *nick2;
-@property (nonatomic) NSString *comment1;
-@property (nonatomic) NSString *comment2;
+@property (nonatomic) NSString *nickName;
+@end
+
+@interface MSMomentModel : JKDBModel
+@property (nonatomic) NSInteger moodId;
+@property (nonatomic) NSInteger userId;
+@property (nonatomic) NSInteger commentCount;
+@property (nonatomic) NSArray <MSMomentCommentsInfo *> *comments;
+@property (nonatomic) NSInteger greet;
+@property (nonatomic) NSString *portraitUrl;
+@property (nonatomic) NSArray *moodUrl;
+@property (nonatomic) NSString *text;
+@property (nonatomic) NSInteger type;
+@property (nonatomic) NSString *nickName;
+@property (nonatomic) NSString *videoImg;
+@property (nonatomic) NSString *videoUrl;
+
+@property (nonatomic) BOOL greeted;
+@property (nonatomic) NSString *location;
 @end
 
 
 @interface MSMomentsModel : QBDataResponse
-@property (nonatomic) NSArray <MSMomentModel *>* moments;
+@property (nonatomic) NSArray <MSMomentModel *> * mood;
 @end

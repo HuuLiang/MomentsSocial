@@ -1,14 +1,13 @@
 //
-//  MSComentsListVC.h
+//  MSSettingVC.h
 //  MomentsSocial
 //
-//  Created by Liang on 2017/7/27.
+//  Created by Liang on 2017/8/3.
 //  Copyright © 2017年 Liang. All rights reserved.
 //
 
 #import "MSBaseViewController.h"
 
-@interface MSComentsListVC : MSBaseViewController
-
+@interface MSSettingVC : MSBaseViewController
 
 @end

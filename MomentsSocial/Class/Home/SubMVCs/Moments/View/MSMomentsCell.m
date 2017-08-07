@@ -18,17 +18,15 @@
 @property (nonatomic) UIButton    *greetButton;
 @property (nonatomic) UILabel     *contentLabel;
 
+@property (nonatomic) UIImageView *playImgV;
 @property (nonatomic) UIImageView *coverImgV;
 @property (nonatomic) MSMomentsContentView *photosView;
 
 @property (nonatomic) UIImageView *locationImgV;
 @property (nonatomic) UILabel     *locationLabel;
 
-@property (nonatomic) UIImageView *attentionImgV;
-@property (nonatomic) UILabel     *attentionLabel;
-
-@property (nonatomic) UIImageView *commentsImgV;
-@property (nonatomic) UILabel     *commentsLabel;
+@property (nonatomic) UIButton    *attentionButton;
+@property (nonatomic) UIButton    *commentButton;
 
 @property (nonatomic) UIImageView *lineView;
 
@@ -41,6 +39,8 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         self.backgroundColor = kColor(@"#f0f0f0");
         self.contentView.backgroundColor = kColor(@"#f0f0f0");
@@ -92,23 +92,32 @@
         _locationLabel.font = kFont(12);
         [_backView addSubview:_locationLabel];
         
-        self.commentsLabel = [[UILabel alloc] init];
-        _commentsLabel.textColor = kColor(@"#999999");
-        _commentsLabel.font = kFont(12);
-        _commentsLabel.textAlignment = NSTextAlignmentRight;
-        [_backView addSubview:_commentsLabel];
+        self.commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_commentButton setTitleColor:kColor(@"#999999") forState:UIControlStateNormal];
+        _commentButton.titleLabel.font = kFont(12);
+        [_commentButton setImage:[UIImage imageNamed:@"moment_comment"] forState:UIControlStateNormal];
+        [_backView addSubview:_commentButton];
         
-        self.commentsImgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"moment_comment"]];
-        [_backView addSubview:_commentsImgV];
+        self.attentionButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_attentionButton setTitleColor:kColor(@"#999999") forState:UIControlStateNormal];
+        _attentionButton.titleLabel.font = kFont(12);
+        [_attentionButton setImage:[UIImage imageNamed:@"near_greeted"] forState:UIControlStateNormal];
+        [_backView addSubview:_attentionButton];
+
+        @weakify(self);
+        [_attentionButton bk_addEventHandler:^(id sender) {
+            @strongify(self);
+            if (self.greetAction) {
+                self.greetAction();
+            }
+        } forControlEvents:UIControlEventTouchUpInside];
         
-        self.attentionLabel = [[UILabel alloc] init];
-        _attentionLabel.textColor = kColor(@"#999999");
-        _attentionLabel.font = kFont(12);
-        _attentionLabel.textAlignment = NSTextAlignmentRight;
-        [_backView addSubview:_attentionLabel];
-        
-        self.attentionImgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"moment_att"]];
-        [_backView addSubview:_attentionImgV];
+        [_commentButton bk_addEventHandler:^(id sender) {
+            @strongify(self);
+            if (self.commentAction) {
+                self.commentAction();
+            }
+        } forControlEvents:UIControlEventTouchUpInside];
         
         {
             [_backView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -168,11 +177,16 @@
 }
 
 - (void)setCommentsCount:(NSInteger)commentsCount {
-    _commentsLabel.text = [NSString stringWithFormat:@"%ld",(long)commentsCount];
+    [_commentButton setTitle:[NSString stringWithFormat:@"%ld",(long)commentsCount] forState:UIControlStateNormal];
 }
 
 - (void)setAttentionCount:(NSInteger)attentionCount {
-    _attentionLabel.text = [NSString stringWithFormat:@"%ld",(long)attentionCount];
+    [_attentionButton setTitle:[NSString stringWithFormat:@"%ld",(long)attentionCount] forState:UIControlStateNormal];
+}
+
+- (void)setGreeted:(BOOL)greeted {
+    _greeted = greeted;
+    [_attentionButton setImage:[UIImage imageNamed:greeted ? @"near_greet" : @"near_greeted"] forState:UIControlStateNormal];
 }
 
 - (void)setMomentsType:(MSMomentsType)momentsType {
@@ -183,6 +197,10 @@
     if (_coverImgV) {
         [_coverImgV removeFromSuperview];
     }
+    if (_playImgV) {
+        [_playImgV removeFromSuperview];
+    }
+    
 
     if (_momentsType == MSMomentsTypePhotos) {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
@@ -193,6 +211,9 @@
         self.coverImgV = [[UIImageView alloc] init];
         _coverImgV.backgroundColor = [UIColor yellowColor];
         [self.contentView addSubview:_coverImgV];
+        
+        self.playImgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"play"]];
+        [_coverImgV addSubview:_playImgV];
     }
 }
 
@@ -217,13 +238,18 @@
         }];
 
     } else if (_momentsType == MSMomentsTypeVideo) {
-//        [_coverImgV sd_setImageWithURL:[NSURL URLWithString:dataSource]];
+        [_coverImgV sd_setImageWithURL:[NSURL URLWithString:dataSource]];
         CGFloat width = kScreenWidth - kWidth(120);
         [_coverImgV mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_contentLabel.mas_bottom).offset(kWidth(20));
             make.left.equalTo(_backView).offset(kWidth(100));
             make.right.equalTo(_backView.mas_right).offset(-kWidth(20));
             make.height.mas_equalTo(ceilf(width/2));
+        }];
+        
+        [_playImgV mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(_coverImgV);
+            make.size.mas_equalTo(CGSizeMake(kWidth(120), kWidth(120)));
         }];
         
         [_lineView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -246,28 +272,16 @@
         make.height.mas_equalTo(_locationLabel.font.lineHeight);
     }];
     
-    [_commentsLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_commentButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(_locationLabel);
-        make.right.equalTo(_backView.mas_right).offset(-kWidth(38));
-        make.height.mas_equalTo(_commentsLabel.font.lineHeight);
+        make.right.equalTo(_backView.mas_right).offset(-kWidth(20));
+        make.size.mas_equalTo(CGSizeMake(kWidth(90), kWidth(28)));
     }];
     
-    [_commentsImgV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_commentsLabel);
-        make.right.equalTo(_commentsLabel.mas_left).offset(-kWidth(10));
-        make.size.mas_equalTo(CGSizeMake(kWidth(32), kWidth(28)));
-    }];
-    
-    [_attentionLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_commentsImgV);
-        make.right.equalTo(_commentsImgV.mas_left).offset(-kWidth(28));
-        make.height.mas_equalTo(_attentionLabel.font.lineHeight);
-    }];
-    
-    [_attentionImgV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_attentionLabel);
-        make.right.equalTo(_attentionLabel.mas_left).offset(-kWidth(12));
-        make.size.mas_equalTo(CGSizeMake(kWidth(32), kWidth(30)));
+    [_attentionButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(_locationLabel);
+        make.right.equalTo(_commentButton.mas_left).offset(-kWidth(28));
+        make.size.mas_equalTo(CGSizeMake(kWidth(90), kWidth(28)));
     }];
 }
 
@@ -286,6 +300,7 @@
 }
 
 - (void)setCommentA:(NSString *)commentA {
+    commentA = [NSString stringWithFormat:@"%@:%@",_nickA,commentA];
     NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:commentA attributes:@{NSForegroundColorAttributeName:kColor(@"#333333"),NSFontAttributeName:kFont(13)}];
     [attriStr addAttributes:@{NSForegroundColorAttributeName:kColor(@"#999999")} range:[commentA rangeOfString:_nickA]];
     _commentLabelA.attributedText = attriStr;
@@ -308,6 +323,7 @@
 }
 
 -(void)setCommentB:(NSString *)commentB {
+    commentB = [NSString stringWithFormat:@"%@:%@",_nickB,commentB];
     NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:commentB attributes:@{NSForegroundColorAttributeName:kColor(@"#333333"),NSFontAttributeName:kFont(13)}];
     [attriStr addAttributes:@{NSForegroundColorAttributeName:kColor(@"#999999")} range:[commentB rangeOfString:_nickB]];
     _commentLabelB.attributedText = attriStr;
@@ -323,6 +339,9 @@
 
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
+    
+    [_commentButton layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleLeft imageTitleSpace:kWidth(10)];
+    [_attentionButton layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleLeft imageTitleSpace:kWidth(10)];
 }
 
 @end

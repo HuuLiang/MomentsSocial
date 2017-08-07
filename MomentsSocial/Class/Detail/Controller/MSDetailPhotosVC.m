@@ -13,9 +13,18 @@ static NSString *const kMSDetailPhotoCellReusableIdentifier = @"kMSDetailPhotoCe
 
 @interface MSDetailPhotosVC () <UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 @property (nonatomic) UICollectionView *collectionView;
+@property (nonatomic) NSArray *photos;
 @end
 
 @implementation MSDetailPhotosVC
+
+- (instancetype)initWithPhotos:(NSArray *)photos {
+    self = [super init];
+    if (self) {
+        _photos = photos;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -51,15 +60,19 @@ static NSString *const kMSDetailPhotoCellReusableIdentifier = @"kMSDetailPhotoCe
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 10;
+    return self.photos.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     MSDetailPhotoCell *cell= [collectionView dequeueReusableCellWithReuseIdentifier:kMSDetailPhotoCellReusableIdentifier forIndexPath:indexPath];
-    if (indexPath.item < 10) {
-        cell.imgUrl = @"";
+    if (indexPath.item < self.photos.count) {
+        cell.imgUrl = self.photos[indexPath.item];
     }
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
 }
 
 @end

@@ -77,7 +77,7 @@
 }
 
 - (void)setImgUrl:(NSString *)imgUrl {
-    [_userImgV sd_setImageWithURL:[NSURL URLWithString:imgUrl] placeholderImage:[UIImage imageNamed:@""]];
+    [_userImgV sd_setImageWithURL:[NSURL URLWithString:imgUrl] placeholderImage:[UIImage imageNamed:@"mine_portrait"]];
 }
 
 - (void)setNickName:(NSString *)nickName {

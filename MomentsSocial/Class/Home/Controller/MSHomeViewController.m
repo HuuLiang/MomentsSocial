@@ -7,12 +7,12 @@
 //
 
 #import "MSHomeViewController.h"
-#import "MSHomeModel.h"
+#import "MSCircleModel.h"
 #import "MSReqManager.h"
 #import "MSHomeMomentsCell.h"
 #import "MSHomeCategoryCell.h"
 #import "MSHomeCollectionHeaderView.h"
-#import "MSComentsListVC.h"
+#import "MSMomentsListVC.h"
 #import "MSMomentsVC.h"
 
 static NSString *const kMSHomeMomentsCellReusableIdentifier             = @"kMSHomeMomentsCellReusableIdentifier";
@@ -22,11 +22,11 @@ static NSString *const kMSHomeCollectionFooterViewReusableIdentifier    = @"kMSH
 
 @interface MSHomeViewController () <UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 @property (nonatomic) UICollectionView *collectionView;
-@property (nonatomic) MSHomeModel *response;
+@property (nonatomic) MSCircleModel *response;
 @end
 
 @implementation MSHomeViewController
-QBDefineLazyPropertyInitialization(MSHomeModel, response)
+QBDefineLazyPropertyInitialization(MSCircleModel, response)
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -62,8 +62,8 @@ QBDefineLazyPropertyInitialization(MSHomeModel, response)
 }
 
 - (void)fetchHomeData {
-    @weakify(self)
-    [[MSReqManager manager] fetchHomeInfoWithCompletionHandler:^(BOOL success, MSHomeModel * obj) {
+    @weakify(self);
+    [[MSReqManager manager] fetchCircleInfoWithCircleId:NSNotFound Class:[MSCircleModel class] completionHandler:^(BOOL success, MSCircleModel * obj) {
         @strongify(self);
         [self.collectionView QB_endPullToRefresh];
         if (success) {
@@ -81,9 +81,9 @@ QBDefineLazyPropertyInitialization(MSHomeModel, response)
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     if (section == 0) {
-        return 5;
+        return self.response.hotCircle.count;
     } else if (section == 1) {
-        return 6;
+        return self.response.circle.count;
     }
     return 0;
 }
@@ -91,25 +91,27 @@ QBDefineLazyPropertyInitialization(MSHomeModel, response)
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         MSHomeMomentsCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kMSHomeMomentsCellReusableIdentifier forIndexPath:indexPath];
-        if (indexPath.item < 10) {
-            cell.imgUrl = @"";
-            cell.title = @"你爆照 我打分";
-            cell.subTitle = @"默默的美美的发了一张照片【照片】";
-            cell.count = 11111;
-            cell.vipLevel = 0;
+        if (indexPath.item < self.response.hotCircle.count) {
+            MSCircleInfo *info = self.response.hotCircle[indexPath.row];
+            cell.imgUrl = info.circleImg;
+            cell.title = info.name;
+            cell.subTitle = info.circleDesc;
+            cell.count = info.number;
+            cell.vipLevel = info.vipLv;
         }
         return cell;
     } else if (indexPath.section == 1) {
         MSHomeCategoryCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kMSHomeCategoryCellReusableIdentifier forIndexPath:indexPath];
-        if (indexPath.item < 10) {
-            cell.imgUrl = @"";
-            cell.title = @"你爆照 我打分";
-            cell.subTitle = @"默默的美美的发了一张照片【照片】";
-            cell.vipLevel = 0;
+        if (indexPath.item < self.response.circle.count) {
+            MSCircleInfo *info = self.response.circle[indexPath.row];
+            cell.imgUrl = info.circleImg;
+            cell.title = info.name;
+            cell.subTitle = info.circleDesc;
+            cell.vipLevel = info.vipLv;
             @weakify(self);
             cell.joinAction = ^{
                 @strongify(self);
-                MSComentsListVC *listVC = [[MSComentsListVC alloc] initWithTitle:@"爆照"];
+                MSMomentsListVC *listVC = [[MSMomentsListVC alloc] initWithCircleInfo:info];
                 [self.navigationController pushViewController:listVC animated:YES];
             };
         }
@@ -120,8 +122,9 @@ QBDefineLazyPropertyInitialization(MSHomeModel, response)
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        if (indexPath.item < 10) {
-            MSMomentsVC *momentsVC = [[MSMomentsVC alloc] initWithTitle:@"你爆照 我打分"];
+        if (indexPath.item < self.response.hotCircle.count) {
+            MSCircleInfo *info = self.response.hotCircle[indexPath.row];
+            MSMomentsVC *momentsVC = [[MSMomentsVC alloc] initWithCircleInfo:info];
             [self.navigationController pushViewController:momentsVC animated:YES];
         }
     }

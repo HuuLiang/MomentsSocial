@@ -28,6 +28,6 @@
 #import "MSUtil.h"
 #import "MSHudManager.h"
 #import "MSPopupHelper.h"
-
+#import "MSUserModel.h"
 
 #endif /* MSPrefixHeader_pch */

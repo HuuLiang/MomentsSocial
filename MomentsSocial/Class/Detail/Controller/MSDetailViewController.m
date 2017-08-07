@@ -12,6 +12,7 @@
 #import "MSDetailPhotosCell.h"
 #import "MSDetailSectionHeaderView.h"
 #import "MSDetailModel.h"
+#import "MSReqManager.h"
 
 #import "MSDetailPhotosVC.h"
 #import "MSDetailInfoViewController.h"
@@ -29,10 +30,20 @@ typedef NS_ENUM(NSInteger,MSDetailSection) {
 @property (nonatomic) MSDetailHeaderView *headerView;
 @property (nonatomic) MSDetailFooterView *footerView;
 @property (nonatomic) MSDetailModel *response;
+@property (nonatomic) NSString *userId;
+@property (nonatomic) MSUserModel *user;
 @end
 
 @implementation MSDetailViewController
 QBDefineLazyPropertyInitialization(MSDetailModel, response)
+
+- (instancetype)initWithUserId:(NSString *)userId {
+    self = [super init];
+    if (self) {
+        _userId = userId;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -71,10 +82,17 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
 }
 
 - (void)fetchUserDetailInfo {
-    [self.tableView QB_endPullToRefresh];
-    [self configHeaderView];
-    [self configFooterView];
-    [self.tableView reloadData];
+    @weakify(self);
+    [[MSReqManager manager] fetchDetailInfoWithUserId:self.userId Class:[MSDetailModel class] completionHandler:^(BOOL success, MSDetailModel * obj) {
+        @strongify(self);
+        [self.tableView QB_endPullToRefresh];
+        if (success) {
+            self.user = obj.user;
+            [self configHeaderView];
+            [self configFooterView];
+            [self.tableView reloadData];
+        }
+    }];
 }
 
 - (void)configHeaderView {
@@ -82,11 +100,16 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
         self.headerView = [[MSDetailHeaderView alloc] init];
         _headerView.size = CGSizeMake(kScreenWidth, kWidth(448));
         self.tableView.tableHeaderView = _headerView;
+        @weakify(self);
+        _headerView.backAction = ^{
+            @strongify(self);
+            [self.navigationController popViewControllerAnimated:YES];
+        };
     }
-    _headerView.imgUrl = @"";
-    _headerView.nickName = @"匿名传说";
-    _headerView.location = @"蒋村街道办事处";
-    _headerView.vipLevel = MSLevelVip2;
+    _headerView.imgUrl = self.user.portraitUrl;
+    _headerView.nickName = self.user.nickName;
+    _headerView.location = self.user.city;
+    _headerView.vipLevel = self.user.vipLv;
 }
 
 - (void)configFooterView {
@@ -95,7 +118,6 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
         _footerView.size = CGSizeMake(kScreenWidth, kWidth(448));
         self.tableView.tableFooterView = _footerView;
     }
-    
 }
 
 #pragma mark - UITableViewDelegate,UITableViewDataSource
@@ -106,7 +128,8 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == MSDetailSectionPhotos) {
-        return 1;
+        
+        return self.user.userPhoto.count > 3 ? 3 : self.user.userPhoto.count;
     }
     return 0;
 }
@@ -114,9 +137,15 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == MSDetailSectionPhotos) {
         MSDetailPhotosCell *cell = [tableView dequeueReusableCellWithIdentifier:kMSDetailPhotosCellReusableIdentifier forIndexPath:indexPath];
-        cell.imgUrlA = @"";
-        cell.imgUrlB = @"";
-        cell.imgUrlC = @"";
+        [self.user.userPhoto enumerateObjectsUsingBlock:^(NSString *  _Nonnull imgUrl, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (idx == 0) {
+                cell.imgUrlA = imgUrl;
+            } else if (idx == 1) {
+                cell.imgUrlB = imgUrl;
+            } else if (idx == 2) {
+                cell.imgUrlC = imgUrl;
+            }
+        }];
         return cell;
     }
     return nil;

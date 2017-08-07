@@ -10,6 +10,8 @@
 #import "QBNetworkInfo.h"
 #import "MSReqManager.h"
 #import "MSTabBarController.h"
+#import "MSActivityModel.h"
+#import "MSSystemConfigModel.h"
 
 @implementation AppDelegate (Configurations)
 
@@ -44,10 +46,19 @@
 }
 
 - (void)registerUUID {
-    [[MSReqManager manager] registerUUIDWithCompletionHandler:^(BOOL success, NSString * uuid) {
+    [[MSReqManager manager] registerUUIDClass:[MSActivityModel class] completionHandler:^(BOOL success, MSActivityModel * response) {
         if (success) {
-            [MSUtil setRegisteredWithUUID:uuid];
+            [MSUtil setRegisteredWithUUID:response.uuid];
+            [MSUtil registerUserId:response.userId];
             [self showHomeViewController];
+        }
+    }];
+}
+
+- (void)fetchSystemConfigInfo {
+    [[MSReqManager manager] fetchSystemConfigInfoClass:[MSSystemConfigModel class] completionHandler:^(BOOL success, MSSystemConfigModel * obj) {
+        if (success) {
+            [MSSystemConfigModel defaultConfig].config = obj.config;
         }
     }];
 }
@@ -123,6 +134,8 @@
 }
 
 - (void)showHomeViewController {
+    [self fetchSystemConfigInfo];
+    
     MSTabBarController *tabBarVC = [[MSTabBarController alloc] init];
     self.window.rootViewController = tabBarVC;
     [self.window makeKeyAndVisible];

@@ -29,6 +29,7 @@
     [self.navigationBar setBackgroundImage:barBackgroundImg forBarMetrics:UIBarMetricsDefault];
     
     self.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
+    self.delegate = (id<UINavigationControllerDelegate>)self;
 }
 
 - (void)didReceiveMemoryWarning {

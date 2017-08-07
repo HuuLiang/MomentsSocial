@@ -10,6 +10,7 @@
 
 @interface MSDetailHeaderView ()
 @property (nonatomic) UIImageView *backImgV;
+@property (nonatomic) UIButton *backButton;
 @property (nonatomic) UIImageView *userImgV;
 @property (nonatomic) UILabel     *nickLabel;
 @property (nonatomic) UILabel     *onlineLabel;
@@ -26,6 +27,10 @@
         
         self.backImgV = [[UIImageView alloc] init];
         [self addSubview:_backImgV];
+        
+        self.backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_backButton setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+        [self addSubview:_backButton];
         
         self.userImgV = [[UIImageView alloc] init];
         _userImgV.layer.cornerRadius = kWidth(56);
@@ -55,9 +60,23 @@
         self.vipImgV = [[UIImageView alloc] init];
         [self addSubview:_vipImgV];
         
+        @weakify(self);
+        [_backButton bk_addEventHandler:^(id sender) {
+            @strongify(self);
+            if (self.backAction) {
+                self.backAction();
+            }
+        } forControlEvents:UIControlEventTouchUpInside];
+        
         {
             [_backImgV mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.edges.equalTo(self);
+            }];
+            
+            [_backButton mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(_backImgV).offset(kWidth(66));
+                make.left.equalTo(_backImgV).offset(kWidth(26));
+                make.size.mas_equalTo(CGSizeMake(kWidth(26), kWidth(66)));
             }];
             
             [_userImgV mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -121,7 +140,10 @@
 
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
-    [_locationButton  setIconInLeftWithSpacing:5];
+    
+    [_locationButton layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleLeft imageTitleSpace:5];
+    
+    _backImgV.image = [self setGradientWithSize:_backImgV.size Colors:@[kColor(@"#EF6FB0"),kColor(@"#ED465C")] direction:leftToRight];
 }
 
 @end

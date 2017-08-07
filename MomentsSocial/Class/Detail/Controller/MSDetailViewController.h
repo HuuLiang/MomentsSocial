@@ -10,4 +10,6 @@
 
 @interface MSDetailViewController : MSBaseViewController
 
+- (instancetype)initWithUserId:(NSString *)userId;
+
 @end

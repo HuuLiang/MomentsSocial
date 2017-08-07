@@ -10,4 +10,6 @@
 
 @interface MSDetailPhotosVC : MSBaseViewController
 
+- (instancetype)initWithPhotos:(NSArray *)photos;
+
 @end

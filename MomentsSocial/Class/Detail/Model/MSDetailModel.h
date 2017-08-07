@@ -10,4 +10,6 @@
 
 @interface MSDetailModel : QBDataResponse
 
+@property (nonatomic) MSUserModel *user;
+
 @end

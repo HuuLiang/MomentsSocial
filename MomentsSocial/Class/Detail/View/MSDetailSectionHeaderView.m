@@ -41,6 +41,14 @@
             }
         } forControlEvents:UIControlEventTouchUpInside];
         
+        [self bk_whenTapped:^{
+            @strongify(self);
+            if (self.intoAction) {
+                self.intoAction();
+            }
+        }];
+        
+        
         {
             [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(self);
@@ -69,7 +77,7 @@
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     
-    [_intoButton setIconInRightWithSpacing:kWidth(8)];
+    [_intoButton layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleRight imageTitleSpace:kWidth(8)];
 }
 
 @end

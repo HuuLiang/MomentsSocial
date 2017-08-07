@@ -10,6 +10,7 @@
 #import "MSMineInfoView.h"
 #import "MSMineSettingView.h"
 #import "MSMineVipDescView.h"
+#import "MSSettingVC.h"
 
 @interface MSMineViewController ()
 @property (nonatomic) UIImageView    *gradientView;
@@ -25,11 +26,13 @@
     
     self.view.backgroundColor = kColor(@"#f0f0f0");
     self.navigationController.navigationBar.barStyle = UIBaselineAdjustmentNone;
-    
+        
     [self configGradientView];
     [self configUserInfoView];
     [self configSettingView];
     [self configVipView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configVipView) name:MSOpenVipSuccessNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -77,7 +80,8 @@
     @weakify(self);
     _settingView.settingAction = ^{
         @strongify(self);
-        
+        MSSettingVC *settingVC = [[MSSettingVC alloc] initWithTitle:@"设置"];
+        [self.navigationController pushViewController:settingVC animated:YES];
     };
     
     {
@@ -90,16 +94,21 @@
 }
 
 - (void)configVipView {
-    if (!_vipView) {
-        self.vipView = [[MSMineVipDescView alloc] init];
-        [self.view addSubview:_vipView];
-        {
-            [_vipView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.view);
-                make.top.equalTo(_settingView.mas_bottom).offset(kWidth(28));
-                make.size.mas_equalTo(CGSizeMake(kWidth(690), kWidth(674)));
-            }];
-        }
+    self.vipView = [[MSMineVipDescView alloc] init];
+    [self.view addSubview:_vipView];
+    
+    @weakify(self);
+    _vipView.openVipAction = ^{
+        @strongify(self);
+        
+    };
+    
+    {
+        [_vipView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.view);
+            make.top.equalTo(_settingView.mas_bottom).offset(kWidth(28));
+            make.size.mas_equalTo(CGSizeMake(kWidth(690), kWidth(674)));
+        }];
     }
 }
 

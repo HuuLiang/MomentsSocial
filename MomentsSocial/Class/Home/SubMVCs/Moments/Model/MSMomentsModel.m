@@ -8,12 +8,37 @@
 
 #import "MSMomentsModel.h"
 
+@implementation MSMomentCommentsInfo
+
+@end
+
 @implementation MSMomentModel
 
+- (Class)moodUrlElementClass {
+    return [NSString class];
+}
+
+- (Class)commentsElementClass {
+    return [MSMomentCommentsInfo class];
+}
+
+- (BOOL)greeted {
+    MSMomentModel *model = [self.class findFirstByCriteria:[NSString stringWithFormat:@"where userId=%ld",(long)_moodId]];
+    return model ? model.greeted : false;
+}
+
++ (NSArray *)transients {
+    return @[@"userId",@"commentCount",@"comments",@"greet",@"portraitUrl",@"moodUrl",@"text",@"type",@"nickName",@"videoImg",@"videoUrl"];
+}
 
 @end
 
 
+
 @implementation MSMomentsModel
+
+- (Class)moodElementClass {
+    return [MSMomentModel class];
+}
 
 @end

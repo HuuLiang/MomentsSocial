@@ -69,7 +69,10 @@
 
 
 @interface MSPopupView ()
+@property (nonatomic) UIImageView *backImgV;
 @property (nonatomic) UIView *backView;
+@property (nonatomic) UIView *shapeView;
+@property (nonatomic) CAShapeLayer *shapeLayer;
 @property (nonatomic) UILabel *msgLabel;
 @property (nonatomic) UIImageView *disImgV;
 @property (nonatomic) UIButton *cancleBtn;
@@ -91,33 +94,37 @@
         
         self.backgroundColor = [kColor(@"#000000") colorWithAlphaComponent:0.6];
         
+        self.backImgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pop_vip1"]];
+        [self addSubview:_backImgV];
+        
         self.backView = [[UIView alloc] init];
         _backView.backgroundColor = kColor(@"#ffffff");
-        _backView.layer.cornerRadius = 5;
-        _backView.layer.masksToBounds = YES;
         [self addSubview:_backView];
+        
+        self.shapeView = [[UIView alloc] init];
+        _shapeView.backgroundColor = kColor(@"#ffffff");
+        [_backView addSubview:_shapeView];
         
         self.msgLabel = [[UILabel alloc] init];
         _msgLabel.textColor = kColor(@"#333333");
         _msgLabel.font = kFont(15);
         _msgLabel.numberOfLines = 0;
         _msgLabel.text = msg;
-        [_backView addSubview:_msgLabel];
-        
+        [_shapeView addSubview:_msgLabel];
+
         self.cancleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_cancleBtn setTitle:cancleMsg forState:UIControlStateNormal];
-        [_cancleBtn setTitleColor:kColor(@"#cccccc") forState:UIControlStateNormal];
+        [_cancleBtn setTitleColor:kColor(@"#999999") forState:UIControlStateNormal];
         _cancleBtn.titleLabel.font = kFont(15);
         _cancleBtn.layer.borderWidth = 1;
-        _cancleBtn.layer.borderColor = kColor(@"#e6e6e6").CGColor;
+        _cancleBtn.layer.borderColor = kColor(@"#dcdcdc").CGColor;
         [_backView addSubview:_cancleBtn];
-        
+
         self.confirmBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_confirmBtn setTitle:confirmMsg forState:UIControlStateNormal];
-        [_confirmBtn setTitleColor:kColor(@"#3584E0") forState:UIControlStateNormal];
+        [_confirmBtn setTitleColor:kColor(@"#ffffff") forState:UIControlStateNormal];
         _confirmBtn.titleLabel.font = kFont(15);
-        _confirmBtn.layer.borderWidth = 1;
-        _confirmBtn.layer.borderColor = kColor(@"#e6e6e6").CGColor;
+        _confirmBtn.backgroundColor = kColor(@"#7FB2ED");
         [_backView addSubview:_confirmBtn];
         
         if (disCount) {
@@ -144,31 +151,44 @@
         } forControlEvents:UIControlEventTouchUpInside];
         
         {
+            [_backImgV mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(self);
+                make.top.equalTo(self).offset(kScreenHeight * 0.2);
+                make.size.mas_equalTo(CGSizeMake(kWidth(340), kWidth(242)));
+            }];
+            
             [_backView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.center.equalTo(self);
-                make.size.mas_equalTo(CGSizeMake(kWidth(490), kWidth(274)));
+                make.centerX.equalTo(self);
+                make.top.equalTo(_backImgV.mas_bottom).offset(-kWidth(20));
+                make.size.mas_equalTo(CGSizeMake(kWidth(560), kWidth(280)));
+            }];
+            
+            [_shapeView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.top.right.equalTo(_backView);
+                make.height.mas_equalTo(kWidth(110));
             }];
             
             [_msgLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(_backView).offset(kWidth(50));
-                make.centerX.equalTo(_backView);
+                make.center.equalTo(_shapeView);
                 make.width.mas_equalTo(kWidth(400));
             }];
-            
+
             [_cancleBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.bottom.equalTo(_backView);
-                make.size.mas_equalTo(CGSizeMake(kWidth(245), kWidth(80)));
+                make.left.equalTo(_backView).offset(kWidth(20));
+                make.bottom.equalTo(_backView.mas_bottom).offset(-kWidth(40));
+                make.size.mas_equalTo(CGSizeMake(kWidth(256), kWidth(76)));
             }];
             
             [_confirmBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.bottom.equalTo(_backView);
-                make.size.mas_equalTo(CGSizeMake(kWidth(245), kWidth(80)));
+                make.right.equalTo(_backView.mas_right).offset(-kWidth(20));
+                make.centerY.equalTo(_cancleBtn);
+                make.size.mas_equalTo(CGSizeMake(kWidth(256), kWidth(76)));
             }];
             
             if (disCount) {
                 [_disImgV mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.right.equalTo(_backView.mas_right).offset(-kWidth(50));
-                    make.bottom.equalTo(_backView.mas_bottom).offset(-kWidth(70));
+                    make.bottom.equalTo(_confirmBtn.mas_top).offset(0);
+                    make.left.equalTo(_confirmBtn.mas_centerX).offset(0);
                     make.size.mas_equalTo(CGSizeMake(kWidth(100), kWidth(50)));
                 }];
             }
@@ -177,6 +197,36 @@
     return self;
 }
 
+- (void)drawRect:(CGRect)rect {
+    [super drawRect:rect];
+    
+    CGFloat width = ceilf(_shapeView.frame.size.width);
+    CGFloat height = kWidth(104);
+    CGFloat amplitude = 2.0f;
+    
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    path.lineWidth = 2;
+    [path moveToPoint:CGPointMake(width, 0)];
+    [path addLineToPoint:CGPointZero];
+    [path addLineToPoint:CGPointMake(0, height)];
+    
+    CGFloat y = height;
+    CGFloat ω = 70*M_PI/width;
+    for (float x = 0.0f; x <= width; x++) {
+        y = amplitude * sinf(ω * x) + height;
+        [path addLineToPoint:CGPointMake(x, y)];
+    }
+    [path addLineToPoint:CGPointMake(width, 0)];
+    [path closePath];
+    
+    UIImage *img = [self setGradientWithSize:CGSizeMake(width, kWidth(104)) Colors:@[kColor(@"#EF6FB0"),kColor(@"#ED465C")] direction:leftToRight];
+    
+    self.shapeLayer = [CAShapeLayer layer];
+    _shapeLayer.borderWidth = 2;
+    _shapeLayer.fillColor = [UIColor colorWithPatternImage:img].CGColor;
+    _shapeLayer.path = path.CGPath;
+    [_shapeView.layer addSublayer:_shapeLayer];
+}
 
 @end
 

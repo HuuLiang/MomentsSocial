@@ -10,6 +10,10 @@
 
 @interface MSSendMomentHeaderView : UIView
 
+@property (nonatomic) MSAction getPhotoAction;
+
+@property (nonatomic) UIImage *addImg;
+
 @end
 
 

@@ -82,12 +82,19 @@ typedef void (^MSObjectAction)(id obj);
 typedef void (^MSCompletionHandler)(BOOL success,id obj);
 
 
-//#pragma clang diagnostic push
-//#pragma clang diagnostic ignored "-Wextern-initializer"
-//
-//#pragma clang diagnostic pop
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wextern-initializer"
+
+
+//NSString *const kMSUserSexMale = @"男";
+//NSString *const kMSUserSexFemale = @"女";
+
+
+#pragma clang diagnostic pop
 
 static NSString *const kMSFriendCurrentUserKeyName         = @"kMSFriendCurrentUserKeyName";
+
+#define MSOpenVipSuccessNotification      @"MSOpenVipSuccessNotification"
 
 #define tableViewCellheight  MAX(kScreenHeight*0.06,44)
 

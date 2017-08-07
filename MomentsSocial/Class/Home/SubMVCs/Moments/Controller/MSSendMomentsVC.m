@@ -7,9 +7,12 @@
 //
 
 #import "MSSendMomentsVC.h"
+#import "MSSendMomentHeaderView.h"
+#import "QBPhotoManager.h"
 
 @interface MSSendMomentsVC () <UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic) UITableView *tableView;
+@property (nonatomic) MSSendMomentHeaderView *headerView;
 @end
 
 @implementation MSSendMomentsVC
@@ -61,7 +64,23 @@
 }
 
 - (void)configTableHeaderView {
+    __block MSSendMomentHeaderView *headerView = [[MSSendMomentHeaderView alloc] init];
+    headerView.size = CGSizeMake(kScreenWidth, kWidth(500));
+    self.tableView.tableHeaderView = headerView;
     
+    @weakify(headerView);
+    headerView.getPhotoAction = ^{
+        [[QBPhotoManager manager] getImageInCurrentViewController:self handler:^(UIImage *pickerImage, NSString *keyName) {
+            @strongify(headerView);
+            headerView.addImg = pickerImage;
+        }];
+    };
+}
+
+#pragma mark - UITableViewDelegate,UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 0;
 }
 
 @end

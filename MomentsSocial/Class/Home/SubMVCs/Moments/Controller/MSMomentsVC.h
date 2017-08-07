@@ -8,6 +8,10 @@
 
 #import "MSBaseViewController.h"
 
+@class MSCircleInfo;
+
 @interface MSMomentsVC : MSBaseViewController
+
+- (instancetype)initWithCircleInfo:(MSCircleInfo *)info;
 
 @end

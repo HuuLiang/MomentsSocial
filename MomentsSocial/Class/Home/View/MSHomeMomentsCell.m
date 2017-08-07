@@ -27,9 +27,9 @@
         self.contentView.backgroundColor = kColor(@"#ffffff");
         
         self.mainImgV = [[UIImageView alloc] init];
-        _mainImgV.layer.cornerRadius = kWidth(52);
+        _mainImgV.layer.cornerRadius = kWidth(56);
         _mainImgV.layer.borderColor = kColor(@"#F0F0F0").CGColor;
-        _mainImgV.layer.borderWidth = kWidth(8);
+        _mainImgV.layer.borderWidth = kWidth(4);
         _mainImgV.layer.masksToBounds = YES;
         [self.contentView addSubview:_mainImgV];
         
@@ -56,7 +56,7 @@
             [_mainImgV mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(self.contentView);
                 make.left.equalTo(self.contentView).offset(kWidth(20));
-                make.size.mas_equalTo(CGSizeMake(kWidth(104), kWidth(104)));
+                make.size.mas_equalTo(CGSizeMake(kWidth(112), kWidth(112)));
             }];
             
             [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {

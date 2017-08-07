@@ -18,4 +18,5 @@
 
 @property (nonatomic) MSLevel vipLevel;
 
+@property (nonatomic) MSAction backAction;
 @end

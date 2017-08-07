@@ -11,14 +11,21 @@
 
 #import "MSNearViewController.h"
 #import "MSShakeVC.h"
+#import "MSCheckInVC.h"
+
+#import "MSDiscoverModel.h"
+#import "MSReqManager.h"
+#import "MSSystemConfigModel.h"
 
 static NSString *const kMSDiscverCellReusableIdentifier = @"kMSDiscverCellReusableIdentifier";
 
 @interface MSDiscoverViewController () <UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic) UITableView *tableView;
+@property (nonatomic) NSMutableArray *dataSource;
 @end
 
 @implementation MSDiscoverViewController
+QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -45,6 +52,8 @@ static NSString *const kMSDiscverCellReusableIdentifier = @"kMSDiscverCellReusab
         [self fetchDiscoverFunctionsInfo];
     }];
     
+    [self configTableHeaderView];
+    
     [_tableView QB_triggerPullToRefresh];
 }
 
@@ -54,37 +63,51 @@ static NSString *const kMSDiscverCellReusableIdentifier = @"kMSDiscverCellReusab
 
 - (void)configTableHeaderView {
     UIImageView *headerImgV = [[UIImageView alloc] init];
-    headerImgV.backgroundColor = [UIColor blueColor];
     headerImgV.size = CGSizeMake(kScreenWidth, kWidth(300));
+    [headerImgV sd_setImageWithURL:[NSURL URLWithString:[MSSystemConfigModel defaultConfig].config.SPREAD_IMG]];
     _tableView.tableHeaderView = headerImgV;
 }
 
 - (void)fetchDiscoverFunctionsInfo {
-    [self configTableHeaderView];
-    [self.tableView reloadData];
-    [self.tableView QB_endPullToRefresh];
+    @weakify(self);
+    [[MSReqManager manager] fetchDiscoverInfoClass:[MSDiscoverModel class] completionHandler:^(BOOL success, MSDiscoverModel * obj) {
+        @strongify(self);
+        [self.tableView QB_endPullToRefresh];
+        if (success) {
+            [self.dataSource removeAllObjects];
+            [self.dataSource addObjectsFromArray:obj.finds];
+            [self.tableView reloadData];
+        }
+    }];
 }
 
 #pragma mark - UITableViewDelegate,UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 4;
+    return self.dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MSDiscoverCell *cell = [tableView dequeueReusableCellWithIdentifier:kMSDiscverCellReusableIdentifier forIndexPath:indexPath];
-    if (indexPath.row < 4) {
-        cell.imgUrl = @"";
-        cell.title = @"附近的人";
-        cell.subTitle = @"看一看谁在附近";
-        cell.descTitle = @"您附近当前有89位异性在线";
+    if (indexPath.row < self.dataSource.count) {
+        MSFindInfo *info = self.dataSource[indexPath.row];
+        cell.imgUrl = info.findImg;
+        cell.title = info.name;
+        cell.subTitle = info.findDesc;
+        cell.descTitle = info.findSubtitle;
         @weakify(self);
         cell.joinAction = ^{
             @strongify(self);
-//            MSNearViewController *nearVC = [[MSNearViewController alloc] initWithTitle:@"附近的人"];
-//            [self.navigationController pushViewController:nearVC animated:YES];
-            MSShakeVC *shakeVC = [[MSShakeVC alloc] initWithTitle:@"摇一摇"];
-            [self.navigationController pushViewController:shakeVC animated:YES];
+            if (info.funType == 1) {
+                MSNearViewController *nearVC = [[MSNearViewController alloc] initWithTitle:@"附近的人"];
+                [self.navigationController pushViewController:nearVC animated:YES];
+            } else if (info.funType == 2) {
+                MSShakeVC *shakeVC = [[MSShakeVC alloc] initWithTitle:@"摇一摇"];
+                [self.navigationController pushViewController:shakeVC animated:YES];
+            } else if (info.funType == 3) {
+                MSCheckInVC *checkInVC = [[MSCheckInVC alloc] initWithTitle:@"今日开放"];
+                [self.navigationController pushViewController:checkInVC animated:YES];
+            }
         };
     }
     return cell;

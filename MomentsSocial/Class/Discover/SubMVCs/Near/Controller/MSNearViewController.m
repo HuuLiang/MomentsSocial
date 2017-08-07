@@ -9,14 +9,18 @@
 #import "MSNearViewController.h"
 #import "MSNearCell.h"
 #import "MSDetailViewController.h"
+#import "MSReqManager.h"
+#import "MSDisFuctionModel.h"
 
 static NSString *const kMSNearCellReusableIdentifier = @"kMSNearCellReusableIdentifier";
 
 @interface MSNearViewController () <UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 @property (nonatomic) UICollectionView *collectionView;
+@property (nonatomic) NSMutableArray *dataSource;
 @end
 
 @implementation MSNearViewController
+QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -55,7 +59,16 @@ static NSString *const kMSNearCellReusableIdentifier = @"kMSNearCellReusableIden
 }
 
 - (void)fetchNearInfo {
-    [self.collectionView QB_endPullToRefresh];
+    @weakify(self);
+    [[MSReqManager manager] fetchNearShakeInfoWithNumber:30 Class:[MSDisFuctionModel class] completionHandler:^(BOOL success, MSDisFuctionModel * obj) {
+        @strongify(self);
+        [self.collectionView QB_endPullToRefresh];
+        if (success) {
+            [self.dataSource removeAllObjects];
+            [self.dataSource addObjectsFromArray:obj.users];
+            [self.collectionView reloadData];
+        }
+    }];
 }
 
 #pragma mark - UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout
@@ -65,16 +78,17 @@ static NSString *const kMSNearCellReusableIdentifier = @"kMSNearCellReusableIden
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 10;
+    return self.dataSource.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     MSNearCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kMSNearCellReusableIdentifier forIndexPath:indexPath];
-    if (indexPath.item < 10) {
-        cell.imgUrl = @"";
-        cell.nickName = @"娇娇";
-        cell.age = 23;
-        cell.sex = @"女";
+    if (indexPath.item < self.dataSource.count) {
+        MSUserModel *user = self.dataSource[indexPath.item];
+        cell.imgUrl = user.portraitUrl;
+        cell.nickName = user.nickName;
+        cell.age = user.age;
+        cell.sex = user.sex;
         cell.location = @"蒋村街道办事处";
         cell.isGreeted = NO;
     }
@@ -82,8 +96,10 @@ static NSString *const kMSNearCellReusableIdentifier = @"kMSNearCellReusableIden
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    MSDetailViewController *detailVC = [[MSDetailViewController alloc] init];
-    [self.navigationController pushViewController:detailVC animated:YES];
+    if (indexPath.item < self.dataSource.count) {
+        MSUserModel *user = self.dataSource[indexPath.item];
+        [self pushIntoDetailVCWithUserId:user.userId];
+    }
 }
 
 @end
