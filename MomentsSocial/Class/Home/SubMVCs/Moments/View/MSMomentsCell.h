@@ -19,6 +19,8 @@ typedef NS_ENUM(NSInteger , MSMomentsType) {
 
 @property (nonatomic) MSAction greetAction;
 
+@property (nonatomic) MSAction loveAction;
+
 @property (nonatomic) NSString *userImgUrl;
 
 @property (nonatomic) NSString *nickName;
@@ -34,6 +36,8 @@ typedef NS_ENUM(NSInteger , MSMomentsType) {
 @property (nonatomic) MSMomentsType momentsType;
 
 @property (nonatomic) BOOL greeted;
+
+@property (nonatomic) BOOL loved;
 
 @property (nonatomic) id dataSource;
 

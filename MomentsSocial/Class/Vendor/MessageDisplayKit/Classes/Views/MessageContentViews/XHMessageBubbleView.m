@@ -49,6 +49,8 @@
 
 @property (nonatomic, strong, readwrite) id <XHMessageModel> message;
 
+@property (nonatomic, weak, readwrite) UILabel *readDoneLabel;
+
 @end
 
 @implementation XHMessageBubbleView
@@ -98,7 +100,8 @@
 + (CGSize)neededSizeForVoicePath:(NSString *)voicePath voiceDuration:(NSString *)voiceDuration {
     // 这里的100只是暂时固定，到时候会根据一个函数来计算
     float gapDuration = (!voiceDuration || voiceDuration.length == 0 ? -1 : [voiceDuration floatValue] - 1.0f);
-    CGSize voiceSize = CGSizeMake(100 + (gapDuration > 0 ? (120.0 / (60 - 1) * gapDuration) : 0), 42);
+//    CGSize voiceSize = CGSizeMake(100 + (gapDuration > 0 ? (120.0 / (60 - 1) * gapDuration) : 0), 42);
+    CGSize voiceSize = CGSizeMake(70, 42);
     return voiceSize;
 }
 
@@ -361,7 +364,7 @@
             [self addSubview:bubbleImageView];
             _bubbleImageView = bubbleImageView;
         }
-        
+    
         // 2、初始化显示文本消息的TextView
         if (!_displayTextView) {
             SETextView *displayTextView = [[SETextView alloc] initWithFrame:CGRectZero];
@@ -374,6 +377,17 @@
             displayTextView.highlighted = NO;
             [self addSubview:displayTextView];
             _displayTextView = displayTextView;
+            
+            // 5.配置消息已读标示
+            if (!_readDoneLabel) {
+                UILabel *readDoneLabel = [[UILabel alloc] init];
+                readDoneLabel.text = message.readDone ? @"已读" : @"未读";
+                readDoneLabel.textColor = kColor(@"#666666");
+                readDoneLabel.textAlignment = NSTextAlignmentRight;
+                readDoneLabel.font = [UIFont systemFontOfSize:8];
+                [self addSubview:readDoneLabel];
+                _readDoneLabel = readDoneLabel;
+            }
         }
         
         // 3、初始化显示图片的控件
@@ -402,7 +416,7 @@
         
         // 4、初始化显示语音时长的label
         if (!_voiceDurationLabel) {
-            UILabel *voiceDurationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, 28, 20)];
+            UILabel *voiceDurationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, 35, 20)];
             voiceDurationLabel.textColor = [UIColor colorWithWhite:0.579 alpha:1.000];
             voiceDurationLabel.backgroundColor = [UIColor clearColor];
             voiceDurationLabel.font = [UIFont systemFontOfSize:13.f];
@@ -484,6 +498,14 @@
                 displayTextViewFrame.size.height = CGRectGetHeight(bubbleFrame) - kXHHaveBubbleMargin * 3;
                 self.displayTextView.frame = displayTextViewFrame;
                 self.displayTextView.center = CGPointMake(self.bubbleImageView.center.x + textX, self.bubbleImageView.center.y);
+                
+                if (self.message.bubbleMessageType == XHBubbleMessageTypeSending) {
+                    self.readDoneLabel.hidden = NO;
+                    self.readDoneLabel.frame = CGRectMake(0, 0, 20, 10);
+                    self.readDoneLabel.center = CGPointMake(bubbleFrame.origin.x - 10, self.bubbleImageView.centerY);
+                } else {
+                    self.readDoneLabel.hidden = YES;
+                }
             }
             
             if (currentType == XHBubbleMessageMediaTypeVoice) {

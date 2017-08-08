@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface UIImage (Blur)
-- (UIImage*)blurWithIsSmallPicture:(BOOL)isSmall;
+
+- (UIImage*)blurImage;
+
 @end

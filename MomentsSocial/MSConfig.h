@@ -35,16 +35,17 @@
 #define MS_NEARSHAKE_URL               @"/cfc/nearbyShake.htm"                        //附近的人  摇一摇
 #define MS_DISCOVER_URL                @"/cfc/find.htm"                               //发现
 #define MS_COMMENT_URL                 @"/cfc/comment.htm"                            //评论列表 
-#define MS_GREETED_URL                 @"/cfc/greeted.htm"                            //点赞
+#define MS_LIKES_URL                   @"/cfc/likes.htm"                              //点赞
+#define MS_SENDMSG_URL                 @"/cfc/userMessage.htm"                        //发送消息
 
 #define MS_ABOUTUS_URL                 @""
 
 #define MS_ENCRYPT_PASSWORD            @"qb%Fr@2016_&"
 
+#define MS_AliPay_SchemeUrl            @"commomentssocialschemeurl"
 
+#define MS_UMENG_APP_ID                @"59899d25bbea834cb6000af9"
 
-#define MS_UMENG_APP_ID                @"5914208be88bad6c13000e6e"
-#define MS_QQ_APP_ID                   @""
 
 #define MS_WEXIN_APP_ID                @"wx2b2846687e296e95"
 #define MS_WECHAT_TOKEN                @"https://api.weixin.qq.com/sns/oauth2/access_token?"

@@ -40,6 +40,14 @@ PODS:
   - OpenSSL (1.0.208)
   - pop (1.0.10)
   - QBExtensions (0.0.11)
+  - QBTPL (0.1.2):
+    - QBTPL/AlipaySDK (= 0.1.2)
+    - QBTPL/TencentOpenAPI (= 0.1.2)
+    - QBTPL/WeChatSDK (= 0.1.2)
+  - QBTPL/AlipaySDK (0.1.2):
+    - OpenSSL (~> 1.0.208)
+  - QBTPL/TencentOpenAPI (0.1.2)
+  - QBTPL/WeChatSDK (0.1.2)
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
@@ -58,6 +66,7 @@ DEPENDENCIES:
   - OpenSSL (~> 1.0.208)
   - pop (~> 1.0.9)
   - QBExtensions
+  - QBTPL
   - SDWebImage (= 3.7.3)
   - SFHFKeychainUtils (~> 0.0.1)
   - UMengAnalytics-NO-IDFA (~> 4.1.1)
@@ -74,10 +83,11 @@ SPEC CHECKSUMS:
   OpenSSL: b187269d386b07452f56af273764ea0636dd5da8
   pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
   QBExtensions: aec4f4e9ca312346071592d6e3aafd68c485d7c1
+  QBTPL: 8ddd3238665714b9b41d99e7e00b4b2104967cbc
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   SFHFKeychainUtils: 9576b411a79a058f4d5381ace6f3242b9a62e664
   UMengAnalytics-NO-IDFA: 985292af177111685325c90c321094172b95d2cb
 
-PODFILE CHECKSUM: 4d8697f92f735ff77b8d9cc95829436456d4afcd
+PODFILE CHECKSUM: 03b3735c933e818ac7e7d5246168e1c72c3a24a3
 
 COCOAPODS: 1.2.1

@@ -45,4 +45,6 @@
 /** 点赞 */
 - (void)greetMomentWithMoodId:(NSInteger)moodId Class:(Class)classModel completionHandler:(MSCompletionHandler)handler;
 
+/** 发送消息 */
+- (void)sendMsgWithSendUserId:(NSInteger)sendUserId receiveUserId:(NSInteger)receiveUserId content:(NSString *)content Class:(Class)classModel completionHandler:(MSCompletionHandler)handler;
 @end

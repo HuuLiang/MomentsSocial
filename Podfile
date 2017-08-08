@@ -9,15 +9,18 @@ pod 'MJRefresh', '~> 2.4.12'
 pod 'BlocksKit', '~> 2.2.5'
 pod 'MBProgressHUD', '~> 0.9.2'
 pod 'SFHFKeychainUtils', '~> 0.0.1'
-#pod 'QBPayment', :subspecs => ['IappPay']
 pod 'QBExtensions'
-#pod 'QBNetworking'
 pod 'AFNetworking'
 pod 'UMengAnalytics-NO-IDFA', '~> 4.1.1'
 pod 'FMDB', '~> 2.6.2'
 pod 'MGSwipeTableCell', '~> 1.5.6'
-#pod 'MLeaksFinder', '~> 0.2.1'
 pod 'pop', '~> 1.0.9'
 pod 'Aspects', '~> 1.4.1'
 pod 'OpenSSL', '~> 1.0.208'
+pod 'QBTPL'
+
+#pod 'MLeaksFinder', '~> 0.2.1'
+#pod 'QBNetworking'
+#pod 'QBPayment', :subspecs => ['IappPay']
+
 end

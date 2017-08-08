@@ -49,6 +49,10 @@
 
 @property (nonatomic) BOOL isRead;
 
+/**
+ 文本信息是否已读
+ */
+@property (nonatomic) BOOL readDone;
 
 /**
  *  初始化文本消息

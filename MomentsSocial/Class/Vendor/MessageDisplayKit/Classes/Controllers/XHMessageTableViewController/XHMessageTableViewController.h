@@ -315,4 +315,12 @@
  */
 - (void)layoutOtherMenuViewHiden:(BOOL)hide;
 
+
+#pragma mark -- 礼物图片按钮
+@property (nonatomic,weak,readonly) UIImageView *giftImageView;
+
+- (void)popGiftView;
+
+//- (void)showPayView;
+
 @end

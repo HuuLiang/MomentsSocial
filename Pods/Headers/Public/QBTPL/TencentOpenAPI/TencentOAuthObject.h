@@ -1,0 +1,1 @@
+../../../../QBTPL/QBTPL/TencentOpenAPI/TencentOpenAPI.framework/Headers/TencentOAuthObject.h

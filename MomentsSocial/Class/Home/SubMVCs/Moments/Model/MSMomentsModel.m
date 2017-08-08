@@ -23,8 +23,13 @@
 }
 
 - (BOOL)greeted {
-    MSMomentModel *model = [self.class findFirstByCriteria:[NSString stringWithFormat:@"where userId=%ld",(long)_moodId]];
-    return model ? model.greeted : false;
+    MSMomentModel *model = [self.class findFirstByCriteria:[NSString stringWithFormat:@"where moodId=%ld",(long)_moodId]];
+    return model ? model.greeted : NO;
+}
+
+- (BOOL)loved {
+    MSMomentModel *model = [self.class findFirstByCriteria:[NSString stringWithFormat:@"where moodId=%ld",(long)_moodId]];
+    return model ? model.loved : NO;
 }
 
 + (NSArray *)transients {

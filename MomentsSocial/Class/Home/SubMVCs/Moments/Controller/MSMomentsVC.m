@@ -155,11 +155,14 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         cell.attentionCount = model.greet;
         cell.content = model.text;
         cell.momentsType = model.type;
+        cell.greeted = model.greeted;
+        cell.loved = model.loved;
         if (model.type == MSMomentsTypePhotos) {
             cell.dataSource = model.moodUrl;
         } else if (model.type == MSMomentsTypeVideo) {
             cell.dataSource = model.videoImg;
         }
+        
         [model.comments enumerateObjectsUsingBlock:^(MSMomentCommentsInfo * _Nonnull comment, NSUInteger idx, BOOL * _Nonnull stop) {
             if (idx == 0) {
                 cell.nickA = comment.nickName;
@@ -169,23 +172,34 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                 cell.commentB = comment.content;
             }
         }];
+        
         @weakify(cell);
         cell.greetAction = ^{
             @strongify(cell);
             if (model.greeted) {
+                [[MSHudManager manager] showHudWithText:@"您已经打过招呼"];
+                return ;
+            }
+            [[MSHudManager manager] showHudWithText:@"打招呼成功"];
+            cell.greeted = YES;
+            model.greeted = YES;
+            [model saveOrUpdate];
+        };
+        
+        cell.loveAction = ^{
+            @strongify(cell);
+            if (model.loved) {
                 [[MSHudManager manager] showHudWithText:@"您已经点过赞"];
                 return ;
             }
-            
             [[MSReqManager manager] greetMomentWithMoodId:model.moodId Class:[QBDataResponse class] completionHandler:^(BOOL success, id obj) {
                 if (success) {
                     [[MSHudManager manager] showHudWithText:@"点赞成功"];
-                    cell.greeted = YES;
-                    model.greeted = YES;
+                    cell.loved = YES;
+                    model.loved = YES;
                     [model saveOrUpdate];
                 }
             }];
-            
         };
         
         @weakify(self);

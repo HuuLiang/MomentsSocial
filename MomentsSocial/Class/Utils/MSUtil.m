@@ -13,22 +13,14 @@
 static NSString *const kRegisterKeyName           = @"MS_register_keyname";
 
 static NSString *const KMSUserVipLevelKeyName     = @"KMSUserVipLevelKeyName";
-static NSString *const kMSUserIdKeyName           = @"kMSUser_id_keyname";
+
+static NSString *const kMSUserIdKeyName           = @"kMSUserIdKeyName";
+static NSString *const kMSUserNickKeyName         = @"kMSUserNickKeyName";
+static NSString *const kMSUserPortraitUrlKeyName  = @"kMSUserPortraitUrlKeyName";
 
 @implementation MSUtil
 
 #pragma mark -- 注册激活
-
-//+ (NSString *)accessId {
-//    NSString *accessIdInKeyChain = [SFHFKeychainUtils getPasswordForUsername:kUserAccessUsername andServiceName:kUserAccessServicename error:nil];
-//    if (accessIdInKeyChain) {
-//        return accessIdInKeyChain;
-//    }
-//    
-//    accessIdInKeyChain = [NSUUID UUID].UUIDString.md5;
-//    [SFHFKeychainUtils storeUsername:kUserAccessUsername andPassword:accessIdInKeyChain forServiceName:kUserAccessServicename updateExisting:YES error:nil];
-//    return accessIdInKeyChain;
-//}
 
 //设备激活
 + (NSString *)UUID {
@@ -44,14 +36,30 @@ static NSString *const kMSUserIdKeyName           = @"kMSUser_id_keyname";
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-#pragma mark - userId
-+ (void)registerUserId:(NSString *)userId {
-    [[NSUserDefaults standardUserDefaults] setObject:userId forKey:kMSUserIdKeyName];
+#pragma mark - user
++ (void)registerUserId:(NSInteger)userId {
+    [[NSUserDefaults standardUserDefaults] setObject:@(userId) forKey:kMSUserIdKeyName];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-+ (NSString *)currentUserId {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:kMSUserIdKeyName];
++ (NSInteger)currentUserId {
+    return [[[NSUserDefaults standardUserDefaults] objectForKey:kMSUserIdKeyName] integerValue];
+}
+
++ (void)registerNickName:(NSString *)nickName {
+    [[NSUserDefaults standardUserDefaults] setObject:nickName forKey:kMSUserNickKeyName];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
++ (NSString *)currentNickName {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:kMSUserNickKeyName];
+}
+
++ (void)registerPortraitUrl:(NSString *)portraitUrl {
+    [[NSUserDefaults standardUserDefaults] setObject:portraitUrl forKey:kMSUserPortraitUrlKeyName];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
++ (NSString *)currentProtraitUrl {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:kMSUserPortraitUrlKeyName];
 }
 
 
@@ -120,5 +128,40 @@ static NSString *const kMSUserIdKeyName           = @"kMSUser_id_keyname";
     return [[[NSUserDefaults standardUserDefaults] objectForKey:KMSUserVipLevelKeyName] integerValue];
 }
 
+
+#pragma mark - 时间转换
++ (NSString *)compareCurrentTime:(NSTimeInterval)compareTimeInterval {
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:compareTimeInterval];
+    
+    NSTimeInterval  timeInterval = [date timeIntervalSinceNow];
+    
+    timeInterval = -timeInterval;
+    long temp = 0;
+    NSString *result;
+    if (timeInterval < 60) {
+        result = [NSString stringWithFormat:@"刚刚"];
+    }
+    else if((temp = timeInterval/60) <60){
+        result = [NSString stringWithFormat:@"%ld分前",temp];
+    }
+    
+    else if((temp = temp/60) <24){
+        result = [NSString stringWithFormat:@"%ld小时前",temp];
+    }
+    
+    else if((temp = temp/24) <30){
+        result = [NSString stringWithFormat:@"%ld天前",temp];
+    }
+    
+    else if((temp = temp/30) <12){
+        result = [NSString stringWithFormat:@"%ld月前",temp];
+    }
+    else{
+        temp = temp/12;
+        result = [NSString stringWithFormat:@"%ld年前",temp];
+    }
+    
+    return  result;
+}
 
 @end

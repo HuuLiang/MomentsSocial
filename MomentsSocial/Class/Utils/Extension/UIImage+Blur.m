@@ -11,19 +11,14 @@
 
 @implementation UIImage (Blur)
 
-- (UIImage*)blurWithIsSmallPicture:(BOOL)isSmall
+- (UIImage*)blurImage
 {
     CIContext *context = [CIContext contextWithOptions:nil];
     CIImage *inputImage = [CIImage imageWithCGImage:self.CGImage];
     
     CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
     [filter setValue:inputImage forKey:kCIInputImageKey];
-    CGFloat blur ;
-    if (isSmall) {
-        blur = self.size.height * 0.06;
-    }else {
-        blur = self.size.height *0.04;
-    }
+    CGFloat blur = self.size.height *0.04 ;
     [filter setValue:[NSNumber numberWithFloat:blur] forKey:@"inputRadius"];
     CIImage *result = [filter valueForKey:kCIOutputImageKey];
     

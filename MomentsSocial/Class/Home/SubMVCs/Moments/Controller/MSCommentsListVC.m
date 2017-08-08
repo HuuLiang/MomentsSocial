@@ -8,6 +8,7 @@
 
 #import "MSCommentsListVC.h"
 #import "MSCommentCell.h"
+#import "MSCommentsModel.h"
 #import "MSMomentsModel.h"
 #import "MSReqManager.h"
 
@@ -40,7 +41,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, heights)
     _tableView.dataSource = self;
     _tableView.tableFooterView = [[UIView alloc] init];
     [_tableView setSeparatorColor:kColor(@"#f0f0f0")];
-    [_tableView setSeparatorInset:UIEdgeInsetsMake(0, kWidth(30), 0, kWidth(30))];
+    [_tableView setSeparatorInset:UIEdgeInsetsMake(-0.5, kWidth(30), -0.5, kWidth(30))];
     [_tableView registerClass:[MSCommentCell class] forCellReuseIdentifier:kMSMomentCommentsListCellReusableIdentifier];
     [self.view addSubview:_tableView];
     {
@@ -62,7 +63,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, heights)
 
 - (void)fetchCommentsInfo {
     @weakify(self);
-    [[MSReqManager manager] fetchCommentsWithMomentId:self.momentId Class:[MSMomentModel class] completionHandler:^(BOOL success, MSMomentModel * obj) {
+    [[MSReqManager manager] fetchCommentsWithMomentId:self.momentId Class:[MSCommentsModel class] completionHandler:^(BOOL success, MSCommentsModel * obj) {
         @strongify(self);
         [self.tableView QB_endPullToRefresh];
         if (success) {

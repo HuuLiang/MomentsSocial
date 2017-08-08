@@ -92,7 +92,8 @@ NSString * const ID = @"cycleCell";
     _currentPageDotColor = [UIColor whiteColor];
     _pageDotColor = [UIColor lightGrayColor];
     _bannerImageViewContentMode = UIViewContentModeScaleToFill;
-    
+    _isNeedBlur = NO;
+    _startBlurIndex = 0;
     self.backgroundColor = [UIColor lightGrayColor];
     
 }
@@ -580,8 +581,8 @@ NSString * const ID = @"cycleCell";
             @weakify(self);
             [cell.imageView sd_setImageWithURL:[NSURL URLWithString:imagePath] placeholderImage:self.placeholderImage completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 @strongify(self);////添加滤镜
-                if (image && self.isNeedBlur && indexPath.item != 0) {
-                    imageView.image = [image blurWithIsSmallPicture:NO];
+                if (image) {
+                    imageView.image = self.isNeedBlur ? (indexPath.item >= self.startBlurIndex ? [image blurImage] : image) : image;
                 }
             }];
             

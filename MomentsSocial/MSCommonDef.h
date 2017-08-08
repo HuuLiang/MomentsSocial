@@ -61,12 +61,11 @@ typedef NS_ENUM(NSInteger, MSUserInfoOpenType) {
 };
 
 typedef NS_ENUM(NSUInteger, MSMessageType) {
-    MSMessageTypeText = 1,         //文字消息
-    MSMessageTypePhoto = 2,        //图片消息
-    MSMessageTypeGift = 3,         //礼物
-    MSMessageTypeVoice = 4,        //声音
-    MSMessageTypeVideo = 5,        //视频
-    MSMessageTypeFaceTime = 6,     //视频聊天邀请
+    MSMessageTypeText = 1,          //文字消息
+    MSMessageTypePhoto,             //图片消息
+    MSMessageTypeVoice,             //声音
+    MSMessageTypeVideo,             //视频
+    MSMessageTypeFaceTime,          //视频聊天邀请
     MSMessageTypeCount
 };
 

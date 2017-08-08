@@ -1,0 +1,1 @@
+../../../QBTPL/QBTPL/WeChatSDK/WechatAuthSDK.h

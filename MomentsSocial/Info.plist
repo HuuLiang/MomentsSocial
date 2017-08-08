@@ -35,7 +35,7 @@
 			<string>alipay</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>comyuefenbaappalipayschemeurl</string>
+				<string>commomentssocialschemeurl</string>
 			</array>
 		</dict>
 	</array>
@@ -56,6 +56,14 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>需要访问您的相机获取照片</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>需要访问您的位置为您推送附近的朋友哦</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>需要访问您的麦克风才可以发送语音消息哦。😄</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>需要访问您的相册获取照片</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -68,13 +76,5 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>需要访问您的相机获取照片</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>需要访问您的位置为您推送附近的朋友哦</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>需要访问您的麦克风才可以发送语音消息哦。😄</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>需要访问您的相册获取照片</string>
 </dict>
 </plist>

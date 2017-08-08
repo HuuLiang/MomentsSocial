@@ -46,7 +46,7 @@
             [_contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.contentView).offset(kWidth(30));
                 make.top.equalTo(_nickLabel.mas_bottom).offset(kWidth(20));
-                make.right.equalTo(self.contentView.mas_right).offset(kWidth(30));
+                make.right.equalTo(self.contentView.mas_right).offset(-kWidth(30));
             }];
         }
     }

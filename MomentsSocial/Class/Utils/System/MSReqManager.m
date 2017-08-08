@@ -153,7 +153,7 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[self params]];
     [params addEntriesFromDictionary:@{@"moodId":@(moodId)}];
     
-    [[QBDataManager manager] requestUrl:MS_GREETED_URL withParams:params class:classModel handler:^(id obj, NSError *error) {
+    [[QBDataManager manager] requestUrl:MS_LIKES_URL withParams:params class:classModel handler:^(id obj, NSError *error) {
         handler([self checkResponseCodeObject:obj error:error],obj);
     }];
 }

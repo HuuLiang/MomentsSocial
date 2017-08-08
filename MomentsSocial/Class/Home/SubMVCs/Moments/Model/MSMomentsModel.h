@@ -28,6 +28,7 @@
 @property (nonatomic) NSString *videoUrl;
 
 @property (nonatomic) BOOL greeted;
+@property (nonatomic) BOOL loved;
 @property (nonatomic) NSString *location;
 @end
 

@@ -88,6 +88,9 @@
  */
 @property (nonatomic, strong) UIFont *font UI_APPEARANCE_SELECTOR;
 
+
+@property (nonatomic, weak, readonly) UILabel *readDoneLabel;
+
 /**
  *  初始化消息内容显示控件的方法
  *
@@ -121,5 +124,7 @@
  *  @return 返回所需高度
  */
 + (CGFloat)calculateCellHeightWithMessage:(id <XHMessageModel>)message;
+
+
 
 @end

@@ -33,7 +33,7 @@
 @property (nonatomic, weak, readwrite) XHShareMenuView *shareMenuView;
 @property (nonatomic, weak, readwrite) XHEmotionManagerView *emotionManagerView;
 @property (nonatomic, strong, readwrite) XHVoiceRecordHUD *voiceRecordHUD;
-
+@property (nonatomic,weak,readwrite) UIImageView *giftImageView;
 
 @property (nonatomic, strong) UIView *headerContainerView;
 @property (nonatomic, strong) UIActivityIndicatorView *loadMoreActivityIndicatorView;
@@ -611,6 +611,9 @@ static CGPoint  delayOffset = {0.0};
                                                                               inputViewFrame.size.width,
                                                                               inputViewFrame.size.height);
                                  
+                                 CGRect giftImageViewFrame = weakSelf.giftImageView.frame;
+                                 weakSelf.giftImageView.frame = CGRectMake(giftImageViewFrame.origin.x, inputViewFrameY - kWidth(40) - kWidth(112), giftImageViewFrame.size.width, giftImageViewFrame.size.height);
+                                 
                                  [weakSelf setTableViewInsetsWithBottomValue:weakSelf.view.frame.size.height
                                   - weakSelf.messageInputView.frame.origin.y];
                                  if (showKeyboard)
@@ -641,11 +644,25 @@ static CGPoint  delayOffset = {0.0};
     inputView.allowsSendVoice = self.allowsSendVoice;
     inputView.allowsSendMultiMedia = self.allowsSendMultiMedia;
     inputView.delegate = self;
+    inputView.backgroundColor = [UIColor colorWithHexString:@"#d8d8d8"];
     [self.view addSubview:inputView];
     [self.view bringSubviewToFront:inputView];
     
     _messageInputView = inputView;
     
+    UIImageView *giftImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"chat_send_gift"]];
+    giftImageView.userInteractionEnabled = YES;
+    giftImageView.frame = CGRectMake(self.view.frame.size.width - kWidth(156), inputFrame.origin.y - kWidth(40) - kWidth(224), kWidth(112), kWidth(112));
+    [self.view addSubview:giftImageView];
+    [self.view bringSubviewToFront:giftImageView];
+    
+    @weakify(self);
+    [giftImageView bk_whenTapped:^{
+        @strongify(self);
+        [self popGiftView];
+    }];
+    
+    _giftImageView = giftImageView;
     
     // 设置手势滑动，默认添加一个bar的高度值
     self.messageTableView.messageInputBarHeight = CGRectGetHeight(_messageInputView.bounds);

@@ -518,6 +518,7 @@ static const CGFloat kXHUserNameLabelHeight = 20;
             [self.contentView sendSubviewToBack:messageBubbleView];
             self.messageBubbleView = messageBubbleView;
         }
+        
     }
     return self;
 }
@@ -565,7 +566,7 @@ static const CGFloat kXHUserNameLabelHeight = 20;
                               timeStampLabelNeedHeight,
                               CGRectGetWidth(self.contentView.bounds) - bubbleX - offsetX,
                               CGRectGetHeight(self.contentView.bounds) - timeStampLabelNeedHeight);
-    self.messageBubbleView.frame = bubbleMessageViewFrame;
+    self.messageBubbleView.frame = bubbleMessageViewFrame;    
 }
 
 - (void)dealloc {

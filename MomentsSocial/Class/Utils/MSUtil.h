@@ -16,8 +16,14 @@
 + (BOOL)isRegisteredUUID;
 + (void)setRegisteredWithUUID:(NSString *)uuid;
 
-+ (void)registerUserId:(NSString *)userId;
-+ (NSString *)currentUserId;
++ (void)registerUserId:(NSInteger)userId;
++ (NSInteger)currentUserId;
+
++ (void)registerNickName:(NSString *)nickName;
++ (NSString *)currentNickName;
+
++ (void)registerPortraitUrl:(NSString *)portraitUrl;
++ (NSString *)currentProtraitUrl;
 
 + (BOOL)isIpad;
 + (NSString *)appVersion;
@@ -26,5 +32,8 @@
 
 + (void)setVipLevel:(MSLevel)vipLevel;
 + (MSLevel)currentVipLevel;
+
++ (NSString *)compareCurrentTime:(NSTimeInterval)compareTimeInterval;
+
 
 @end

@@ -173,8 +173,9 @@ typedef enum {
 
 //是否需要加滤镜
 @property (nonatomic) BOOL isNeedBlur;
-//当前查看的机器人的userId
-@property (nonatomic) NSString *userId;
+
+//开始加滤镜的图片位置
+@property (nonatomic) NSInteger startBlurIndex;
 
 //////////////////////  清除缓存接口  //////////////////////
 

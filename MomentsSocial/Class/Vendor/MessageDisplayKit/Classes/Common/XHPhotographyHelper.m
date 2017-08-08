@@ -30,6 +30,8 @@
 
 - (void)showOnPickerViewControllerSourceType:(UIImagePickerControllerSourceType)sourceType onViewController:(UIViewController *)viewController compled:(DidFinishTakeMediaCompledBlock)compled {
     if (![UIImagePickerController isSourceTypeAvailable:sourceType]) {
+        NSString *sourceTypeTitle = sourceType == UIImagePickerControllerSourceTypePhotoLibrary ? @"相册":@"相机";
+        [[MSHudManager manager] showHudWithTitle:sourceTypeTitle message:[NSString stringWithFormat:@"请在设备的\"设置-隐私-%@\"中允许访问%@",sourceTypeTitle,sourceTypeTitle]];
         compled(nil, nil);
         return;
     }
@@ -51,18 +53,29 @@
     }];
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo {
-    if (self.didFinishTakeMediaCompled) {
-        self.didFinishTakeMediaCompled(image, editingInfo);
-    }
-    [self dismissPickerViewController:picker];
-}
+//- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo {
+//    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera || picker.sourceType == UIImagePickerControllerSourceTypePhotoLibrary) {
+//        if (self.didFinishTakeMediaCompled) {
+//            self.didFinishTakeMediaCompled(image, editingInfo);
+//        }
+//        [self dismissPickerViewController:picker];
+//    }
+//}
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    if (self.didFinishTakeMediaCompled) {
-        self.didFinishTakeMediaCompled(nil, info);
+//- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+//    if (self.didFinishTakeMediaCompled) {
+//        self.didFinishTakeMediaCompled(nil, info);
+//    }
+//    [self dismissPickerViewController:picker];
+//}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera || picker.sourceType == UIImagePickerControllerSourceTypePhotoLibrary) {
+        if (self.didFinishTakeMediaCompled) {
+            self.didFinishTakeMediaCompled(nil, info);
+        }
+        [self dismissPickerViewController:picker];
     }
-    [self dismissPickerViewController:picker];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {

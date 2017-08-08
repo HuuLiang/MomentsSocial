@@ -105,10 +105,18 @@
         [_backView addSubview:_attentionButton];
 
         @weakify(self);
-        [_attentionButton bk_addEventHandler:^(id sender) {
+        [_greetButton bk_addEventHandler:^(id sender) {
             @strongify(self);
             if (self.greetAction) {
                 self.greetAction();
+            }
+
+        } forControlEvents:UIControlEventTouchUpInside];
+        
+        [_attentionButton bk_addEventHandler:^(id sender) {
+            @strongify(self);
+            if (self.loveAction) {
+                self.loveAction();
             }
         } forControlEvents:UIControlEventTouchUpInside];
         
@@ -186,7 +194,11 @@
 
 - (void)setGreeted:(BOOL)greeted {
     _greeted = greeted;
-    [_attentionButton setImage:[UIImage imageNamed:greeted ? @"near_greet" : @"near_greeted"] forState:UIControlStateNormal];
+}
+
+- (void)setLoved:(BOOL)loved {
+    _loved = loved;
+    [_attentionButton setImage:[UIImage imageNamed:_loved ? @"near_greet" : @"near_greeted"] forState:UIControlStateNormal];
 }
 
 - (void)setMomentsType:(MSMomentsType)momentsType {

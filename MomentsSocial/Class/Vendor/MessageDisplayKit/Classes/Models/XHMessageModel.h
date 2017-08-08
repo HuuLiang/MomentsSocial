@@ -50,6 +50,12 @@
 
 - (NSDate *)timestamp;
 
+/**
+ 文本信息是否已读
+ */
+@property (nonatomic) BOOL readDone;
+
+
 - (BOOL)isRead;
 - (void)setIsRead:(BOOL)isRead;
 
