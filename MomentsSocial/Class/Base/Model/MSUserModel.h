@@ -8,6 +8,16 @@
 
 #import "JKDBModel.h"
 
+@interface MSUserMsgModel : NSObject
+@property (nonatomic) NSInteger msgId;
+@property (nonatomic) MSMessageType msgType;
+@property (nonatomic) NSString *content;
+@property (nonatomic) NSString *photoUrl;
+@property (nonatomic) NSString *voiceUrl;
+@property (nonatomic) NSString *videoImg;
+@property (nonatomic) NSString *videoUrl;
+@end
+
 @interface MSUserModel : JKDBModel
 @property (nonatomic) NSString *phone;
 @property (nonatomic) NSString *sex;
@@ -16,7 +26,7 @@
 @property (nonatomic) NSString *weight;
 @property (nonatomic) NSString *weixin;
 @property (nonatomic) NSString *portraitUrl;
-@property (nonatomic) NSString *userId;
+@property (nonatomic) NSInteger userId;
 @property (nonatomic) NSString *income;
 @property (nonatomic) NSString *birthday;
 @property (nonatomic) NSString *nickName;
@@ -28,5 +38,5 @@
 @property (nonatomic) NSString *constellation;
 @property (nonatomic) NSArray *userPhoto;
 @property (nonatomic) MSLevel vipLv;
-
+@property (nonatomic) NSArray <MSUserMsgModel *> *message;
 @end

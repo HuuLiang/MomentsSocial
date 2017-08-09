@@ -32,5 +32,6 @@
 #import "NSString+getQRCode.h"
 #import "UIButton+iconSpacing.h"
 #import "UIView+gradient.h"
+#import "UIView+PopAnimation.h"
 
 #endif /* MSExtensions_h */

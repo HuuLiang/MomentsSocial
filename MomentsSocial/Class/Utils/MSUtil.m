@@ -9,6 +9,7 @@
 #import "MSUtil.h"
 #import <SFHFKeychainUtils.h>
 #import <sys/sysctl.h>
+#import <AVFoundation/AVFoundation.h>
 
 static NSString *const kRegisterKeyName           = @"MS_register_keyname";
 
@@ -17,6 +18,8 @@ static NSString *const KMSUserVipLevelKeyName     = @"KMSUserVipLevelKeyName";
 static NSString *const kMSUserIdKeyName           = @"kMSUserIdKeyName";
 static NSString *const kMSUserNickKeyName         = @"kMSUserNickKeyName";
 static NSString *const kMSUserPortraitUrlKeyName  = @"kMSUserPortraitUrlKeyName";
+
+static NSString *const kMSAutoReplyMessageTimeRecordKeyName = @"kMSAutoReplyMessageTimeRecordKeyName";
 
 @implementation MSUtil
 
@@ -128,6 +131,22 @@ static NSString *const kMSUserPortraitUrlKeyName  = @"kMSUserPortraitUrlKeyName"
     return [[[NSUserDefaults standardUserDefaults] objectForKey:KMSUserVipLevelKeyName] integerValue];
 }
 
++ (BOOL)isToday {
+    NSDate *lastDate = [[NSUserDefaults standardUserDefaults] objectForKey:kMSAutoReplyMessageTimeRecordKeyName];
+    if (!lastDate) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kMSAutoReplyMessageTimeRecordKeyName];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        return YES;
+    }
+    
+    if ([lastDate isToday]) {
+        return YES;
+    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kMSAutoReplyMessageTimeRecordKeyName];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        return NO;
+    }
+}
 
 #pragma mark - 时间转换
 + (NSString *)compareCurrentTime:(NSTimeInterval)compareTimeInterval {
@@ -162,6 +181,36 @@ static NSString *const kMSUserPortraitUrlKeyName  = @"kMSUserPortraitUrlKeyName"
     }
     
     return  result;
+}
+
+#pragma mark - 获取currentVC
+
++ (UIViewController *)currentViewController {
+    UIViewController* currentVC = [UIApplication sharedApplication].keyWindow.rootViewController;
+    while (1) {
+        if ([currentVC isKindOfClass:[UITabBarController class]]) {
+            currentVC = ((UITabBarController*)currentVC).selectedViewController;
+        }
+        
+        if ([currentVC isKindOfClass:[UINavigationController class]]) {
+            currentVC = ((UINavigationController*)currentVC).visibleViewController;
+        }
+        
+        if (currentVC.presentedViewController) {
+            currentVC = currentVC.presentedViewController;
+        }else{
+            break;
+        }
+    }
+    return currentVC;
+}
+
+#pragma mark 获取视频的播放时长
++ (float)getVideoLengthWithVideoUrl:(NSString *)videoUrl {
+    AVURLAsset* audioAsset =[AVURLAsset URLAssetWithURL:[NSURL URLWithString:videoUrl] options:nil];
+    CMTime audioDuration = audioAsset.duration;
+    float audioDurationSeconds = CMTimeGetSeconds(audioDuration);
+    return audioDurationSeconds;
 }
 
 @end

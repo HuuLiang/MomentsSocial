@@ -8,6 +8,8 @@
 
 #import "JKDBModel.h"
 
+@class MSAutoReplyMsg;
+
 @interface MSContactModel : JKDBModel
 
 @property (nonatomic) NSInteger userId;
@@ -23,5 +25,10 @@
 @property (nonatomic) NSTimeInterval msgTime;
 
 @property (nonatomic) NSInteger unreadCount;
+
+
++ (void)deletePastContactInfo;
+
++ (BOOL)addContactInfoWithReplyMsg:(MSAutoReplyMsg *)replyMsg;
 
 @end

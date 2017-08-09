@@ -115,6 +115,12 @@
     }];
 }
 
+- (void)fetchOneUserInfoClass:(Class)classModel completionHandler:(MSCompletionHandler)handler {
+    [[QBDataManager manager] requestUrl:MS_PUSHUSERONE_URL withParams:[self params] class:classModel handler:^(id obj, NSError *error) {
+        handler([self checkResponseCodeObject:obj error:error],obj);
+    }];
+}
+
 /** 摇一摇 附近的人 */
 - (void)fetchNearShakeInfoWithNumber:(NSInteger)userCount Class:(Class)classModel completionHandler:(MSCompletionHandler)handler {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[self params]];
@@ -154,6 +160,17 @@
     [params addEntriesFromDictionary:@{@"moodId":@(moodId)}];
     
     [[QBDataManager manager] requestUrl:MS_LIKES_URL withParams:params class:classModel handler:^(id obj, NSError *error) {
+        handler([self checkResponseCodeObject:obj error:error],obj);
+    }];
+}
+
+- (void)sendMsgWithSendUserId:(NSString *)sendUserId receiveUserId:(NSString *)receiveUserId content:(NSString *)content Class:(Class)classModel completionHandler:(MSCompletionHandler)handler {
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[self params]];
+    [params addEntriesFromDictionary:@{@"sendUserId":sendUserId,
+                                       @"receiveUserId":receiveUserId,
+                                       @"content":content}];
+    
+    [[QBDataManager manager] requestUrl:MS_SENDMSG_URL withParams:params class:classModel handler:^(id obj, NSError *error) {
         handler([self checkResponseCodeObject:obj error:error],obj);
     }];
 }

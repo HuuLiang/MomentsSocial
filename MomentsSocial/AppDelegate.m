@@ -26,7 +26,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
+    [self checkLocalNotificationWithLaunchOptionsOptions:launchOptions];
     [self setCommonStyle];
     [self checkNetworkInfoState];
     return YES;

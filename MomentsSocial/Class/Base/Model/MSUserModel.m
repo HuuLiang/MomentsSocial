@@ -8,10 +8,18 @@
 
 #import "MSUserModel.h"
 
+@implementation MSUserMsgModel
+
+@end
+
 @implementation MSUserModel
 
 - (Class)userPhotoElementClass {
-    return [MSUserModel class];
+    return [NSString class];
+}
+
+- (Class)messageElementClass {
+    return [MSUserMsgModel class];
 }
 
 + (NSArray *)transients {

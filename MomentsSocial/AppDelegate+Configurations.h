@@ -12,4 +12,7 @@
 - (void)checkNetworkInfoState;
 - (void)setCommonStyle;
 - (void)showHomeViewController;
+
+- (void)checkLocalNotificationWithLaunchOptionsOptions:(NSDictionary *)launchOptions;
+
 @end

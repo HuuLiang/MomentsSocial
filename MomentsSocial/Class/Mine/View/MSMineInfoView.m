@@ -84,8 +84,8 @@
     _nickLabel.text = nickName;
 }
 
-- (void)setUserId:(NSString *)userId {
-    _idLabel.text = [NSString stringWithFormat:@"ID：%@",userId];
+- (void)setUserId:(NSInteger)userId {
+    _idLabel.text = [NSString stringWithFormat:@"ID：%ld",(long)userId];
 }
 
 - (void)setVipLevel:(MSLevel)vipLevel {

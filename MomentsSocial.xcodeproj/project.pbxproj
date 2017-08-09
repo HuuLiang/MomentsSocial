@@ -172,6 +172,14 @@
 		EC3CB36D1F2F0DA20086F373 /* MSMomentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3CB36C1F2F0DA20086F373 /* MSMomentsCell.m */; };
 		EC3CC1DA1F2F2ECE0086F373 /* MSMomentsContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3CC1D91F2F2ECE0086F373 /* MSMomentsContentView.m */; };
 		EC3CC1DD1F2F606D0086F373 /* MSMomentsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3CC1DC1F2F606D0086F373 /* MSMomentsModel.m */; };
+		EC5383911F3A98D300D2EB0F /* MSPayInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5383901F3A98D300D2EB0F /* MSPayInfoCell.m */; };
+		EC5383941F3A9FAF00D2EB0F /* MSPayDescCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5383931F3A9FAF00D2EB0F /* MSPayDescCell.m */; };
+		EC5383971F3AABFE00D2EB0F /* MSLocalNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5383961F3AABFE00D2EB0F /* MSLocalNotificationManager.m */; };
+		EC53839A1F3AAE4000D2EB0F /* MSAutoReplyMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5383991F3AAE4000D2EB0F /* MSAutoReplyMessageManager.m */; };
+		EC53839E1F3B06A300D2EB0F /* QBVoiceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC53839D1F3B06A300D2EB0F /* QBVoiceManager.m */; };
+		EC5383A11F3B073B00D2EB0F /* MSContactView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5383A01F3B073B00D2EB0F /* MSContactView.m */; };
+		EC5383A41F3B074B00D2EB0F /* MSFaceTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5383A31F3B074B00D2EB0F /* MSFaceTimeView.m */; };
+		EC5383A71F3B0A4500D2EB0F /* UIView+PopAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5383A61F3B0A4500D2EB0F /* UIView+PopAnimation.m */; };
 		EC848DB61F32BD1300B47E37 /* MSSystemConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DB51F32BD1300B47E37 /* MSSystemConfigModel.m */; };
 		EC848DBC1F32CBD300B47E37 /* MSCircleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DBB1F32CBD300B47E37 /* MSCircleModel.m */; };
 		EC848DC01F33036F00B47E37 /* QBPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DBF1F33036F00B47E37 /* QBPhotoManager.m */; };
@@ -568,6 +576,22 @@
 		EC3CC1D91F2F2ECE0086F373 /* MSMomentsContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSMomentsContentView.m; sourceTree = "<group>"; };
 		EC3CC1DB1F2F606D0086F373 /* MSMomentsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMomentsModel.h; sourceTree = "<group>"; };
 		EC3CC1DC1F2F606D0086F373 /* MSMomentsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSMomentsModel.m; sourceTree = "<group>"; };
+		EC53838F1F3A98D300D2EB0F /* MSPayInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSPayInfoCell.h; sourceTree = "<group>"; };
+		EC5383901F3A98D300D2EB0F /* MSPayInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSPayInfoCell.m; sourceTree = "<group>"; };
+		EC5383921F3A9FAF00D2EB0F /* MSPayDescCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSPayDescCell.h; sourceTree = "<group>"; };
+		EC5383931F3A9FAF00D2EB0F /* MSPayDescCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSPayDescCell.m; sourceTree = "<group>"; };
+		EC5383951F3AABFE00D2EB0F /* MSLocalNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSLocalNotificationManager.h; sourceTree = "<group>"; };
+		EC5383961F3AABFE00D2EB0F /* MSLocalNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSLocalNotificationManager.m; sourceTree = "<group>"; };
+		EC5383981F3AAE4000D2EB0F /* MSAutoReplyMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAutoReplyMessageManager.h; sourceTree = "<group>"; };
+		EC5383991F3AAE4000D2EB0F /* MSAutoReplyMessageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSAutoReplyMessageManager.m; sourceTree = "<group>"; };
+		EC53839C1F3B06A300D2EB0F /* QBVoiceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBVoiceManager.h; sourceTree = "<group>"; };
+		EC53839D1F3B06A300D2EB0F /* QBVoiceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBVoiceManager.m; sourceTree = "<group>"; };
+		EC53839F1F3B073B00D2EB0F /* MSContactView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSContactView.h; sourceTree = "<group>"; };
+		EC5383A01F3B073B00D2EB0F /* MSContactView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSContactView.m; sourceTree = "<group>"; };
+		EC5383A21F3B074B00D2EB0F /* MSFaceTimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSFaceTimeView.h; sourceTree = "<group>"; };
+		EC5383A31F3B074B00D2EB0F /* MSFaceTimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSFaceTimeView.m; sourceTree = "<group>"; };
+		EC5383A51F3B0A4500D2EB0F /* UIView+PopAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+PopAnimation.h"; sourceTree = "<group>"; };
+		EC5383A61F3B0A4500D2EB0F /* UIView+PopAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+PopAnimation.m"; sourceTree = "<group>"; };
 		EC848DB41F32BD1300B47E37 /* MSSystemConfigModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSystemConfigModel.h; sourceTree = "<group>"; };
 		EC848DB51F32BD1300B47E37 /* MSSystemConfigModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSSystemConfigModel.m; sourceTree = "<group>"; };
 		EC848DBA1F32CBD300B47E37 /* MSCircleModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCircleModel.h; sourceTree = "<group>"; };
@@ -1350,6 +1374,7 @@
 		EC3553221F31B6A000370A36 /* QBTools */ = {
 			isa = PBXGroup;
 			children = (
+				EC53839B1F3B068C00D2EB0F /* VoiceManager */,
 				EC1BFE561F39BE0A003613D6 /* UploadManager */,
 				EC1BFCD11F39936F003613D6 /* LocationManager */,
 				EC1BFCC41F39538A003613D6 /* PhotoBrowse */,
@@ -1427,6 +1452,15 @@
 				ECA8A94B1F38716700BABFF9 /* MSCommentCell.m */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		EC53839B1F3B068C00D2EB0F /* VoiceManager */ = {
+			isa = PBXGroup;
+			children = (
+				EC53839C1F3B06A300D2EB0F /* QBVoiceManager.h */,
+				EC53839D1F3B06A300D2EB0F /* QBVoiceManager.m */,
+			);
+			path = VoiceManager;
 			sourceTree = "<group>";
 		};
 		EC848DBD1F33036F00B47E37 /* ImagePicker */ = {
@@ -1843,6 +1877,10 @@
 				EC1BFCCC1F395FE1003613D6 /* MSContactModel.m */,
 				EC1BFCD51F399E54003613D6 /* MSMessageModel.h */,
 				EC1BFCD61F399E54003613D6 /* MSMessageModel.m */,
+				EC5383951F3AABFE00D2EB0F /* MSLocalNotificationManager.h */,
+				EC5383961F3AABFE00D2EB0F /* MSLocalNotificationManager.m */,
+				EC5383981F3AAE4000D2EB0F /* MSAutoReplyMessageManager.h */,
+				EC5383991F3AAE4000D2EB0F /* MSAutoReplyMessageManager.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1852,6 +1890,10 @@
 			children = (
 				EC1BFCCE1F3960E7003613D6 /* MSContactCell.h */,
 				EC1BFCCF1F3960E7003613D6 /* MSContactCell.m */,
+				EC53839F1F3B073B00D2EB0F /* MSContactView.h */,
+				EC5383A01F3B073B00D2EB0F /* MSContactView.m */,
+				EC5383A21F3B074B00D2EB0F /* MSFaceTimeView.h */,
+				EC5383A31F3B074B00D2EB0F /* MSFaceTimeView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1984,8 +2026,12 @@
 				ECB58CBA1F2B141D0074E6D8 /* MSMineVipDescView.m */,
 				EC848DCA1F330BD100B47E37 /* MSSettingCell.h */,
 				EC848DCB1F330BD100B47E37 /* MSSettingCell.m */,
+				EC53838F1F3A98D300D2EB0F /* MSPayInfoCell.h */,
+				EC5383901F3A98D300D2EB0F /* MSPayInfoCell.m */,
 				EC1BFE941F39E8F1003613D6 /* MSPayTypeCell.h */,
 				EC1BFE951F39E8F1003613D6 /* MSPayTypeCell.m */,
+				EC5383921F3A9FAF00D2EB0F /* MSPayDescCell.h */,
+				EC5383931F3A9FAF00D2EB0F /* MSPayDescCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2012,6 +2058,8 @@
 				ECC11B1F1F2724450093E3EE /* UIImage+Resource.m */,
 				ECC11B201F2724450093E3EE /* UIScrollView+Refresh.h */,
 				ECC11B211F2724450093E3EE /* UIScrollView+Refresh.m */,
+				EC5383A51F3B0A4500D2EB0F /* UIView+PopAnimation.h */,
+				EC5383A61F3B0A4500D2EB0F /* UIView+PopAnimation.m */,
 				ECC11B221F2724450093E3EE /* UIView+FrameEx.h */,
 				ECC11B231F2724450093E3EE /* UIView+FrameEx.m */,
 				ECC11B241F2724450093E3EE /* UIView+Loading.h */,
@@ -2290,6 +2338,7 @@
 				EC1BFDB31F39A787003613D6 /* UIScrollView+XHkeyboardControl.m in Sources */,
 				EC1BFDEE1F39A787003613D6 /* XHShareMenuView.m in Sources */,
 				ECC118F41F26D8150093E3EE /* AppDelegate+Configurations.m in Sources */,
+				EC5383A41F3B074B00D2EB0F /* MSFaceTimeView.m in Sources */,
 				EC1BFDE51F39A787003613D6 /* XHMessageTableView.m in Sources */,
 				EC1BFDE21F39A787003613D6 /* XHBaseTableViewCell.m in Sources */,
 				EC1BFE481F39BD1D003613D6 /* POSAdjustedAssetReaderIOS7.m in Sources */,
@@ -2297,6 +2346,7 @@
 				EC1BFE4D1F39BD1D003613D6 /* POSLocking.m in Sources */,
 				EC0CAA881F341D3E00B1C669 /* MSCheckInUserCell.m in Sources */,
 				ECC11B2B1F2724450093E3EE /* NSString+dataEncrypt.m in Sources */,
+				EC5383941F3A9FAF00D2EB0F /* MSPayDescCell.m in Sources */,
 				ECFCAB791F29C63900DC2948 /* MSMomentsListVC.m in Sources */,
 				ECC11AEB1F26E9D70093E3EE /* MSDiscoverViewController.m in Sources */,
 				EC1BFDB11F39A787003613D6 /* UIImage+Utility.m in Sources */,
@@ -2336,7 +2386,9 @@
 				ECD953611F3056E2006F5737 /* MSDetailPhotoCell.m in Sources */,
 				EC1BFE8B1F39D36A003613D6 /* openssl_wrapper.m in Sources */,
 				ECC11ACF1F26E4CE0093E3EE /* MSBaseViewController.m in Sources */,
+				EC53839E1F3B06A300D2EB0F /* QBVoiceManager.m in Sources */,
 				ECD9536B1F308B3F006F5737 /* MSShakeVC.m in Sources */,
+				EC53839A1F3AAE4000D2EB0F /* MSAutoReplyMessageManager.m in Sources */,
 				EC1BFE1B1F39AB18003613D6 /* MSMessageViewController+XHBMessage.m in Sources */,
 				EC848DC01F33036F00B47E37 /* QBPhotoManager.m in Sources */,
 				EC1BFDE61F39A787003613D6 /* XHMessageTableViewCell.m in Sources */,
@@ -2385,6 +2437,7 @@
 				EC1BFE8C1F39D36A003613D6 /* RSADataSigner.m in Sources */,
 				EC1BFDDD1F39A787003613D6 /* SETextMagnifierCaret.m in Sources */,
 				EC1BFE901F39D51D003613D6 /* MSPaymentManager.m in Sources */,
+				EC5383971F3AABFE00D2EB0F /* MSLocalNotificationManager.m in Sources */,
 				EC1BFE891F39D36A003613D6 /* MD5DataSigner.m in Sources */,
 				EC848DE51F334CD300B47E37 /* MSCheckInFooterView.m in Sources */,
 				ECC11B2F1F2724450093E3EE /* UIImage+Resource.m in Sources */,
@@ -2392,6 +2445,7 @@
 				EC1BFE651F39D343003613D6 /* payRequsestHandler.mm in Sources */,
 				ECC11A501F26DA870093E3EE /* ActionSheetLocalePicker.m in Sources */,
 				EC1BFDE91F39A787003613D6 /* XHVoiceRecordHUD.m in Sources */,
+				EC5383A11F3B073B00D2EB0F /* MSContactView.m in Sources */,
 				EC1BFE671F39D343003613D6 /* WXUtil.mm in Sources */,
 				ECC11AC41F26DA870093E3EE /* TAAbstractDotView.m in Sources */,
 				EC1BFE851F39D36A003613D6 /* Order.m in Sources */,
@@ -2430,11 +2484,13 @@
 				ECFCAB901F29F34400DC2948 /* MSNearCell.m in Sources */,
 				ECB58CBB1F2B141D0074E6D8 /* MSMineVipDescView.m in Sources */,
 				EC3CB2C01F2EDEF10086F373 /* MSDetailInfoHeaderView.m in Sources */,
+				EC5383911F3A98D300D2EB0F /* MSPayInfoCell.m in Sources */,
 				EC1BFDC81F39A787003613D6 /* XHMessageVideoConverPhotoFactory.m in Sources */,
 				EC1BFDBA1F39A787003613D6 /* XHPhotographyHelper.m in Sources */,
 				EC1BFDBE1F39A787003613D6 /* XHDisplayLocationViewController.m in Sources */,
 				EC1BFDCB1F39A787003613D6 /* XHAnnotation.m in Sources */,
 				EC848DC91F330B4A00B47E37 /* MSSettingVC.m in Sources */,
+				EC5383A71F3B0A4500D2EB0F /* UIView+PopAnimation.m in Sources */,
 				ECA8A9491F3870B400BABFF9 /* MSCommentsListVC.m in Sources */,
 				EC1BFDE71F39A787003613D6 /* XHMessageInputView.m in Sources */,
 				ECFCAB851F29E7D700DC2948 /* MSDiscoverCell.m in Sources */,

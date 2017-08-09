@@ -8,6 +8,7 @@
 
 #import "MSBaseViewController.h"
 #import "MSDetailViewController.h"
+#import "MSVipViewController.h"
 
 @interface MSBaseViewController ()
 
@@ -40,5 +41,9 @@
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 
+- (void)pushVipViewController {
+    MSVipViewController *vipVC = [[MSVipViewController alloc] init];
+    [self.navigationController pushViewController:vipVC animated:YES];
+}
 
 @end

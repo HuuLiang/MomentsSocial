@@ -16,6 +16,6 @@
 
 @property (nonatomic) MSLevel vipLevel;
 
-@property (nonatomic) NSString *userId;
+@property (nonatomic) NSInteger userId;
 
 @end

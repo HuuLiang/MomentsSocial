@@ -9,8 +9,22 @@
 #import "QBDataResponse.h"
 
 @interface MSConfigInfo : NSObject
-@property (nonatomic) NSInteger PUSH_RATE;
-@property (nonatomic) NSString *SPREAD_IMG;
+
+//CONTACT_NAME
+//CONTACT_SCHEME
+//PAY_AMOUNT_1
+//PAY_AMOUNT_2
+//PUSH_COUNT
+//PUSH_RATE
+//SPREAD_IMG
+
+@property (nonatomic) NSInteger     PUSH_RATE;
+@property (nonatomic) NSInteger     PUSH_COUNT;
+@property (nonatomic) NSString      *SPREAD_IMG;
+@property (nonatomic) NSString      *CONTACT_NAME;
+@property (nonatomic) NSString      *CONTACT_SCHEME;
+@property (nonatomic) NSInteger     PAY_AMOUNT_1;
+@property (nonatomic) NSInteger     PAY_AMOUNT_2;
 @end
 
 @interface MSSystemConfigModel : QBDataResponse

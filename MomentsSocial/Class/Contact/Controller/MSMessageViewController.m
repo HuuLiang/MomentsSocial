@@ -11,6 +11,8 @@
 #import "MSNavigationController.h"
 #import "QBLocationManager.h"
 #import "MSMessageModel.h"
+#import "MSReqManager.h"
+#import "QBDataResponse.h"
 
 @interface MSMessageViewController ()
 @property (nonatomic) BOOL needReturn;
@@ -72,7 +74,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
         }];
     }
     
-    
+    [self configLocationUI];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -98,50 +100,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
         self.chatMessages = [MSMessageModel allMessagesWithUserId:self.userId].mutableCopy;
         [self.messages removeAllObjects];
         [self.chatMessages enumerateObjectsUsingBlock:^(MSMessageModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            __block XHMessage *message;
-            NSDate *date = [NSDate dateWithTimeIntervalSince1970:obj.msgTime];
-            if (obj.msgType == MSMessageTypeText) {
-                message = [[XHMessage alloc] initWithText:obj.msgContent
-                                                   sender:obj.sendUserId
-                                                timestamp:date];
-                message.readDone = obj.readDone;
-                message.messageMediaType = XHBubbleMessageMediaTypeText;
-            } else if (obj.msgType == MSMessageTypePhoto) {
-                message = [[XHMessage alloc] initWithPhoto:nil
-                                              thumbnailUrl:obj.imgUrl
-                                            originPhotoUrl:nil
-                                                    sender:obj.sendUserId
-                                                 timestamp:date];
-                message.messageMediaType = XHBubbleMessageMediaTypePhoto;
-            } else if (obj.msgType == MSMessageTypeVoice) {
-                message = [[XHMessage alloc] initWithVoicePath:obj.voiceUrl
-                                                      voiceUrl:obj.voiceUrl
-                                                 voiceDuration:obj.voiceDuration
-                                                        sender:obj.sendUserId
-                                                     timestamp:date];
-                message.messageMediaType = XHBubbleMessageMediaTypeVoice;
-            } else if (obj.msgType == MSMessageTypeVideo) {
-                message = [[XHMessage alloc] initWithVideoConverPhoto:nil
-                                                            videoPath:nil
-                                                             videoUrl:obj.videoUrl
-                                                               sender:obj.sendUserId
-                                                            timestamp:date];
-                message.messageMediaType = XHBubbleMessageMediaTypeVideo;
-                message.thumbnailUrl = obj.videoImgUrl;
-            } else if (obj.msgType == MSMessageTypeFaceTime) {
-                message = [[XHMessage alloc] initWithText:obj.msgContent
-                                                   sender:obj.sendUserId
-                                                timestamp:date];
-                message.messageMediaType = XHBubbleMessageMediaTypeText;
-            }
-            
-            if ([obj.sendUserId isEqualToString:self.messageSender]) {
-                message.bubbleMessageType = XHBubbleMessageTypeSending;
-            } else {
-                message.bubbleMessageType = XHBubbleMessageTypeReceiving;
-            }
-            
-            [self.messages addObject:message];
+            [self addChatMessageIntoSelf:obj];
         }];
         
         dispatch_sync(dispatch_get_main_queue(), ^{
@@ -149,6 +108,53 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
             [self scrollToBottomAnimated:NO];
         });
     });
+}
+
+- (void)addChatMessageIntoSelf:(MSMessageModel *)obj {
+    __block XHMessage *message;
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:obj.msgTime];
+    if (obj.msgType == MSMessageTypeText) {
+        message = [[XHMessage alloc] initWithText:obj.msgContent
+                                           sender:obj.sendUserId
+                                        timestamp:date];
+        message.readDone = obj.readDone;
+        message.messageMediaType = XHBubbleMessageMediaTypeText;
+    } else if (obj.msgType == MSMessageTypePhoto) {
+        message = [[XHMessage alloc] initWithPhoto:nil
+                                      thumbnailUrl:obj.imgUrl
+                                    originPhotoUrl:nil
+                                            sender:obj.sendUserId
+                                         timestamp:date];
+        message.messageMediaType = XHBubbleMessageMediaTypePhoto;
+    } else if (obj.msgType == MSMessageTypeVoice) {
+        message = [[XHMessage alloc] initWithVoicePath:obj.voiceUrl
+                                              voiceUrl:obj.voiceUrl
+                                         voiceDuration:obj.voiceDuration
+                                                sender:obj.sendUserId
+                                             timestamp:date];
+        message.messageMediaType = XHBubbleMessageMediaTypeVoice;
+    } else if (obj.msgType == MSMessageTypeVideo) {
+        message = [[XHMessage alloc] initWithVideoConverPhoto:nil
+                                                    videoPath:nil
+                                                     videoUrl:obj.videoUrl
+                                                       sender:obj.sendUserId
+                                                    timestamp:date];
+        message.messageMediaType = XHBubbleMessageMediaTypeVideo;
+        message.thumbnailUrl = obj.videoImgUrl;
+    } else if (obj.msgType == MSMessageTypeFaceTime) {
+        message = [[XHMessage alloc] initWithText:obj.msgContent
+                                           sender:obj.sendUserId
+                                        timestamp:date];
+        message.messageMediaType = XHBubbleMessageMediaTypeText;
+    }
+    
+    if ([obj.sendUserId isEqualToString:self.messageSender]) {
+        message.bubbleMessageType = XHBubbleMessageTypeSending;
+    } else {
+        message.bubbleMessageType = XHBubbleMessageTypeReceiving;
+    }
+    
+    [self.messages addObject:message];
 }
 
 /**
@@ -199,7 +205,12 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
 }
 
 - (void)addChatMessage:(MSMessageModel *)chatMessage {
-    
+    [self addChatMessageIntoSelf:chatMessage];
+
+    [[MSReqManager manager] sendMsgWithSendUserId:self.messageSender receiveUserId:self.userId content:chatMessage.msgContent Class:[QBDataResponse class] completionHandler:^(BOOL success, id obj) {
+        if (success) {
+        }
+    }];
 }
 
 

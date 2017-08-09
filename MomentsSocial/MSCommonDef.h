@@ -94,6 +94,8 @@ typedef void (^MSCompletionHandler)(BOOL success,id obj);
 static NSString *const kMSFriendCurrentUserKeyName         = @"kMSFriendCurrentUserKeyName";
 
 #define MSOpenVipSuccessNotification      @"MSOpenVipSuccessNotification"
+#define kMSAutoNotificationTypeKeyName    @"type"
+
 
 #define tableViewCellheight  MAX(kScreenHeight*0.06,44)
 

@@ -56,11 +56,13 @@
         [self.popView removeFromSuperview];
         self.popView = nil;
     }];
-    [[UIApplication sharedApplication].keyWindow.rootViewController.view addSubview:self.popView];
+    
+    UIViewController *baseViewController = [MSUtil currentViewController];
+    [baseViewController.view addSubview:self.popView];
     
     {
         [_popView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo([UIApplication sharedApplication].keyWindow.rootViewController.view);
+            make.center.equalTo(baseViewController.view);
             make.size.mas_equalTo(CGSizeMake(kScreenWidth, kScreenHeight));
         }];
     }

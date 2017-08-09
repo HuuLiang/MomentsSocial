@@ -32,8 +32,12 @@
 
 + (void)setVipLevel:(MSLevel)vipLevel;
 + (MSLevel)currentVipLevel;
++ (BOOL)isToday;
 
 + (NSString *)compareCurrentTime:(NSTimeInterval)compareTimeInterval;
 
++ (UIViewController *)currentViewController;
+
++ (float)getVideoLengthWithVideoUrl:(NSString *)videoUrl;
 
 @end

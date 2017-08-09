@@ -31,6 +31,7 @@
 #define MS_HOME_URL                    @"/cfc/queryCircle.htm"                        //圈子
 #define MS_MOMENTS_URL                 @"/cfc/queryMood.htm"                          //动态
 #define MS_PUSHUSER_URL                @"/cfc/pushUser.htm"                           //批量推送用户
+#define MS_PUSHUSERONE_URL             @"/cfc/pushUserOne"                            //单个推送用户
 #define MS_DAYHOUSE_URL                @"/cfc/dayHouse.htm"                           //今日开房
 #define MS_NEARSHAKE_URL               @"/cfc/nearbyShake.htm"                        //附近的人  摇一摇
 #define MS_DISCOVER_URL                @"/cfc/find.htm"                               //发现

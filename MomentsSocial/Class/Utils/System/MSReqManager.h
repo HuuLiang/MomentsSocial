@@ -30,6 +30,9 @@
 /** 批量推送 */
 - (void)fetchPushUserInfoWithPage:(NSInteger)page size:(NSInteger)pageSize Class:(Class)classModel completionHandler:(MSCompletionHandler)handler;
 
+/** 单个推送用户 */
+- (void)fetchOneUserInfoClass:(Class)classModel completionHandler:(MSCompletionHandler)handler;
+
 /** 摇一摇 附近的人 */
 - (void)fetchNearShakeInfoWithNumber:(NSInteger)userCount Class:(Class)classModel completionHandler:(MSCompletionHandler)handler;
 
@@ -46,5 +49,5 @@
 - (void)greetMomentWithMoodId:(NSInteger)moodId Class:(Class)classModel completionHandler:(MSCompletionHandler)handler;
 
 /** 发送消息 */
-- (void)sendMsgWithSendUserId:(NSInteger)sendUserId receiveUserId:(NSInteger)receiveUserId content:(NSString *)content Class:(Class)classModel completionHandler:(MSCompletionHandler)handler;
+- (void)sendMsgWithSendUserId:(NSString *)sendUserId receiveUserId:(NSString *)receiveUserId content:(NSString *)content Class:(Class)classModel completionHandler:(MSCompletionHandler)handler;
 @end

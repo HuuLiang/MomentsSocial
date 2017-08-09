@@ -18,6 +18,7 @@
 #import "WeChatPayManager.h"
 #import <UMMobClick/MobClick.h>
 #import "QBUploadManager.h"
+#import "MSAutoReplyMessageManager.h"
 
 @interface AppDelegate () <WXApiDelegate>
 
@@ -162,6 +163,24 @@
     [WXApi handleOpenURL:url delegate:(id<WXApiDelegate>)self];
     return YES;
 }
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    if ([[notification.userInfo.allKeys firstObject] isEqualToString:kMSAutoNotificationTypeKeyName]) {
+        [[MSAutoReplyMessageManager manager] fetchOneReplyUserInfo];
+    }
+//    [application setApplicationIconBadgeNumber:[[YFBContactManager manager] allUnReadMessageCount]];
+}
+
+- (void)checkLocalNotificationWithLaunchOptionsOptions:(NSDictionary *)launchOptions {
+    UILocalNotification *localNotification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
+    if (!localNotification) {
+        return;
+    }
+    if ([[localNotification.userInfo.allKeys firstObject] isEqualToString:kMSAutoNotificationTypeKeyName]) {
+        [[MSAutoReplyMessageManager manager] fetchOneReplyUserInfo];
+    }
+}
+
 
 - (void)showHomeViewController {
     //设置默认配置信息  微信注册  七牛注册  加载钻石 礼物信息

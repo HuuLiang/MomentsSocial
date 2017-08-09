@@ -9,6 +9,7 @@
 #import "MSContactViewController.h"
 #import "MSContactCell.h"
 #import "MSContactModel.h"
+#import "MSMessageViewController.h"
 
 typedef NS_ENUM(NSInteger,MSContactSection) {
     MSContactSectionUnRead = 0,
@@ -78,6 +79,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row < self.dataSource.count) {
         MSContactModel *contactModel = self.dataSource[indexPath.row];
+        [MSMessageViewController showMessageWithUserId:contactModel.userId nickName:contactModel.nickName portraitUrl:contactModel.portraitUrl inViewController:self];
     }
 }
 
