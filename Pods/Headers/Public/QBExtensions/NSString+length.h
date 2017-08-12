@@ -1,1 +1,1 @@
-../../../QBExtensions/QBExtensions/Classes/Foundation/NSString+length.h
+../../../QBExtensions/QBExtensions/Core/Foundation/NSString+length.h

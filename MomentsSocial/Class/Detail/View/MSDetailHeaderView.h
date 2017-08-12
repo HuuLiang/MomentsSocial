@@ -14,6 +14,8 @@
 
 @property (nonatomic) NSString *nickName;
 
+@property (nonatomic) BOOL online;
+
 @property (nonatomic) NSString *location;
 
 @property (nonatomic) MSLevel vipLevel;

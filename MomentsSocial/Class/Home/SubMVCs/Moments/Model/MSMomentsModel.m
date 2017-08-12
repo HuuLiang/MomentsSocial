@@ -22,12 +22,12 @@
     return [MSMomentCommentsInfo class];
 }
 
-- (BOOL)greeted {
-    MSMomentModel *model = [self.class findFirstByCriteria:[NSString stringWithFormat:@"where moodId=%ld",(long)_moodId]];
+- (BOOL)isGreeted {
+    MSMomentModel *model = [MSMomentModel findFirstByCriteria:[NSString stringWithFormat:@"where moodId=%ld",(long)self.moodId]];
     return model ? model.greeted : NO;
 }
 
-- (BOOL)loved {
+- (BOOL)isLoved {
     MSMomentModel *model = [self.class findFirstByCriteria:[NSString stringWithFormat:@"where moodId=%ld",(long)_moodId]];
     return model ? model.loved : NO;
 }

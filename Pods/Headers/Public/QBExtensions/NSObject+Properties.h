@@ -1,1 +1,1 @@
-../../../QBExtensions/QBExtensions/Classes/Foundation/NSObject+Properties.h
+../../../QBExtensions/QBExtensions/Core/Foundation/NSObject+Properties.h

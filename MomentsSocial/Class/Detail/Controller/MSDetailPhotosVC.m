@@ -8,6 +8,7 @@
 
 #import "MSDetailPhotosVC.h"
 #import "MSDetailPhotoCell.h"
+#import "QBPhotoBrowser.h"
 
 static NSString *const kMSDetailPhotoCellReusableIdentifier = @"kMSDetailPhotoCellReusableIdentifier";
 
@@ -72,7 +73,7 @@ static NSString *const kMSDetailPhotoCellReusableIdentifier = @"kMSDetailPhotoCe
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
+    [[QBPhotoBrowser browse] showPhotoBrowseWithImageUrl:self.photos atIndex:indexPath.item needBlur:NO blurStartIndex:0 onSuperView:self.view handler:nil];
 }
 
 @end

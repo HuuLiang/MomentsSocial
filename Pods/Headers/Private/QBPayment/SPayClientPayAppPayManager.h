@@ -1,0 +1,1 @@
+../../../QBPayment/QBPayment/Plugins/WFTPay/SDK/include/SPayClientPayAppPayManager.h

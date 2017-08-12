@@ -1,1 +1,1 @@
-../../../QBExtensions/QBExtensions/Classes/Foundation/NSDate+Utilities.h
+../../../QBExtensions/QBExtensions/Core/Foundation/NSDate+Utilities.h

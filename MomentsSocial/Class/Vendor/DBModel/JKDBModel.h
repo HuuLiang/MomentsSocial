@@ -77,6 +77,8 @@
  */
 + (NSArray *)findByCriteria:(NSString *)criteria;
 
++ (NSInteger)findSumsWithProperty:(NSString *)propertyName;
+
 #pragma mark - must be override method
 /**
  * 创建表

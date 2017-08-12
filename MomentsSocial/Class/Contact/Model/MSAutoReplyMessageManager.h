@@ -107,5 +107,5 @@ typedef NS_ENUM(NSInteger,MSReplyDataSourceType) {
 @end
 
 @interface MSAutoReplyBatchResponse : QBDataResponse
-@property (nonatomic) NSArray <MSUserModel *> *users;
+@property (nonatomic) NSArray <MSUserModel *> *pushUser;
 @end

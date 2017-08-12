@@ -32,12 +32,29 @@
         self.userImgV = [[UIImageView alloc] init];
         _userImgV.layer.cornerRadius = 5;
         _userImgV.layer.masksToBounds = YES;
+        _userImgV.userInteractionEnabled = YES;
         [self addSubview:_userImgV];
         
         self.nickLabel = [[UILabel alloc] init];
         _nickLabel.textColor = kColor(@"#333333");
         _nickLabel.font = kFont(15);
+        _nickLabel.userInteractionEnabled = YES;
         [self addSubview:_nickLabel];
+        
+        @weakify(self);
+        [_userImgV bk_whenTapped:^{
+            @strongify(self);
+            if (self.changeImgAction) {
+                self.changeImgAction();
+            }
+        }];
+        
+        [_nickLabel bk_whenTapped:^{
+            @strongify(self);
+            if (self.changeNickAction) {
+                self.changeNickAction();
+            }
+        }];
         
         self.vipImgV = [[UIImageView alloc] init];
         [self addSubview:_vipImgV];

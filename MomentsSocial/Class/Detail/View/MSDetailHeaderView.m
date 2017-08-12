@@ -12,8 +12,7 @@
 @property (nonatomic) UIImageView *backImgV;
 @property (nonatomic) UIButton *backButton;
 @property (nonatomic) UIImageView *userImgV;
-@property (nonatomic) UILabel     *nickLabel;
-@property (nonatomic) UILabel     *onlineLabel;
+@property (nonatomic) UIButton *nickOnlineButton;
 @property (nonatomic) UIButton    *locationButton;
 @property (nonatomic) UIImageView *vipImgV;
 @end
@@ -38,18 +37,12 @@
         _userImgV.layer.borderWidth = 2.0f;
         _userImgV.layer.masksToBounds = YES;
         [self addSubview:_userImgV];
-        
-        self.nickLabel = [[UILabel alloc] init];
-        _nickLabel.textColor = kColor(@"#ffffff");
-        _nickLabel.font = kFont(16);
-        [self addSubview:_nickLabel];
-        
-        self.onlineLabel = [[UILabel alloc] init];
-        _onlineLabel.textColor = kColor(@"#ED465C");
-        _onlineLabel.font = kFont(11);
-        _onlineLabel.text = @"在线";
-        _onlineLabel.backgroundColor = kColor(@"#ffffff");
-        [self addSubview:_onlineLabel];
+                
+        self.nickOnlineButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_nickOnlineButton setTitleColor:kColor(@"#ffffff") forState:UIControlStateNormal];
+        _nickOnlineButton.titleLabel.font = kFont(16);
+        _nickOnlineButton.enabled = NO;
+        [self addSubview:_nickOnlineButton];
         
         self.locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_locationButton setImage:[UIImage imageNamed:@"near_location"] forState:UIControlStateNormal];
@@ -85,20 +78,15 @@
                 make.size.mas_equalTo(CGSizeMake(kWidth(112), kWidth(112)));
             }];
             
-            [_nickLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            
+            [_nickOnlineButton mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(_userImgV.mas_bottom).offset(kWidth(28));
                 make.centerX.equalTo(self);
-                make.height.mas_equalTo(_nickLabel.font.lineHeight);
-            }];
-            
-            [_onlineLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.equalTo(_nickLabel);
-                make.left.equalTo(_nickLabel.mas_right).offset(kWidth(18));
-                make.height.mas_equalTo(_onlineLabel.font.lineHeight);
+                make.size.mas_equalTo(CGSizeMake(kWidth(260), kWidth(36)));
             }];
             
             [_locationButton mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(_nickLabel.mas_bottom).offset(kWidth(18));
+                make.top.equalTo(_nickOnlineButton.mas_bottom).offset(kWidth(18));
                 make.centerX.equalTo(self);
                 make.size.mas_equalTo(CGSizeMake(kWidth(300), kWidth(26)));
             }];
@@ -119,7 +107,15 @@
 }
 
 - (void)setNickName:(NSString *)nickName {
-    _nickLabel.text = nickName;
+    [_nickOnlineButton setTitle:nickName forState:UIControlStateNormal];
+}
+
+- (void)setOnline:(BOOL)online {
+    if (online) {
+        [_nickOnlineButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+    } else {
+        _nickOnlineButton.imageView.image = nil;
+    }
 }
 
 - (void)setLocation:(NSString *)location {
@@ -140,6 +136,8 @@
 
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
+    
+    [_nickOnlineButton layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleLeft imageTitleSpace:kWidth(14)];
     
     [_locationButton layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleLeft imageTitleSpace:5];
     

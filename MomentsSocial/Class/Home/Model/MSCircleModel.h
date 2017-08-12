@@ -8,7 +8,7 @@
 
 #import "QBDataResponse.h"
 
-@interface MSCircleInfo : NSObject
+@interface MSCircleInfo : JKDBModel
 
 @property (nonatomic) NSString *circleImg;
 
@@ -21,6 +21,8 @@
 @property (nonatomic) NSInteger circleId;
 
 @property (nonatomic) MSLevel vipLv;
+
+- (NSInteger)numberWithCircleId:(NSInteger)circleId;
 
 @end
 

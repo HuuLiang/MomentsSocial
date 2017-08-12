@@ -63,6 +63,7 @@
         _onlineLabel.textColor = kColor(@"#5AC8FA");
         _onlineLabel.font = kFont(12);
         [_backView addSubview:_onlineLabel];
+        _onlineLabel.hidden = YES;
         
         self.greetButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_greetButton setTitle:@"打招呼" forState:UIControlStateNormal];
@@ -80,9 +81,17 @@
         _contentLabel.numberOfLines = 0;
         [_backView addSubview:_contentLabel];
         
-        self.lineView = [[UIImageView alloc] init];
-        _lineView.backgroundColor = kColor(@"#f0f0f0");
-        [_backView addSubview:_lineView];
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        layout.sectionInset = UIEdgeInsetsZero;
+        self.photosView = [[MSMomentsContentView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+        [self.contentView addSubview:_photosView];
+        
+        self.coverImgV = [[UIImageView alloc] init];
+        _coverImgV.backgroundColor = [UIColor yellowColor];
+        [self.contentView addSubview:_coverImgV];
+        
+        self.playImgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"play"]];
+        [_coverImgV addSubview:_playImgV];
         
         self.locationImgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"near_location"]];
         [_backView addSubview:_locationImgV];
@@ -104,7 +113,38 @@
         [_attentionButton setImage:[UIImage imageNamed:@"near_greeted"] forState:UIControlStateNormal];
         [_backView addSubview:_attentionButton];
 
+        self.lineView = [[UIImageView alloc] init];
+        _lineView.backgroundColor = kColor(@"#f0f0f0");
+        [_backView addSubview:_lineView];
+        
+        self.commentLabelA = [[UILabel alloc] init];
+        _commentLabelA.font = kFont(13);
+        _commentLabelA.numberOfLines = 0;
+        [_backView addSubview:_commentLabelA];
+        
+        
+        self.commentLabelB = [[UILabel alloc] init];
+        _commentLabelB.font = kFont(13);
+        _commentLabelB.numberOfLines = 0;
+        [_backView addSubview:_commentLabelB];
+
+        
         @weakify(self);
+        _photosView.browserAction = ^(id obj) {
+            @strongify(self);
+            if (self.photoAction) {
+                self.photoAction(obj);
+            }
+        };
+        
+        [_coverImgV bk_whenTapped:^{
+            @strongify(self);
+            if (self.VideoAction) {
+                self.VideoAction();
+                
+            }
+        }];
+
         [_greetButton bk_addEventHandler:^(id sender) {
             @strongify(self);
             if (self.greetAction) {
@@ -135,12 +175,12 @@
             
             [_userImgV mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(_backView).offset(kWidth(20));
-                make.top.equalTo(_backView).offset(kWidth(22));
+                make.top.equalTo(_backView).offset(kWidth(30));
                 make.size.mas_equalTo(CGSizeMake(kWidth(60), kWidth(60)));
             }];
             
             [_nickLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.equalTo(_userImgV).offset(kWidth(22));
+                make.centerY.equalTo(_userImgV);
                 make.left.equalTo(_userImgV.mas_right).offset(kWidth(20));
                 make.height.mas_equalTo(_nickLabel.font.lineHeight);
             }];
@@ -162,196 +202,181 @@
                 make.left.equalTo(_backView).offset(kWidth(100));
                 make.right.equalTo(_backView.mas_right).offset(-kWidth(20));
             }];
+            
+            [_photosView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(_contentLabel.mas_bottom).offset(kWidth(20));
+                make.left.equalTo(_backView).offset(kWidth(100));
+                make.right.equalTo(_backView.mas_right).offset(-kWidth(20));
+                make.height.mas_equalTo(1); //临时值
+            }];
+            
+            [_coverImgV mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(_contentLabel.mas_bottom).offset(kWidth(20));
+                make.left.equalTo(_backView).offset(kWidth(100));
+                make.right.equalTo(_backView.mas_right).offset(-kWidth(20));
+                make.height.mas_equalTo(ceilf((kScreenWidth - kWidth(120))/2));
+            }];
+            
+            [_playImgV mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.center.equalTo(_coverImgV);
+                make.size.mas_equalTo(CGSizeMake(kWidth(120), kWidth(120)));
+            }];
+
+            [_commentLabelB mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.bottom.equalTo(_backView.mas_bottom).offset(-kWidth(30));
+                make.left.equalTo(_backView.mas_left).offset(kWidth(120));
+                make.right.equalTo(_backView.mas_right).offset(-kWidth(40));
+            }];
+            
+            [_commentLabelA mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(_backView.mas_left).offset(kWidth(120));
+                make.right.equalTo(_backView.mas_right).offset(-kWidth(40));
+                make.bottom.equalTo(_commentLabelB.mas_top).offset(-kWidth(24));
+            }];
+            
+            [_lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.bottom.equalTo(_commentLabelA.mas_top).offset(-kWidth(26));
+                make.left.equalTo(_backView).offset(kWidth(100));
+                make.right.mas_equalTo(_backView.mas_right).offset(-kWidth(20));
+                make.height.mas_equalTo(1);
+            }];
+            
+            [_locationImgV mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.bottom.equalTo(_lineView.mas_top).offset(-kWidth(26));
+                make.left.equalTo(_backView).offset(kWidth(104));
+                make.size.mas_equalTo(CGSizeMake(kWidth(24), kWidth(32)));
+            }];
+            
+            [_locationLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(_locationImgV);
+                make.left.equalTo(_locationImgV.mas_right).offset(kWidth(12));
+                make.height.mas_equalTo(_locationLabel.font.lineHeight);
+            }];
+            
+            [_commentButton mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(_locationLabel);
+                make.right.equalTo(_backView.mas_right).offset(-kWidth(20));
+                make.size.mas_equalTo(CGSizeMake(kWidth(90), kWidth(28)));
+            }];
+            
+            [_attentionButton mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(_locationLabel);
+                make.right.equalTo(_commentButton.mas_left).offset(-kWidth(28));
+                make.size.mas_equalTo(CGSizeMake(kWidth(90), kWidth(28)));
+            }];
         }
-        
     }
     return self;
 }
 
 - (void)setUserImgUrl:(NSString *)userImgUrl {
+    _userImgUrl = userImgUrl;
     [_userImgV sd_setImageWithURL:[NSURL URLWithString:userImgUrl]];
 }
 
 - (void)setNickName:(NSString *)nickName {
+    _nickName = nickName;
     _nickLabel.text = nickName;
 }
 
+- (void)setOnline:(NSNumber *)online {
+    _online = online;
+    _onlineLabel.hidden = [_online boolValue];
+}
+
 - (void)setContent:(NSString *)content {
+    _content = content;
     _contentLabel.text = content;
 }
 
 - (void)setLocation:(NSString *)location {
+    _location = location;
     _locationLabel.text = location;
 }
 
-- (void)setCommentsCount:(NSInteger)commentsCount {
+- (void)setCommentsCount:(NSNumber *)commentsCount {
+    _commentsCount = commentsCount;
     [_commentButton setTitle:[NSString stringWithFormat:@"%ld",(long)commentsCount] forState:UIControlStateNormal];
 }
 
-- (void)setAttentionCount:(NSInteger)attentionCount {
+- (void)setAttentionCount:(NSNumber *)attentionCount {
+    _attentionCount = attentionCount;
     [_attentionButton setTitle:[NSString stringWithFormat:@"%ld",(long)attentionCount] forState:UIControlStateNormal];
 }
 
-- (void)setGreeted:(BOOL)greeted {
+- (void)setGreeted:(NSNumber *)greeted {
     _greeted = greeted;
 }
 
-- (void)setLoved:(BOOL)loved {
+- (void)setLoved:(NSNumber *)loved {
     _loved = loved;
-    [_attentionButton setImage:[UIImage imageNamed:_loved ? @"near_greet" : @"near_greeted"] forState:UIControlStateNormal];
+    [_attentionButton setImage:[UIImage imageNamed:[_loved boolValue] ? @"near_greet" : @"near_greeted"] forState:UIControlStateNormal];
 }
 
 - (void)setMomentsType:(MSMomentsType)momentsType {
     _momentsType = momentsType;
-    if (_photosView) {
-        [_photosView removeFromSuperview];
-    }
-    if (_coverImgV) {
-        [_coverImgV removeFromSuperview];
-    }
-    if (_playImgV) {
-        [_playImgV removeFromSuperview];
-    }
-    
-
-    if (_momentsType == MSMomentsTypePhotos) {
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.sectionInset = UIEdgeInsetsZero;
-        self.photosView = [[MSMomentsContentView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-        [self.contentView addSubview:_photosView];
-    } else if (_momentsType == MSMomentsTypeVideo) {
-        self.coverImgV = [[UIImageView alloc] init];
-        _coverImgV.backgroundColor = [UIColor yellowColor];
-        [self.contentView addSubview:_coverImgV];
-        
-        self.playImgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"play"]];
-        [_coverImgV addSubview:_playImgV];
+    if (momentsType == MSMomentsTypePhotos) {
+        _coverImgV.hidden = YES;
+        _playImgV.hidden = YES;
+        _photosView.hidden = NO;
+    } else if (momentsType == MSMomentsTypeVideo) {
+        _coverImgV.hidden = NO;
+        _playImgV.hidden = NO;
+        _photosView.hidden = YES;
     }
 }
 
+- (void)setVipLv:(MSLevel)vipLv {
+    _vipLv = vipLv;
+}
+
 - (void)setDataSource:(id)dataSource {
-    if (_momentsType == MSMomentsTypePhotos) {
-        _photosView.dataArr = dataSource;
+    _dataSource = dataSource;
+    
+    if (!_photosView.isHidden) {
+        _photosView.dataArr = self.dataSource;
         CGFloat photoheight = (kScreenWidth - kWidth(140))/3;
-        NSInteger lineCount = ceilf([(NSArray *)dataSource count] / 3.0);
+        NSInteger lineCount = ceilf([(NSArray *)self.dataSource count] / 3.0);
         CGFloat height = lineCount * photoheight + ((lineCount > 0 ? lineCount : 1) - 1) * kWidth(10);
-        [_photosView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_contentLabel.mas_bottom).offset(kWidth(20));
-            make.left.equalTo(_backView).offset(kWidth(100));
-            make.right.equalTo(_backView.mas_right).offset(-kWidth(20));
+        [_photosView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.mas_equalTo(height);
         }];
-        
-        [_lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_photosView.mas_bottom).offset(kWidth(84));
-            make.left.equalTo(_backView).offset(kWidth(100));
-            make.right.mas_equalTo(_backView.mas_right).offset(-kWidth(20));
-            make.height.mas_equalTo(1);
-        }];
-
-    } else if (_momentsType == MSMomentsTypeVideo) {
-        [_coverImgV sd_setImageWithURL:[NSURL URLWithString:dataSource]];
-        CGFloat width = kScreenWidth - kWidth(120);
-        [_coverImgV mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_contentLabel.mas_bottom).offset(kWidth(20));
-            make.left.equalTo(_backView).offset(kWidth(100));
-            make.right.equalTo(_backView.mas_right).offset(-kWidth(20));
-            make.height.mas_equalTo(ceilf(width/2));
-        }];
-        
-        [_playImgV mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(_coverImgV);
-            make.size.mas_equalTo(CGSizeMake(kWidth(120), kWidth(120)));
-        }];
-        
-        [_lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_coverImgV.mas_bottom).offset(kWidth(84));
-            make.left.equalTo(_backView).offset(kWidth(100));
-            make.right.mas_equalTo(_backView.mas_right).offset(-kWidth(20));
-            make.height.mas_equalTo(1);
-        }];
     }
-    
-    [_locationImgV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(_lineView.mas_top).offset(-kWidth(26));
-        make.left.equalTo(_backView).offset(kWidth(104));
-        make.size.mas_equalTo(CGSizeMake(kWidth(24), kWidth(32)));
-    }];
-    
-    [_locationLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_locationImgV);
-        make.left.equalTo(_locationImgV.mas_right).offset(kWidth(12));
-        make.height.mas_equalTo(_locationLabel.font.lineHeight);
-    }];
-    
-    [_commentButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_locationLabel);
-        make.right.equalTo(_backView.mas_right).offset(-kWidth(20));
-        make.size.mas_equalTo(CGSizeMake(kWidth(90), kWidth(28)));
-    }];
-    
-    [_attentionButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_locationLabel);
-        make.right.equalTo(_commentButton.mas_left).offset(-kWidth(28));
-        make.size.mas_equalTo(CGSizeMake(kWidth(90), kWidth(28)));
-    }];
+    if (!_coverImgV.isHidden) {
+        [_coverImgV sd_setImageWithURL:[NSURL URLWithString:dataSource]];
+    }
 }
 
 - (void)setNickA:(NSString *)nickA {
     _nickA = nickA;
-    if (_commentLabelA) {
-        [_commentLabelA removeFromSuperview];
-    }
-    if (_commentLabelB) {
-        [_commentLabelB removeFromSuperview];
-    }
-    self.commentLabelA = [[UILabel alloc] init];
-    _commentLabelA.font = kFont(13);
-    _commentLabelA.numberOfLines = 0;
-    [_backView addSubview:_commentLabelA];
 }
 
 - (void)setCommentA:(NSString *)commentA {
-    commentA = [NSString stringWithFormat:@"%@:%@",_nickA,commentA];
-    NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:commentA attributes:@{NSForegroundColorAttributeName:kColor(@"#333333"),NSFontAttributeName:kFont(13)}];
-    [attriStr addAttributes:@{NSForegroundColorAttributeName:kColor(@"#999999")} range:[commentA rangeOfString:_nickA]];
-    _commentLabelA.attributedText = attriStr;
-    
-    {
-        [_commentLabelA mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_backView.mas_left).offset(kWidth(120));
-            make.right.equalTo(_backView.mas_right).offset(-kWidth(40));
-            make.top.equalTo(_lineView.mas_bottom).offset(kWidth(24));
-        }];
-    }
+    _commentA = commentA;
+    NSString *userComment = [NSString stringWithFormat:@"%@：%@",_nickA,_commentA];
+    NSMutableAttributedString *attriStrA = [[NSMutableAttributedString alloc] initWithString:userComment attributes:@{NSForegroundColorAttributeName:kColor(@"#333333"),NSFontAttributeName:kFont(13)}];
+    [attriStrA addAttributes:@{NSForegroundColorAttributeName:kColor(@"#999999")} range:[userComment rangeOfString:[NSString stringWithFormat:@"%@：",_nickA]]];
+    _commentLabelA.attributedText = attriStrA;
 }
 
 - (void)setNickB:(NSString *)nickB {
     _nickB = nickB;
-    self.commentLabelB = [[UILabel alloc] init];
-    _commentLabelB.font = kFont(13);
-    _commentLabelB.numberOfLines = 0;
-    [_backView addSubview:_commentLabelB];
 }
 
 -(void)setCommentB:(NSString *)commentB {
-    commentB = [NSString stringWithFormat:@"%@:%@",_nickB,commentB];
-    NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:commentB attributes:@{NSForegroundColorAttributeName:kColor(@"#333333"),NSFontAttributeName:kFont(13)}];
-    [attriStr addAttributes:@{NSForegroundColorAttributeName:kColor(@"#999999")} range:[commentB rangeOfString:_nickB]];
-    _commentLabelB.attributedText = attriStr;
-    
-    {
-        [_commentLabelB mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_backView.mas_left).offset(kWidth(120));
-            make.right.equalTo(_backView.mas_right).offset(-kWidth(40));
-            make.top.equalTo(_commentLabelA.mas_bottom).offset(kWidth(18));
-        }];
-    }
+    _commentB = commentB;
+    NSString * userComment = [NSString stringWithFormat:@"%@：%@",_nickB,_commentB];
+    NSMutableAttributedString *attriStrB = [[NSMutableAttributedString alloc] initWithString:userComment attributes:@{NSForegroundColorAttributeName:kColor(@"#333333"),NSFontAttributeName:kFont(13)}];
+    [attriStrB addAttributes:@{NSForegroundColorAttributeName:kColor(@"#999999")} range:[userComment rangeOfString:[NSString stringWithFormat:@"%@：",_nickB]]];
+    _commentLabelB.attributedText = attriStrB;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
 }
 
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
-    
     [_commentButton layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleLeft imageTitleSpace:kWidth(10)];
     [_attentionButton layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleLeft imageTitleSpace:kWidth(10)];
 }

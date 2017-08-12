@@ -1,1 +1,0 @@
-../../../../QBTPL/QBTPL/TencentOpenAPI/TencentOpenAPI.framework/Headers/sdkdef.h

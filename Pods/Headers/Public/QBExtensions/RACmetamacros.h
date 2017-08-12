@@ -1,1 +1,1 @@
-../../../QBExtensions/QBExtensions/Classes/Foundation/RACmetamacros.h
+../../../QBExtensions/QBExtensions/Core/Foundation/RACmetamacros.h

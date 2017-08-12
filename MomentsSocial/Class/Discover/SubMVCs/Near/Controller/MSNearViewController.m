@@ -11,12 +11,14 @@
 #import "MSDetailViewController.h"
 #import "MSReqManager.h"
 #import "MSDisFuctionModel.h"
+#import "QBLocationManager.h"
+#import "MSMessageModel.h"
 
 static NSString *const kMSNearCellReusableIdentifier = @"kMSNearCellReusableIdentifier";
 
 @interface MSNearViewController () <UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 @property (nonatomic) UICollectionView *collectionView;
-@property (nonatomic) NSMutableArray *dataSource;
+@property (nonatomic) NSMutableArray <MSUserModel *> *dataSource;
 @end
 
 @implementation MSNearViewController
@@ -85,20 +87,59 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     MSNearCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kMSNearCellReusableIdentifier forIndexPath:indexPath];
     if (indexPath.item < self.dataSource.count) {
         MSUserModel *user = self.dataSource[indexPath.item];
-        cell.imgUrl = user.portraitUrl;
-        cell.nickName = user.nickName;
-        cell.age = user.age;
-        cell.sex = user.sex;
-        cell.location = @"蒋村街道办事处";
-        cell.isGreeted = NO;
+        
+        @weakify(cell);
+        cell.greetAction = ^{
+            @strongify(cell);
+            if (user.greeted) {
+                [[MSHudManager manager] showHudWithText:@"已经打过招呼"];
+            } else {
+                if ([MSMessageModel addMessageInfoWithUserId:user.userId nickName:user.nickName portraitUrl:user.portraitUrl]) {
+                    [[MSHudManager manager] showHudWithText:@"打招呼成功"];
+                    user.greeted = YES;
+                    cell.isGreeted = YES;
+                    [user saveOrUpdate];
+                    [self.dataSource replaceObjectAtIndex:indexPath.item withObject:user];
+                }
+            }
+        };
+        
     }
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    MSNearCell *nearCell = (MSNearCell *)cell;
+    if (indexPath.item < self.dataSource.count) {
+        MSUserModel *user = self.dataSource[indexPath.item];
+        nearCell.isGreeted = [user greeted];
+        if (!nearCell.imgUrl) {
+            nearCell.imgUrl = user.portraitUrl;
+        }
+        if (!nearCell.nickName) {
+            nearCell.nickName = user.nickName;
+        }
+        if (!nearCell.age) {
+            nearCell.age = user.age;
+        }
+        if (!nearCell.sex) {
+            nearCell.sex = user.sex;
+        }
+
+        if (!nearCell.location) {
+            @weakify(nearCell);
+            [[QBLocationManager manager] getUserLacationNameWithUserId:[NSString stringWithFormat:@"%ld",(long)user.userId] locationName:^(BOOL success, NSString *locationName) {
+                @strongify(nearCell);
+                nearCell.location = locationName;
+            }];
+        }
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.item < self.dataSource.count) {
         MSUserModel *user = self.dataSource[indexPath.item];
-        [self pushIntoDetailVCWithUserId:user.userId];
+        [self pushIntoDetailVCWithUserId:[NSString stringWithFormat:@"%ld",(long)user.userId]];
     }
 }
 

@@ -504,6 +504,20 @@
     return users;
 }
 
++ (NSInteger)findSumsWithProperty:(NSString *)propertyName {
+    JKDBHelper *jkDB = [JKDBHelper shareInstance];
+    __block NSInteger allUnreadCount = 0;
+    [jkDB.dbQueue inDatabase:^(FMDatabase *db) {
+        NSString *tableName = NSStringFromClass(self.class);
+        NSString *sql = [NSString stringWithFormat:@"SELECT SUM(%@) FROM %@",propertyName,tableName];
+        FMResultSet *resultSet = [db executeQuery:sql];
+        while ([resultSet next]) {
+            allUnreadCount = [resultSet longForColumnIndex:0];
+        }
+    }];
+    return allUnreadCount;
+}
+
 #pragma mark - util method
 + (NSString *)getColumeAndTypeString
 {

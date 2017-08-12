@@ -94,6 +94,13 @@ typedef void (^MSCompletionHandler)(BOOL success,id obj);
 static NSString *const kMSFriendCurrentUserKeyName         = @"kMSFriendCurrentUserKeyName";
 
 #define MSOpenVipSuccessNotification      @"MSOpenVipSuccessNotification"
+
+#define kMSPostContactInfoNotification    @"kMSPostContactInfoNotification"
+#define kMSPostUnReadCountNotification    @"kMSPostUnReadCountNotification"
+#define kMSPostMessageInfoNotification    @"kMSPostMessageInfoNotification"
+
+#define kMSPostOnlineInfoNotification     @"kMSPostOnlineInfoNotification"
+
 #define kMSAutoNotificationTypeKeyName    @"type"
 
 

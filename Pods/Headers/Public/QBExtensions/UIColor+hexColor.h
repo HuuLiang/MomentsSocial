@@ -1,1 +1,1 @@
-../../../QBExtensions/QBExtensions/Classes/UIKit/UIColor+hexColor.h
+../../../QBExtensions/QBExtensions/Core/UIKit/UIColor+hexColor.h

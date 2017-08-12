@@ -26,6 +26,9 @@
 
 @property (nonatomic) NSInteger unreadCount;
 
++ (NSArray *)reloadAllContactInfos;
+
++ (void)refreshBadgeNumber;
 
 + (void)deletePastContactInfo;
 

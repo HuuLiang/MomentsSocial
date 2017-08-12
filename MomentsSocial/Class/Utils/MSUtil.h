@@ -36,6 +36,7 @@
 
 + (NSString *)compareCurrentTime:(NSTimeInterval)compareTimeInterval;
 
++ (UIViewController *)rootViewControlelr;
 + (UIViewController *)currentViewController;
 
 + (float)getVideoLengthWithVideoUrl:(NSString *)videoUrl;

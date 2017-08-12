@@ -14,6 +14,12 @@ typedef void(^PayResult)(BOOL success);
 
 + (instancetype)manager;
 
+- (void)setup;
+
+- (void)handleOpenURL:(NSURL *)url;
+
+- (void)applicationWillEnterForeground:(UIApplication *)application;
+
 - (void)startPayForVipLevel:(MSLevel)vipLevel type:(MSPayType)payType  price:(NSInteger)price handler:(PayResult)handler;
 
 @end

@@ -12,13 +12,13 @@
 
 + (void)registerWithSecretKey:(NSString *)secretKey accessKey:(NSString *)accessKey scope:(NSString *)scope;
 
-+ (BOOL)uploadImage:(UIImage *)image
-           withName:(NSString *)name
-  completionHandler:(QBCompletionHandler)handler;
-
-+ (BOOL)uploadVoiceWithPath:(NSString *)voicePath
-                  voiceName:(NSString *)voiceName
-          completionHandler:(QBCompletionHandler)handler;
+//+ (BOOL)uploadImage:(UIImage *)image
+//           withName:(NSString *)name
+//  completionHandler:(QBCompletionHandler)handler;
+//
+//+ (BOOL)uploadVoiceWithPath:(NSString *)voicePath
+//                  voiceName:(NSString *)voiceName
+//          completionHandler:(QBCompletionHandler)handler;
 
 + (BOOL)uploadWithFile:(id)object
               fileName:(NSString *)fileName

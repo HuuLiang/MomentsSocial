@@ -1,1 +1,1 @@
-../../../QBExtensions/QBExtensions/Classes/UIKit/UIImage+color.h
+../../../QBExtensions/QBExtensions/Core/UIKit/UIImage+color.h

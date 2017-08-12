@@ -185,8 +185,12 @@ static NSString *const kMSAutoReplyMessageTimeRecordKeyName = @"kMSAutoReplyMess
 
 #pragma mark - 获取currentVC
 
++ (UIViewController *)rootViewControlelr {
+    return [UIApplication sharedApplication].keyWindow.rootViewController;
+}
+
 + (UIViewController *)currentViewController {
-    UIViewController* currentVC = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController* currentVC = [self rootViewControlelr];
     while (1) {
         if ([currentVC isKindOfClass:[UITabBarController class]]) {
             currentVC = ((UITabBarController*)currentVC).selectedViewController;

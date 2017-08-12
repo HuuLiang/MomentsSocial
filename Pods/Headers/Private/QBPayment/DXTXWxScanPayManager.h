@@ -1,0 +1,1 @@
+../../../QBPayment/QBPayment/Plugins/DXTXPay/DXTXWxScanPayManager.h

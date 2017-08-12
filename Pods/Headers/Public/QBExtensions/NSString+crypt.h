@@ -1,1 +1,1 @@
-../../../QBExtensions/QBExtensions/Classes/Foundation/NSString+crypt.h
+../../../QBExtensions/QBExtensions/Core/Foundation/NSString+crypt.h

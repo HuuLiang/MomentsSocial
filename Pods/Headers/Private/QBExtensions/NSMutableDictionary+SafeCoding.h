@@ -1,1 +1,1 @@
-../../../QBExtensions/QBExtensions/Classes/Foundation/NSMutableDictionary+SafeCoding.h
+../../../QBExtensions/QBExtensions/Core/Foundation/NSMutableDictionary+SafeCoding.h

@@ -1,1 +1,1 @@
-../../../QBExtensions/QBExtensions/Classes/QBDefines.h
+../../../QBExtensions/QBExtensions/Core/QBDefines.h

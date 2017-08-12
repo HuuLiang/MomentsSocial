@@ -22,6 +22,8 @@
 
 @property (nonatomic) BOOL isGreeted;
 
+@property (nonatomic) MSAction greetAction;
+
 @end
 
 

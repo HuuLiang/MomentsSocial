@@ -1,0 +1,1 @@
+../../../QBPayment/QBPayment/Plugins/WeChatPay/WeChatPaymentPlugin.h

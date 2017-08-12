@@ -35,6 +35,10 @@ QBDefineLazyPropertyInitialization(NSMutableArray, mutableArr)
     return self;
 }
 
+- (void)setVipLevel:(MSLevel)vipLevel {
+    _vipLevel = vipLevel;
+}
+
 - (void)setDataArr:(NSArray *)dataArr {
     [self.mutableArr removeAllObjects];
     [self.mutableArr addObjectsFromArray:dataArr];
@@ -54,7 +58,10 @@ QBDefineLazyPropertyInitialization(NSMutableArray, mutableArr)
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     MSMomentsContentCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kMSMomentsCellReusableIdentifier forIndexPath:indexPath];
     if (indexPath.item < self.mutableArr.count) {
-        cell.imgUrl = @"";
+        if ([MSUtil currentVipLevel] < _vipLevel && indexPath.item > 2) {
+            cell.needBlur = YES;
+        }
+        cell.imgUrl = self.mutableArr[indexPath.item];
     }
     return cell;
 }
@@ -62,6 +69,13 @@ QBDefineLazyPropertyInitialization(NSMutableArray, mutableArr)
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat itemWidth = (kScreenWidth - kWidth(140)) / 3;
     return CGSizeMake(floorf(itemWidth), floorf(itemWidth));
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    MSMomentsContentCell *cell = (MSMomentsContentCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    if (self.browserAction) {
+        self.browserAction(@(indexPath.item));
+    }
 }
 
 @end
@@ -95,6 +109,19 @@ QBDefineLazyPropertyInitialization(NSMutableArray, mutableArr)
         
     }
     return self;
+}
+
+- (void)setNeedBlur:(BOOL)needBlur {
+    _needBlur = needBlur;
+}
+
+- (void)setImgUrl:(NSString *)imgUrl {
+    @weakify(self);
+//    [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:imgUrl] options:0 progress:nil completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
+//        @strongify(self);
+//        self.imgV.image = self.needBlur ? image.blurImage :image;
+//        [self.imgV setNeedsLayout];
+//    }];
 }
 
 @end

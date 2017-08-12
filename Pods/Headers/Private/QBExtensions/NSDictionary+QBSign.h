@@ -1,1 +1,1 @@
-../../../QBExtensions/QBExtensions/Classes/Foundation/NSDictionary+QBSign.h
+../../../QBExtensions/QBExtensions/Core/Foundation/NSDictionary+QBSign.h

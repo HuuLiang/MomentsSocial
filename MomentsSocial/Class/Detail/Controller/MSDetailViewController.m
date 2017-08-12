@@ -13,6 +13,8 @@
 #import "MSDetailSectionHeaderView.h"
 #import "MSDetailModel.h"
 #import "MSReqManager.h"
+#import "QBLocationManager.h"
+#import "MSOnlineManager.h"
 
 #import "MSDetailPhotosVC.h"
 #import "MSDetailInfoViewController.h"
@@ -81,6 +83,25 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
     return YES;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeOnline:) name:kMSPostOnlineInfoNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMSPostOnlineInfoNotification object:nil];
+}
+
+- (void)changeOnline:(NSNotification *)notification {
+    MSOnlineInfo *onlineInfo = [notification object];
+    if (onlineInfo.userId == [self.userId integerValue]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.headerView.online = onlineInfo.online;
+        });
+    }
+}
+
 - (void)fetchUserDetailInfo {
     @weakify(self);
     [[MSReqManager manager] fetchDetailInfoWithUserId:self.userId Class:[MSDetailModel class] completionHandler:^(BOOL success, MSDetailModel * obj) {
@@ -108,7 +129,13 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
     }
     _headerView.imgUrl = self.user.portraitUrl;
     _headerView.nickName = self.user.nickName;
-    _headerView.location = self.user.city;
+    @weakify(self);
+    [[QBLocationManager manager] getUserLacationNameWithUserId:self.userId locationName:^(BOOL success, NSString *locationName) {
+        @strongify(self);
+        self.headerView.location = self.user.city;
+
+    }];
+    _headerView.online = [[MSOnlineManager manager] onlineWithUserId:[self.userId integerValue]];
     _headerView.vipLevel = self.user.vipLv;
 }
 
@@ -170,11 +197,15 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
     @weakify(self);
     headerView.intoAction = ^{
         @strongify(self);
-        if (section == MSDetailSectionPhotos) {
-            [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypePhoto disCount:YES cancleAction:nil confirmAction:^{
-                MSDetailPhotosVC *photosVC = [[MSDetailPhotosVC alloc] initWithTitle:@"相册"];
-                [self.navigationController pushViewController:photosVC animated:YES];
+        if ([MSUtil currentVipLevel] == MSLevelVip0) {
+            [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeUserDetailInfo disCount:NO cancleAction:nil confirmAction:^{
+                [self pushVipViewController];
             }];
+            return ;
+        }
+        if (section == MSDetailSectionPhotos) {
+            MSDetailPhotosVC *photosVC = [[MSDetailPhotosVC alloc] initWithTitle:@"相册"];
+            [self.navigationController pushViewController:photosVC animated:YES];
         } else if (section == MSDetailSectionInfo) {
             MSDetailInfoViewController *infoVC = [[MSDetailInfoViewController alloc] initWithTitle:@"个人资料"];
             [self.navigationController pushViewController:infoVC animated:YES];

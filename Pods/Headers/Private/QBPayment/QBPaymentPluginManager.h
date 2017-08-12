@@ -1,0 +1,1 @@
+../../../QBPayment/QBPayment/Core/Private/QBPaymentPluginManager.h

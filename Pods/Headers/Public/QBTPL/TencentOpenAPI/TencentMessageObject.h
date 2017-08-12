@@ -1,1 +1,0 @@
-../../../../QBTPL/QBTPL/TencentOpenAPI/TencentOpenAPI.framework/Headers/TencentMessageObject.h

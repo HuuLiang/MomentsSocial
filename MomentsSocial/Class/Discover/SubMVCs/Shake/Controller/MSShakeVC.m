@@ -11,6 +11,10 @@
 #import "MSShakeUserView.h"
 #import "MSReqManager.h"
 #import "MSDisFuctionModel.h"
+#import "MSMessageModel.h"
+
+static NSString *const kMSShakeDayKeyName  = @"kMSShakeDayKeyName";
+static NSString *const kMSShakeTimeKeyName = @"kMSShakeTimeKeyName";
 
 @interface MSShakeVC ()
 @property (nonatomic) MSShakeView *shakeView;
@@ -43,11 +47,6 @@
     self.shakeView = [[MSShakeView alloc] init];
     [self.view addSubview:_shakeView];
     
-//    @weakify(self);
-//    _shakeView.startFetchAction = ^{
-//        @strongify(self);
-//    };
-    
     {
         [_shakeView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.equalTo(self.view);
@@ -60,6 +59,7 @@
     
     self.userView = [[MSShakeUserView alloc] init];
     _userView.age = self.user.age;
+    _userView.imgUrl = self.user.portraitUrl;
     [self.view addSubview:_userView];
     
     @weakify(self);
@@ -75,6 +75,11 @@
     _userView.loveAction = ^{
         @strongify(self);
         //喜欢逻辑
+        
+        if ([MSMessageModel addMessageInfoWithUserId:self.user.userId nickName:self.user.nickName portraitUrl:self.user.portraitUrl]) {
+            [[MSHudManager manager] showHudWithText:@"打招呼成功"];
+            self.userView.hateAction();
+        }
     };
     
     {
@@ -108,13 +113,51 @@
     }];
 }
 
+- (BOOL)checkUserCanShake {
+    if ([MSUtil currentVipLevel] > MSLevelVip0) {
+        return YES;
+    }
+    
+    NSDate *date = [[NSUserDefaults standardUserDefaults] objectForKey:kMSShakeDayKeyName];
+    if (!date) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kMSShakeDayKeyName];
+        [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:kMSShakeTimeKeyName];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        return YES;
+    } else {
+        if ([date isToday]) {
+            NSInteger todayShakeCount = [[[NSUserDefaults standardUserDefaults] objectForKey:kMSShakeTimeKeyName] integerValue];
+            if (todayShakeCount < 3) {
+                todayShakeCount++;
+                [[NSUserDefaults standardUserDefaults] setObject:@(todayShakeCount) forKey:kMSShakeTimeKeyName];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                return YES;
+            } else {
+                return NO;
+            }
+        } else {
+            [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kMSShakeDayKeyName];
+            [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:kMSShakeTimeKeyName];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            return YES;
+        }
+    }
+}
+
 #pragma mark - Motion
 
 - (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
-    if (_shakeView) {
-        _shakeView.shakeStatus = MSShakeStatusStart;
-        
-        [self performSelector:@selector(fetchShakeUserInfo) withObject:nil afterDelay:1.5];
+    if ([self checkUserCanShake]) {
+        if (_shakeView) {
+            _shakeView.shakeStatus = MSShakeStatusStart;
+            
+            [self performSelector:@selector(fetchShakeUserInfo) withObject:nil afterDelay:1.5];
+        }
+    } else {
+        [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeShakeTime disCount:NO cancleAction:nil confirmAction:^{
+            [self pushVipViewController];
+        }];
+        [self motionCancelled:UIEventSubtypeRemoteControlStop withEvent:event];
     }
 }
 

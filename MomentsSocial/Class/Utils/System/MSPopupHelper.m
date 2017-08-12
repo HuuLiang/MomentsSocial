@@ -28,16 +28,71 @@
     NSString *enterMsg = @"";
     
     switch (type) {
-        case MSPopupTypePhoto:
-            contentMsg = @"该用户设置：此照片不对用户展示";
+        case MSPopupTypeChangeUserInfo:
+            contentMsg = @"很抱歉，游客无法编辑个人资料";
             enterMsg = @"升级VIP";
             break;
             
-        case MSPopupTypePostMsg:
+        case MSPopupTypeSendMessage:
+            contentMsg = @"很抱歉，该用户开启了防止骚扰，仅接收VIP用户消息，您发送的消息TA可能无法查看";
+            enterMsg = @"升级VIP";
+            break;
+            
+        case MSPopupTypeUserDetailInfo:
+            contentMsg = @"很抱歉，游客无法查看用户详细资料，成为VIP即可查案所有用户资料。";
+            enterMsg = @"升级VIP";
+            break;
+            
+        case MSPopupTypeRegisterVip0:
+            contentMsg = @"很抱歉,为保证活动真实有效，游客身份无法报名。";
+            enterMsg = @"升级VIP";
+            break;
+        
+        case MSPopupTypeRegisterVip1:
+            contentMsg = @"为提高开放质量，今日开房服务仅针对钻石VIP用户";
+            enterMsg = @"钻石VIP";
+            break;
+            
+        case MSPopupTypeShakeTime:
+            contentMsg = @"游客每日只可摇一摇三次，升级VIP可无限摇";
+            enterMsg = @"升级VIP";
+            break;
+            
+        case MSPopupTypeCircleVip1:
+            contentMsg = @"很抱歉，游客无法游览此区域。";
+            enterMsg = @"升级VIP";
+            break;
+            
+        case MSPopupTypeCircleVip2:
+            contentMsg = @"此分类仅支持钻石VIP进入";
+            enterMsg = @"钻石VIP";
+            break;
+        
+        case MSPopupTypePostMoment:
             contentMsg = @"很抱歉，游客无法使用发帖功能";
             enterMsg = @"升级VIP";
             break;
-            
+        case MSPopupTypePhotoVip1:
+            contentMsg = @"该用户设置，此照片不对游客展示。";
+            enterMsg = @"升级VIP";
+            break;
+        case MSPopupTypePhotoVip2:
+            contentMsg = @"该用户设置，此照片仅供钻石VIP观看。";
+            enterMsg = @"升级VIP";
+            break;
+        case MSPopupTypeVideoVip1:
+            contentMsg = @"该用户设置，此视频不对游客展示。";
+            enterMsg = @"升级VIP";
+            break;
+        case MSPopupTypeVideoVip2:
+            contentMsg = @"该用户设置，此视频仅供钻石VIP观看。";
+            enterMsg = @"升级VIP";
+            break;
+
+        case MSPopupTypeFaceTime:
+            contentMsg = @"很抱歉，游客无法视频聊天";
+            enterMsg = @"升级VIP";
+        
         default:
             break;
     }
@@ -57,7 +112,7 @@
         self.popView = nil;
     }];
     
-    UIViewController *baseViewController = [MSUtil currentViewController];
+    UIViewController *baseViewController = [MSUtil rootViewControlelr];
     [baseViewController.view addSubview:self.popView];
     
     {
@@ -112,7 +167,8 @@
         _msgLabel.font = kFont(15);
         _msgLabel.numberOfLines = 0;
         _msgLabel.text = msg;
-        [_shapeView addSubview:_msgLabel];
+        _msgLabel.textAlignment = NSTextAlignmentCenter;
+        [_backView addSubview:_msgLabel];
 
         self.cancleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_cancleBtn setTitle:cancleMsg forState:UIControlStateNormal];
@@ -171,8 +227,11 @@
             }];
             
             [_msgLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.center.equalTo(_shapeView);
-                make.width.mas_equalTo(kWidth(400));
+                make.centerX.equalTo(_backView);
+                make.top.equalTo(_backView).offset(kWidth(15));
+                make.width.mas_equalTo(kWidth(520));
+//                make.bottom.equalTo(_shapeView.mas_bottom);
+//                make.edges.mas_equalTo(UIEdgeInsetsMake(kWidth(10), kWidth(10), kWidth(30), kWidth(10)));
             }];
 
             [_cancleBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -228,6 +287,8 @@
     _shapeLayer.fillColor = [UIColor colorWithPatternImage:img].CGColor;
     _shapeLayer.path = path.CGPath;
     [_shapeView.layer addSublayer:_shapeLayer];
+    
+    [self bringSubviewToFront:_msgLabel];
 }
 
 @end

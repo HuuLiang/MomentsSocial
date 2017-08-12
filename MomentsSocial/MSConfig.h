@@ -12,8 +12,8 @@
 
 #define MS_CHANNEL_NO               [MSConfiguration sharedConfig].channelNo
 #define MS_REST_APPID               @"QUBA_3002"
-//#define MS_REST_PV                  @"100"
-//#define MS_PAYMENT_PV               @"100"
+#define MS_REST_PV                  @"100"
+#define MS_PAYMENT_PV               @"100"
 #define MS_CONTENT_VERSION          @"1.0"
 #define MS_PACKAGE_CERTIFICATE      @"iPhone Distribution: Neijiang Fenghuang Enterprise (Group) Co., Ltd."
 

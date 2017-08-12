@@ -14,6 +14,11 @@
 #import "MSNavigationController.h"
 #import "MSReqManager.h"
 #import "MSCommentsListVC.h"
+#import "MSOnlineManager.h"
+#import "QBLocationManager.h"
+#import "QBPhotoBrowser.h"
+#import "QBVideoPlayer.h"
+#import "MSMessageModel.h"
 
 static NSString *const kMSMomentsCellReusableIdentifier = @"kMSMomentsCellReusableIdentifier";
 
@@ -71,6 +76,30 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     [super didReceiveMemoryWarning];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeOnline:) name:kMSPostOnlineInfoNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMSPostOnlineInfoNotification object:nil];
+}
+
+- (void)changeOnline:(NSNotification *)notification {
+    MSOnlineInfo *onlineInfo = [notification object];
+    dispatch_async(dispatch_queue_create(0, 0), ^{
+       [self.dataSource enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(MSMomentModel *  _Nonnull momentModel, NSUInteger idx, BOOL * _Nonnull stop) {
+           if (onlineInfo.userId == momentModel.userId) {
+               MSMomentsCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
+               dispatch_async(dispatch_get_main_queue(), ^{
+                   cell.online = @(onlineInfo.online);
+               });
+           }
+       }];
+    });
+}
+
 - (void)fetchMomentsListInfo {
     @weakify(self);
     [[MSReqManager manager] fetchMomentsListInfoWithCircleId:self.circleInfo.circleId class:[MSMomentsModel class] completionHandler:^(BOOL success, MSMomentsModel * obj) {
@@ -87,31 +116,30 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 - (void)configRightBarButton {
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"发帖" style:UIBarButtonItemStylePlain handler:^(id sender) {
         if ([MSUtil currentVipLevel] < MSLevelVip1) {
-            [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypePostMsg disCount:YES cancleAction:nil confirmAction:^{
-                
+            [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypePostMoment disCount:NO cancleAction:nil confirmAction:^{
+                [self pushVipViewController];
             }];
-        } else {
-            MSSendMomentsVC *sendMomentsVC = [[MSSendMomentsVC alloc] initWithTitle:@"发帖"];
-            MSNavigationController *sendMomentsNav = [[MSNavigationController alloc] initWithRootViewController:sendMomentsVC];
-            if (!self.navigationController.isBeingPresented) {
-                [self presentViewController:sendMomentsNav animated:YES completion:nil];
-            }
+            return ;
         }
-//        MSSendMomentsVC *sendMomentsVC = [[MSSendMomentsVC alloc] initWithTitle:@"发帖"];
-//        MSNavigationController *sendMomentsNav = [[MSNavigationController alloc] initWithRootViewController:sendMomentsVC];
-//        if (!self.navigationController.isBeingPresented) {
-//            [self presentViewController:sendMomentsNav animated:YES completion:nil];
-//        }
+        MSSendMomentsVC *sendMomentsVC = [[MSSendMomentsVC alloc] initWithTitle:@"发帖"];
+        MSNavigationController *sendMomentsNav = [[MSNavigationController alloc] initWithRootViewController:sendMomentsVC];
+        if (!self.navigationController.isBeingPresented) {
+            [self presentViewController:sendMomentsNav animated:YES completion:nil];
+        }
     }];
 }
 
 
 - (void)calculateCellHeight {
     [self.dataSource enumerateObjectsUsingBlock:^(MSMomentModel *  _Nonnull model, NSUInteger idx, BOOL * _Nonnull stop) {
-        CGFloat contentHeight = 0;;
+        __block CGFloat contentHeight = 0;
+        
+        contentHeight = contentHeight + kWidth(30) + kWidth(60);
+        
         if (model.text.length > 0) {
-            contentHeight = [model.text sizeWithFont:kFont(15) maxWidth:kWidth(630)].height + kWidth(20);
+            contentHeight = contentHeight + [model.text sizeWithFont:kFont(15) maxWidth:kWidth(630)].height + kWidth(20);
         }
+        
         CGFloat photosHeight = 0;
         if (model.type == MSMomentsTypePhotos) {
             CGFloat photoheight = (kScreenWidth - kWidth(140))/3;
@@ -120,20 +148,19 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         } else if (model.type == MSMomentsTypeVideo) {
             photosHeight = (kScreenWidth - kWidth(120))/2;
         }
-        CGFloat commentHeight = 0;
-        __block MSMomentCommentsInfo *comment1 = nil;
-        __block MSMomentCommentsInfo *comment2 = nil;
+        contentHeight = contentHeight + photosHeight + kWidth(20) + kWidth(84);
+        
         [model.comments enumerateObjectsUsingBlock:^(MSMomentCommentsInfo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             if (idx == 0) {
-                comment1 = obj;
+                contentHeight = contentHeight + [[NSString stringWithFormat:@"%@：%@",obj.nickName,obj.content] sizeWithFont:kFont(13) maxWidth:kWidth(590)].height + kWidth(26) + kWidth(30);
             } else if (idx == 1) {
-                comment2 = obj;
+                contentHeight = contentHeight + [[NSString stringWithFormat:@"%@：%@",obj.nickName,obj.content] sizeWithFont:kFont(13) maxWidth:kWidth(590)].height + kWidth(24);
             }
         }];
-        commentHeight = kWidth(26) + [comment1.content sizeWithFont:kFont(13) maxWidth:kWidth(590)].height + kWidth(18) + [comment2.content sizeWithFont:kFont(13) maxWidth:kWidth(590)].height + kWidth(30);
         
-        CGFloat height = kWidth(110) + contentHeight + photosHeight + kWidth(84) + commentHeight;
-        [self.heights addObject:@(height)];
+        contentHeight = contentHeight + kWidth(20);
+        
+        [self.heights addObject:@(contentHeight)];
     }];
     [self.tableView reloadData];
 }
@@ -148,30 +175,8 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     MSMomentsCell *cell = [tableView dequeueReusableCellWithIdentifier:kMSMomentsCellReusableIdentifier forIndexPath:indexPath];
     if (indexPath.row < self.dataSource.count) {
         __block MSMomentModel *model = self.dataSource[indexPath.row];
-        cell.userImgUrl = model.portraitUrl;
-        cell.nickName = model.nickName;
-        cell.location = @"蒋村街道办事处";
-        cell.commentsCount = model.comments.count;
-        cell.attentionCount = model.greet;
-        cell.content = model.text;
         cell.momentsType = model.type;
-        cell.greeted = model.greeted;
-        cell.loved = model.loved;
-        if (model.type == MSMomentsTypePhotos) {
-            cell.dataSource = model.moodUrl;
-        } else if (model.type == MSMomentsTypeVideo) {
-            cell.dataSource = model.videoImg;
-        }
-        
-        [model.comments enumerateObjectsUsingBlock:^(MSMomentCommentsInfo * _Nonnull comment, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (idx == 0) {
-                cell.nickA = comment.nickName;
-                cell.commentA = comment.content;
-            } else if (idx == 1) {
-                cell.nickB = comment.nickName;
-                cell.commentB = comment.content;
-            }
-        }];
+        cell.vipLv = self.circleInfo.vipLv;
         
         @weakify(cell);
         cell.greetAction = ^{
@@ -180,10 +185,13 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                 [[MSHudManager manager] showHudWithText:@"您已经打过招呼"];
                 return ;
             }
-            [[MSHudManager manager] showHudWithText:@"打招呼成功"];
-            cell.greeted = YES;
-            model.greeted = YES;
-            [model saveOrUpdate];
+            if ([MSMessageModel addMessageInfoWithUserId:model.userId nickName:model.nickName portraitUrl:model.portraitUrl]) {
+                [[MSHudManager manager] showHudWithText:@"打招呼成功"];
+                cell.greeted = @(1);
+                model.greeted = YES;
+                [model saveOrUpdate];
+                [self.dataSource replaceObjectAtIndex:indexPath.row withObject:model];
+            }
         };
         
         cell.loveAction = ^{
@@ -195,9 +203,10 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
             [[MSReqManager manager] greetMomentWithMoodId:model.moodId Class:[QBDataResponse class] completionHandler:^(BOOL success, id obj) {
                 if (success) {
                     [[MSHudManager manager] showHudWithText:@"点赞成功"];
-                    cell.loved = YES;
+                    cell.loved = @(1);
                     model.loved = YES;
                     [model saveOrUpdate];
+                    [self.dataSource replaceObjectAtIndex:indexPath.row withObject:model];
                 }
             }];
         };
@@ -208,8 +217,95 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
             MSCommentsListVC *listVC = [[MSCommentsListVC alloc] initWithMomentId:model.moodId];
             [self.navigationController pushViewController:listVC animated:YES];
         };
+        
+        cell.photoAction = ^(id obj) {
+            @strongify(self);
+            BOOL needBlur = [MSUtil currentVipLevel] <= self.circleInfo.vipLv;
+            
+            [[QBPhotoBrowser browse] showPhotoBrowseWithImageUrl:model.moodUrl atIndex:[obj integerValue] needBlur:needBlur blurStartIndex:3 onSuperView:self.view handler:^{
+                MSPopupType type;
+                if (cell.vipLv == MSLevelVip0) {
+                    type = MSPopupTypePhotoVip1;
+                } else {
+                    type = MSPopupTypePhotoVip2;
+                }
+                [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypePhotoVip2 cancleAction:nil confirmAction:^{
+                    [self pushVipViewController];
+                }];
+            }];
+        };
+        
+        cell.VideoAction = ^{
+            @strongify(self);
+            MSPopupType type;
+            if ([MSUtil currentVipLevel] <= self.circleInfo.vipLv) {
+                if (cell.vipLv == MSLevelVip0) {
+                    type = MSPopupTypePhotoVip1;
+                } else {
+                    type = MSPopupTypePhotoVip2;
+                }
+                [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypePhotoVip2 cancleAction:nil confirmAction:^{
+                    [self pushVipViewController];
+                }];
+            }
+            //视频播放
+            QBVideoPlayer * _videoPlayer = [[QBVideoPlayer alloc] initWithVideoURL:[NSURL URLWithString:model.videoUrl]];
+            [self.view addSubview:_videoPlayer];
+            {
+                [_videoPlayer mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.edges.equalTo(self.view);
+                }];
+            }
+            [_videoPlayer startToPlay];
+            
+            @weakify(_videoPlayer);
+            _videoPlayer.endPlayAction = ^(id obj) {
+                @strongify(_videoPlayer);
+                [_videoPlayer pause];
+                [_videoPlayer removeFromSuperview];
+                _videoPlayer = nil;
+            };
+        };
     }
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    MSMomentsCell *momentsCell = (MSMomentsCell *)cell;
+    if (indexPath.row < self.dataSource.count) {
+        __block MSMomentModel *model = self.dataSource[indexPath.row];
+        if (!momentsCell.userImgUrl)            {momentsCell.userImgUrl = model.portraitUrl;}
+        if (!momentsCell.nickName)              {momentsCell.nickName = model.nickName;}
+        if (!momentsCell.online)                {momentsCell.online = @([[MSOnlineManager manager] onlineWithUserId:model.userId]);}
+        if (!momentsCell.greeted)               {momentsCell.greeted = @([model isGreeted]);}
+        if (!momentsCell.content)               {momentsCell.content = model.text;}
+        
+        if (model.type == MSMomentsTypePhotos) {
+            momentsCell.dataSource = model.moodUrl;
+        } else if (model.type == MSMomentsTypeVideo) {
+            momentsCell.dataSource = model.videoImg;
+        }
+        
+        if (!momentsCell.commentsCount)         {momentsCell.commentsCount = @(model.commentCount);}
+        if (!momentsCell.attentionCount)        {momentsCell.attentionCount = @(model.likesNumber);}
+        if (!momentsCell.loved)                 {momentsCell.loved = @([model loved]);}
+        
+        if (!momentsCell.location) {
+            [[QBLocationManager manager] getUserLacationNameWithUserId:[NSString stringWithFormat:@"%ld",model.userId] locationName:^(BOOL success, NSString *locationName) {
+                momentsCell.location = locationName;
+            }];
+        }
+        
+        [model.comments enumerateObjectsUsingBlock:^(MSMomentCommentsInfo * _Nonnull comment, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (idx == 0) {
+                momentsCell.nickA = comment.nickName;
+                momentsCell.commentA = comment.content;
+            } else if (idx == 1) {
+                momentsCell.nickB = comment.nickName;
+                momentsCell.commentB = comment.content;
+            }
+        }];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

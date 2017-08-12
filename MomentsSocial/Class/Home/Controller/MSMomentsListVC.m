@@ -96,7 +96,7 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
         cell.imgUrl = info.circleImg;
         cell.title = info.name;
         cell.subTitle = info.circleDesc;
-        cell.count = info.number;
+        cell.count = [info numberWithCircleId:info.circleId];
         cell.vipLevel = info.vipLv;
     }
     return cell;
@@ -105,6 +105,18 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.item < self.response.circle.count) {
         MSCircleInfo *info = self.response.circle[indexPath.row];
+        if (info.vipLv > [MSUtil currentVipLevel]) {
+            MSPopupType type;
+            if (info.vipLv == MSLevelVip1) {
+                type = MSPopupTypeCircleVip1;
+            } else {
+                type = MSPopupTypeCircleVip2;
+            }
+            [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypeCircleVip2 cancleAction:nil confirmAction:^{
+                [self pushVipViewController];
+            }];
+            return;
+        }
         MSMomentsVC *momentsVC = [[MSMomentsVC alloc] initWithCircleInfo:info];
         [self.navigationController pushViewController:momentsVC animated:YES];
     }

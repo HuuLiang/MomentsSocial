@@ -62,10 +62,8 @@ NSString *const kMSRobotSexFemaleKeyName  = @"女";
         @weakify(self);
         [_greetView bk_whenTapped:^{
             @strongify(self);
-            if (!self.greetView.isGreeted) {
-                self.greetView.isGreeted = YES;
-            } else {
-                [[MSHudManager manager] showHudWithText:@"已经打过招呼"];
+            if (self.greetAction) {
+                self.greetAction();
             }
         }];
         
@@ -117,18 +115,22 @@ NSString *const kMSRobotSexFemaleKeyName  = @"女";
 }
 
 - (void)setImgUrl:(NSString *)imgUrl {
+    _imgUrl = imgUrl;
     [_mainImgV sd_setImageWithURL:[NSURL URLWithString:imgUrl]];
 }
 
 - (void)setNickName:(NSString *)nickName {
+    _nickName = nickName;
     _nickLabel.text = nickName;
 }
 
 - (void)setAge:(NSInteger)age {
+    _age = age;
     _ageLabel.text = [NSString stringWithFormat:@"%ld岁",(long)age];
 }
 
 - (void)setSex:(NSString *)sex {
+    _sex = sex;
     if (sex == kMSRobotSexMaleKeyName) {
         _sexImgV.image = [UIImage imageNamed:@"near_male"];
     } else if (sex == kMSRobotSexFemaleKeyName) {
@@ -137,6 +139,7 @@ NSString *const kMSRobotSexFemaleKeyName  = @"女";
 }
 
 - (void)setLocation:(NSString *)location {
+    _location = location;
     _locationLabel.text = location;
 }
 

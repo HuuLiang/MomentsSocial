@@ -13,6 +13,10 @@
 
 @implementation MSContactModel
 
++ (NSArray *)reloadAllContactInfos {
+    return [MSContactModel findByCriteria:[NSString stringWithFormat:@"order by unreadCount desc,msgTime desc"]];
+}
+
 + (void)deletePastContactInfo {
     [[MSContactModel findAll] enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(MSContactModel * _Nonnull contact, NSUInteger idx, BOOL * _Nonnull stop) {
         if (![[NSDate dateWithTimeIntervalSince1970:contact.msgTime] isToday]) {
@@ -55,8 +59,31 @@
     }
     contactInfo.unreadCount = contactInfo.unreadCount + 1;
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMSPostContactInfoNotification object:contactInfo];
     
     return [contactInfo saveOrUpdate];
+}
+
+//+ (BOOL)addContactInfoUserId:(NSInteger)userId nickName:(NSString *)nickName portraitUrl:(NSString *)portraitUrl {
+//    MSContactModel *contactInfo = [MSContactModel findFirstByCriteria:[NSString stringWithFormat:@"where userId=%ld",(long)userId]];
+//    if (!contactInfo) {
+//        contactInfo = [[MSContactModel alloc] init];
+//        contactInfo.unreadCount = 0;
+//    }
+//    contactInfo.userId = userId;
+//    contactInfo.nickName = nickName;
+//    contactInfo.portraitUrl = portraitUrl;
+//    contactInfo.msgTime = [[NSDate date] timeIntervalSince1970];
+//    contactInfo.msgType = MSMessageTypeText;
+//    contactInfo.msgContent = @"我对你很有感觉呦😊";
+//    contactInfo.unreadCount += 1;
+//    [[NSNotificationCenter defaultCenter] postNotificationName:kMSPostContactInfoNotification object:contactInfo];
+//    return [contactInfo saveOrUpdate];
+//}
+
++ (void)refreshBadgeNumber {
+    NSInteger allUnReadCount = [MSContactModel findSumsWithProperty:@"unreadCount"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMSPostUnReadCountNotification object:@(allUnReadCount)];
 }
 
 @end

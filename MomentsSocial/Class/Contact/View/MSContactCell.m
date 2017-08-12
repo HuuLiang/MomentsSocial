@@ -24,6 +24,9 @@
     
     if (self) {
         
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.accessoryType = UITableViewCellAccessoryNone;
+        
         self.backgroundColor = kColor(@"#ffffff");
         self.contentView.backgroundColor = kColor(@"#ffffff");
         

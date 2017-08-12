@@ -22,7 +22,7 @@
 
 + (void)showWithReplyMsgInfo:(MSAutoReplyMsg *)replyMsg {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIViewController *baseViewController = [MSUtil currentViewController];
+        UIViewController *baseViewController = [MSUtil rootViewControlelr];
         MSContactView *contactView = [[MSContactView alloc] initWithReplyMsgInfo:replyMsg handler:^{
             [MSMessageViewController presentMessageWithUserId:replyMsg.userId nickName:replyMsg.nickName portraitUrl:replyMsg.portraitUrl inViewController:baseViewController];
         }];

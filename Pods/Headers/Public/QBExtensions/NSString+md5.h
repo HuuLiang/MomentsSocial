@@ -1,1 +1,1 @@
-../../../QBExtensions/QBExtensions/Classes/Foundation/NSString+md5.h
+../../../QBExtensions/QBExtensions/Core/Foundation/NSString+md5.h

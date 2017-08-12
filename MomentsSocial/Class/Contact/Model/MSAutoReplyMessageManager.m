@@ -12,17 +12,23 @@
 #import "MSContactModel.h"
 #import "MSMessageModel.h"
 #import "MSLocalNotificationManager.h"
+#import "MSOnlineManager.h"
 
 static const NSUInteger kRollingTimeInterval = 5;
+static const NSTimeInterval firstPushTime = 0;
+static const NSTimeInterval secondPushTime = 60 * 30;
+static const NSTimeInterval thirdPushTime = 60 * 60;
 
 static NSString *const kMSAutoReplyMsgObserveTimeKeyName    = @"kMSAutoReplyMsgObserveTimeKeyName";
 static NSString *const kMSAutoReplyMsgPageCountKeyName      = @"kMSAutoReplyMsgPageCountKeyName";
+
 
 @interface MSAutoReplyMessageManager ()
 @property (nonatomic,strong) dispatch_queue_t replyQueue;
 @property (nonatomic,strong) dispatch_queue_t dataQueue;
 @property (nonatomic,strong) dispatch_source_t timer;
 @property (nonatomic) __block NSUInteger observeTime;
+@property (nonatomic) __block NSNumber   *reqPage;
 @property (nonatomic) __block NSMutableArray <MSAutoReplyMsg *> *dataSource;
 @end
 
@@ -46,6 +52,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 }
 
 - (void)deleteYesterdayMessages {
+    [[MSOnlineManager manager] resetAllOnlineInfo]; //重置所有在线状态
     [MSContactModel deletePastContactInfo]; //清空消息列表过期数据
     [MSMessageModel deletePastMessageInfo]; //清空聊天详情过期数据
     [MSAutoReplyMsg deletePastAutoReplyMsgInfo]; //清空自动回复池过期数据
@@ -59,22 +66,15 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     dispatch_source_set_event_handler(_timer, ^{
         //执行事件
         QBLog(@"注意当前的计时器时间 %ld",(long)self.observeTime);
-        if (_observeTime == 0 || _observeTime == 60 * 5 || _observeTime == 60 * 10) {
+        if (_observeTime == firstPushTime || _observeTime == secondPushTime || _observeTime == thirdPushTime) {
             
-            __block NSNumber * reqPage = [[NSUserDefaults standardUserDefaults] objectForKey:kMSAutoReplyMsgPageCountKeyName];
-            if (!reqPage) {
-                reqPage = @(1);
-                [[NSUserDefaults standardUserDefaults] setObject:reqPage forKey:kMSAutoReplyMsgPageCountKeyName];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-            }
-            
-            [self fetchBatchReplyUsersInfoWithPage:[reqPage integerValue] handler:^(BOOL success) {
+            [self fetchBatchReplyUsersInfoWithPage:[self.reqPage integerValue] handler:^(BOOL success) {
                 if (success) {
-                    reqPage = @([reqPage integerValue] + 1);
+                    self.reqPage = @([self.reqPage integerValue] + 1);
                 } else {
-                    reqPage = @(1);
+                    self.reqPage = @(1);
                 }
-                [[NSUserDefaults standardUserDefaults] setObject:reqPage forKey:kMSAutoReplyMsgPageCountKeyName];
+                [[NSUserDefaults standardUserDefaults] setObject:self.reqPage forKey:kMSAutoReplyMsgPageCountKeyName];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }];
             
@@ -82,9 +82,14 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         _observeTime++;
         [[NSUserDefaults standardUserDefaults] setObject:@(_observeTime) forKey:kMSAutoReplyMsgObserveTimeKeyName];
         [[NSUserDefaults standardUserDefaults] synchronize];
+        
     });
     
     self.observeTime = [[[NSUserDefaults standardUserDefaults] objectForKey:kMSAutoReplyMsgObserveTimeKeyName] integerValue];
+    self.reqPage = [[NSUserDefaults standardUserDefaults] objectForKey:kMSAutoReplyMsgPageCountKeyName];
+    if (!_reqPage) {
+        _reqPage = @(1);
+    }
     
     if ([MSUtil currentVipLevel] < MSLevelVip2) {
         if (![MSUtil isToday]) {
@@ -95,7 +100,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
             dispatch_resume(_timer);
         } else {
             //是今天 沿用保存的时间继续开始计时器
-            if (_observeTime > 60 * 20) {
+            if (_observeTime > thirdPushTime) {
                 //如果在线时间超过规定的时间 则不做处理
                 dispatch_source_cancel(_timer);
                 return;
@@ -110,9 +115,9 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 - (void)fetchBatchReplyUsersInfoWithPage:(NSInteger)page handler:(void(^)(BOOL success))handler {
     [[MSReqManager manager] fetchPushUserInfoWithPage:page size:[MSSystemConfigModel defaultConfig].config.PUSH_COUNT Class:[MSAutoReplyBatchResponse class] completionHandler:^(BOOL success, MSAutoReplyBatchResponse * obj) {
         if (success) {
-            [self insertUserMsgIntoReplyCache:obj.users sort:NO];
+            [self insertUserMsgIntoReplyCache:obj.pushUser sort:NO];
         }
-        handler(obj.users.count > 0);
+        handler(obj.pushUser.count > 0);
     }];
 }
 
@@ -131,7 +136,11 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         if (userIndex == 0) {
             timeInterval = timeInterval + 10; //初始化first user回复时间 延迟 10s
         } else {
+#ifdef DEBUG
+            timeInterval = timeInterval + 10;
+#else
             timeInterval = timeInterval + arc4random() % 61 + 60; //初始化后续user的回复时间 间隔 60-120s
+#endif
         }
         
         __block NSTimeInterval userMsgTime = timeInterval; //初始化user消息回复时间
@@ -195,9 +204,6 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     [self.dataSource removeAllObjects];
     [self operateReplySource:[MSAutoReplyMsg findAll] type:MSReplyDataSourceTypeAdd];
     //如果还有今日消息未备推送 则立即启动推送循环
-    if (self.dataSource.count > 0) {
-        [self activateRollingAutoReplyMsgsEvent];
-    }
 }
 
 - (void)operateReplySource:(NSArray <MSAutoReplyMsg *> *)replyMsgs type:(MSReplyDataSourceType)type {
@@ -221,6 +227,9 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                     return NSOrderedSame;
                 }
             }];
+        }
+        if (self.dataSource.count > 0) {
+            [self activateRollingAutoReplyMsgsEvent];
         }
     });
 }
@@ -254,6 +263,8 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 }
 
 - (void)postReplyMsg:(MSAutoReplyMsg *)replyMsg {
+    [[MSOnlineManager manager] addUser:replyMsg.userId type:MSUserTypeNewPush];    //加入在线管理器
+    
     [MSMessageModel addMessageInfoWithReplyMsg:replyMsg]; //加入聊天详情表
     
     if ([MSContactModel addContactInfoWithReplyMsg:replyMsg]) {
@@ -267,42 +278,11 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 @implementation MSAutoReplyMsg
@@ -328,7 +308,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 
 @implementation MSAutoReplyBatchResponse
 
-- (Class)usersElementClass {
+- (Class)pushUserElementClass {
     return [MSUserModel class];
 }
 

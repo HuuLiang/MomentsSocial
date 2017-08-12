@@ -84,8 +84,10 @@
 }
 
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didScrollToIndex:(NSInteger)index {
-    if (self.handler) {
-        self.handler();
+    if (self.needBlur && index >= self.blurIndex) {
+        if (self.handler) {
+            self.handler();
+        }
     }
 }
 

@@ -63,9 +63,15 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 
 - (void)configTableHeaderView {
     UIImageView *headerImgV = [[UIImageView alloc] init];
+    headerImgV.userInteractionEnabled = YES;
     headerImgV.size = CGSizeMake(kScreenWidth, kWidth(300));
     [headerImgV sd_setImageWithURL:[NSURL URLWithString:[MSSystemConfigModel defaultConfig].config.SPREAD_IMG]];
     _tableView.tableHeaderView = headerImgV;
+    @weakify(self);
+    [headerImgV bk_whenTapped:^{
+        @strongify(self);
+        [self pushVipViewController];
+    }];
 }
 
 - (void)fetchDiscoverFunctionsInfo {

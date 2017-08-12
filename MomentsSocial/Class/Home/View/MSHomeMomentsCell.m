@@ -100,10 +100,13 @@
 }
 
 - (void)setVipLevel:(MSLevel)vipLevel {
+    _vipLevel = vipLevel;
     if (vipLevel == MSLevelVip0) {
         _vipImgV.image = [UIImage imageNamed:@"level_vip_0"];
     } else if (vipLevel == MSLevelVip1) {
         _vipImgV.image = [UIImage imageNamed:@"level_vip_1"];
+    } else if (vipLevel == MSLevelVip2) {
+        _vipImgV.image = [UIImage imageNamed:@"level_vip_2"];
     } else {
         _vipImgV.image = nil;
     }

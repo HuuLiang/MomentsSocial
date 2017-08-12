@@ -96,7 +96,7 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
             cell.imgUrl = info.circleImg;
             cell.title = info.name;
             cell.subTitle = info.circleDesc;
-            cell.count = info.number;
+            cell.count = [info numberWithCircleId:info.circleId];
             cell.vipLevel = info.vipLv;
         }
         return cell;
@@ -111,8 +111,20 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
             @weakify(self);
             cell.joinAction = ^{
                 @strongify(self);
-                MSMomentsListVC *listVC = [[MSMomentsListVC alloc] initWithCircleInfo:info];
-                [self.navigationController pushViewController:listVC animated:YES];
+                if (info.vipLv > [MSUtil currentVipLevel]) {
+                    MSPopupType type;
+                    if (info.vipLv == MSLevelVip1) {
+                        type = MSPopupTypeCircleVip1;
+                    } else {
+                        type = MSPopupTypeCircleVip2;
+                    }
+                    [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypeCircleVip2 cancleAction:nil confirmAction:^{
+                        [self pushVipViewController];
+                    }];
+                    return;
+                }
+                MSMomentsVC *momentsVC = [[MSMomentsVC alloc] initWithCircleInfo:info];
+                [self.navigationController pushViewController:momentsVC animated:YES];
             };
         }
         return cell;
@@ -124,6 +136,18 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
     if (indexPath.section == 0) {
         if (indexPath.item < self.response.hotCircle.count) {
             MSCircleInfo *info = self.response.hotCircle[indexPath.row];
+            if (info.vipLv > [MSUtil currentVipLevel]) {
+                MSPopupType type;
+                if (info.vipLv == MSLevelVip1) {
+                    type = MSPopupTypeCircleVip1;
+                } else {
+                    type = MSPopupTypeCircleVip2;
+                }
+                [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypeCircleVip2 cancleAction:nil confirmAction:^{
+                    [self pushVipViewController];
+                }];
+                return;
+            }
             MSMomentsVC *momentsVC = [[MSMomentsVC alloc] initWithCircleInfo:info];
             [self.navigationController pushViewController:momentsVC animated:YES];
         }

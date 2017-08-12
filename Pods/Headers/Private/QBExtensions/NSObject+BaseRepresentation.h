@@ -1,1 +1,1 @@
-../../../QBExtensions/QBExtensions/Classes/Foundation/NSObject+BaseRepresentation.h
+../../../QBExtensions/QBExtensions/Core/Foundation/NSObject+BaseRepresentation.h

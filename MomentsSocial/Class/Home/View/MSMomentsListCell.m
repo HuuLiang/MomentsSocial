@@ -117,6 +117,8 @@
         _typeImgV.image = [UIImage imageNamed:@"level_vip_0"];
     } else if (vipLevel == MSLevelVip1) {
         _typeImgV.image = [UIImage imageNamed:@"level_vip_1"];
+    } else if (vipLevel == MSLevelVip2) {
+        _typeImgV.image = [UIImage imageNamed:@"level_vip_2"];
     } else {
         _typeImgV.image = nil;
     }

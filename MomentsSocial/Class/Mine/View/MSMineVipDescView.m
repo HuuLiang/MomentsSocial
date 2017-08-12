@@ -76,26 +76,28 @@
         }
 
         
-        
-        self.openVipButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        if ([MSUtil currentVipLevel] == MSLevelVip0) {
-            [_openVipButton setTitle:@"开通VIP" forState:UIControlStateNormal];
-        } else if ([MSUtil currentVipLevel] == MSLevelVip1) {
-            [_openVipButton setTitle:@"升级VIP" forState:UIControlStateNormal];
-        }
-        [_openVipButton setTitleColor:kColor(@"#ffffff") forState:UIControlStateNormal];
-        _openVipButton.titleLabel.font = kFont(14);
-        _openVipButton.layer.cornerRadius = kWidth(32);
-        _openVipButton.layer.masksToBounds = YES;
-        [self addSubview:_openVipButton];
-        
-        @weakify(self);
-        [_openVipButton bk_addEventHandler:^(id sender) {
-            @strongify(self);
-            if (self.openVipAction) {
-                self.openVipAction();
+        if ([MSUtil currentVipLevel] <= MSLevelVip1) {
+            self.openVipButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            if ([MSUtil currentVipLevel] == MSLevelVip0) {
+                [_openVipButton setTitle:@"开通VIP" forState:UIControlStateNormal];
+            } else if ([MSUtil currentVipLevel] == MSLevelVip1) {
+                [_openVipButton setTitle:@"升级VIP" forState:UIControlStateNormal];
             }
-        } forControlEvents:UIControlEventTouchUpInside];
+            [_openVipButton setTitleColor:kColor(@"#ffffff") forState:UIControlStateNormal];
+            _openVipButton.titleLabel.font = kFont(14);
+            _openVipButton.layer.cornerRadius = kWidth(32);
+            _openVipButton.layer.masksToBounds = YES;
+            [self addSubview:_openVipButton];
+            
+            @weakify(self);
+            [_openVipButton bk_addEventHandler:^(id sender) {
+                @strongify(self);
+                if (self.openVipAction) {
+                    self.openVipAction();
+                }
+            } forControlEvents:UIControlEventTouchUpInside];
+
+        }
         
         
         {
@@ -180,11 +182,13 @@
             }
             
             
-            [_openVipButton mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.bottom.equalTo(self.mas_bottom).offset(-kWidth(42));
-                make.centerX.equalTo(self);
-                make.size.mas_equalTo(CGSizeMake(kWidth(398), kWidth(64)));
-            }];
+            if ([MSUtil currentVipLevel] <= MSLevelVip1) {
+                [_openVipButton mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.bottom.equalTo(self.mas_bottom).offset(-kWidth(42));
+                    make.centerX.equalTo(self);
+                    make.size.mas_equalTo(CGSizeMake(kWidth(398), kWidth(64)));
+                }];
+            }
         }
     }
     return self;

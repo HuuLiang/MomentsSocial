@@ -36,4 +36,8 @@
 
 + (BOOL)addMessageInfoWithReplyMsg:(MSAutoReplyMsg *)replyMsg;
 
++ (void)postMessageInfoToContact:(MSMessageModel *)msgModel;
+
++ (BOOL)addMessageInfoWithUserId:(NSInteger)userId nickName:(NSString *)nickName portraitUrl:(NSString *)portraitUrl;
+
 @end

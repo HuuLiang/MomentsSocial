@@ -18,7 +18,7 @@
 @property (nonatomic) NSInteger userId;
 @property (nonatomic) NSInteger commentCount;
 @property (nonatomic) NSArray <MSMomentCommentsInfo *> *comments;
-@property (nonatomic) NSInteger greet;
+@property (nonatomic) NSInteger likesNumber;
 @property (nonatomic) NSString *portraitUrl;
 @property (nonatomic) NSArray *moodUrl;
 @property (nonatomic) NSString *text;
@@ -30,6 +30,9 @@
 @property (nonatomic) BOOL greeted;
 @property (nonatomic) BOOL loved;
 @property (nonatomic) NSString *location;
+
+- (BOOL)isGreeted;
+- (BOOL)isLoved;
 @end
 
 

@@ -21,23 +21,31 @@ typedef NS_ENUM(NSInteger , MSMomentsType) {
 
 @property (nonatomic) MSAction loveAction;
 
+@property (nonatomic) MSObjectAction photoAction;
+
+@property (nonatomic) MSAction VideoAction;
+
 @property (nonatomic) NSString *userImgUrl;
 
 @property (nonatomic) NSString *nickName;
+
+@property (nonatomic) NSNumber * online;
 
 @property (nonatomic) NSString *content;
 
 @property (nonatomic) NSString *location;
 
-@property (nonatomic) NSInteger commentsCount;
+@property (nonatomic) NSNumber * commentsCount;
 
-@property (nonatomic) NSInteger attentionCount;
+@property (nonatomic) NSNumber * attentionCount;
 
 @property (nonatomic) MSMomentsType momentsType;
 
-@property (nonatomic) BOOL greeted;
+@property (nonatomic) NSNumber * greeted;
 
-@property (nonatomic) BOOL loved;
+@property (nonatomic) NSNumber * loved;
+
+@property (nonatomic) MSLevel vipLv;
 
 @property (nonatomic) id dataSource;
 

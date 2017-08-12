@@ -18,4 +18,8 @@
 
 @property (nonatomic) NSInteger userId;
 
+@property (nonatomic) MSAction changeImgAction;
+
+@property (nonatomic) MSAction changeNickAction;
+
 @end

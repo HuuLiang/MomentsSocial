@@ -10,6 +10,7 @@
 #import "MSAutoReplyMessageManager.h"
 #import "QBVoiceManager.h"
 #import "MSBaseViewController.h"
+#import "MSVipViewController.h"
 
 @interface MSFaceTimeView ()
 
@@ -27,7 +28,7 @@
 
 + (void)showWithReplyMsgInfo:(MSAutoReplyMsg *)replyMsg {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIViewController *baseViewController = [MSUtil currentViewController];
+        UIViewController *baseViewController = [MSUtil rootViewControlelr];
         
        __block MSFaceTimeView *faceTimeView = [[MSFaceTimeView alloc] initWithReplyMsgInfo:replyMsg
                                                                        refuseAction:^{
@@ -46,11 +47,13 @@
 }
 
 - (void)popVipView {
-    if ([MSUtil currentVipLevel] < MSLevelVip0) {
-        [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypePhoto disCount:YES cancleAction:^{
+    if ([MSUtil currentVipLevel] == MSLevelVip0) {
+        [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeFaceTime disCount:YES cancleAction:^{
             [self cancelFaceTimeView];
         } confirmAction:^{
-            [(MSBaseViewController *)[MSUtil currentViewController].navigationController pushVipViewController];
+            [self cancelFaceTimeView];
+            MSVipViewController *vipVC = [[MSVipViewController alloc] init];
+            [[MSUtil currentViewController].navigationController pushViewController:vipVC animated:YES];
         }];
     }
 }
@@ -162,5 +165,11 @@
     [[QBVoiceManager manager] endFaceTimeVoice];
 }
 
+- (void)drawRect:(CGRect)rect {
+    [super drawRect:rect];
+    
+    [_refuseButton layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleTop imageTitleSpace:kWidth(30)];
+    [_confirmButton layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleTop imageTitleSpace:kWidth(30)];
+}
 
 @end

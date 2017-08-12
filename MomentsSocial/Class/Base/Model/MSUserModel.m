@@ -26,4 +26,12 @@
     return @[@"phone",@"sex",@"age",@"marital",@"weight",@"weixin",@"portraitUrl",@"income",@"birthday",@"nickName",@"city",@"education",@"qq",@"vocation",@"height",@"constellation",@"userPhoto",@"vipLv"];
 }
 
+- (BOOL)greeted {
+    MSUserModel *userModel = [MSUserModel findFirstByCriteria:[NSString stringWithFormat:@"%ld",self.userId]];
+    if (!userModel) {
+        return NO;
+    }
+    return userModel.greeted;
+}
+
 @end

@@ -133,6 +133,27 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     if (kind == UICollectionElementKindSectionHeader) {
         self.headerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kMSCheckInHeaderViewReusableIdentifier forIndexPath:indexPath];
         _headerView.canCheckIn = [self canCheckIn];
+        
+        @weakify(self);
+        _headerView.registerAction = ^{
+            @strongify(self);
+            if ([MSUtil currentVipLevel] == MSLevelVip0) {
+                [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeRegisterVip0 disCount:NO cancleAction:nil confirmAction:^{
+                    [self pushVipViewController];
+                }];
+            } else if ([MSUtil currentVipLevel] == MSLevelVip1) {
+                [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeRegisterVip1 disCount:YES cancleAction:nil confirmAction:^{
+                    [self pushVipViewController];
+                }];
+            } else {
+                if (![self canCheckIn]) {
+                    [[MSHudManager manager] showHudWithText:@"未到报名时间，无法报名"];
+                } else {
+                    [[MSHudManager manager] showHudWithText:@"很抱歉，报名人数已达上限，请下次再来"];
+                }
+            }
+        };
+        
         return _headerView;
     } else if (kind == UICollectionElementKindSectionFooter) {
         self.footerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kMSCheckInFooterViewReusableIdentifier forIndexPath:indexPath];

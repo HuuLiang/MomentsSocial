@@ -38,5 +38,10 @@
 @property (nonatomic) NSString *constellation;
 @property (nonatomic) NSArray *userPhoto;
 @property (nonatomic) MSLevel vipLv;
+@property (nonatomic) BOOL greeted;
 @property (nonatomic) NSArray <MSUserMsgModel *> *message;
+
+
+- (BOOL)greeted;
+
 @end

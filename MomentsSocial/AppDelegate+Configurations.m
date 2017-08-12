@@ -12,15 +12,13 @@
 #import "MSTabBarController.h"
 #import "MSActivityModel.h"
 #import "MSSystemConfigModel.h"
-#import <WXApi.h>
-#import <AlipaySDK/AlipaySDK.h>
-#import "AlipayManager.h"
-#import "WeChatPayManager.h"
 #import <UMMobClick/MobClick.h>
 #import "QBUploadManager.h"
 #import "MSAutoReplyMessageManager.h"
+#import "QBLocationManager.h"
+#import "MSPaymentManager.h"
 
-@interface AppDelegate () <WXApiDelegate>
+@interface AppDelegate ()
 
 @end
 
@@ -156,11 +154,22 @@
      } error:nil];
 }
 
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    [[MSPaymentManager manager] applicationWillEnterForeground:application];
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    [[MSPaymentManager manager] handleOpenURL:url];
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    [[MSPaymentManager manager] handleOpenURL:url];
+    return YES;
+}
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-        [[AlipayManager shareInstance] sendNotificationByResult:resultDic];
-    }];
-    [WXApi handleOpenURL:url delegate:(id<WXApiDelegate>)self];
+    [[MSPaymentManager manager] handleOpenURL:url];
     return YES;
 }
 
@@ -183,37 +192,20 @@
 
 
 - (void)showHomeViewController {
-    //设置默认配置信息  微信注册  七牛注册  加载钻石 礼物信息
-    [WXApi registerApp:MS_WEXIN_APP_ID];
+    //设置默认配置信息  微信注册 友盟统计  七牛注册  系统配置 开启推送 定位
+    [[MSPaymentManager manager] setup];
     [self setupMobStatistics];
     [QBUploadManager registerWithSecretKey:MS_UPLOAD_SECRET_KEY accessKey:MS_UPLOAD_ACCESS_KEY scope:MS_UPLOAD_SCOPE];
 
     [self fetchSystemConfigInfo];
     
+    [[MSAutoReplyMessageManager manager] startAutoReplyMsgEvent];
+    
+    [[QBLocationManager manager] loadLocationManager];
+    
     MSTabBarController *tabBarVC = [[MSTabBarController alloc] init];
     self.window.rootViewController = tabBarVC;
     [self.window makeKeyAndVisible];
 }
-
-
-#pragma mark - WXApiDelegate
-- (void)onReq:(BaseReq *)req {
-    QBLog(@"%@",req);
-}
-
-- (void)onResp:(BaseResp *)resp {
-     if ([resp isKindOfClass:[PayResp class]]) {
-        MSPayResult payResult;
-        if (resp.errCode == WXErrCodeUserCancel) {
-            payResult = MSPayResultCancle;
-        } else if (resp.errCode == WXSuccess) {
-            payResult = MSPayResultSuccess;
-        } else {
-            payResult = MSPayResultFailed;
-        }
-        [[WeChatPayManager sharedInstance] sendNotificationByResult:payResult];
-    }
-}
-
 
 @end

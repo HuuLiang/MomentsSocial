@@ -13,6 +13,9 @@
 #import "MSMessageModel.h"
 #import "MSReqManager.h"
 #import "QBDataResponse.h"
+#import "MSVipViewController.h"
+#import "MSNavigationController.h"
+#import "QBVoiceManager.h"
 
 @interface MSMessageViewController ()
 @property (nonatomic) BOOL needReturn;
@@ -86,21 +89,39 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     [super viewWillAppear:animated];
     
     [self reloadChatMessage];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivePostMessageInfo:) name:kMSPostMessageInfoNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
+    [self postLastMessageInfoToContact];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)postLastMessageInfoToContact {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [MSMessageModel postMessageInfoToContact:[self.chatMessages lastObject]];
+    });
+}
+
+- (void)receivePostMessageInfo:(NSNotification *)notification {
+    MSMessageModel *msgModel = [notification object];
+    if ([msgModel.sendUserId isEqualToString:self.userId]) {
+        [self.chatMessages addObject:msgModel];
+        [self addChatMessageIntoSelf:msgModel reload:NO];
+        [[QBVoiceManager manager] playReceiveVoice];
+    }
+}
 
 - (void)reloadChatMessage {
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         self.chatMessages = [MSMessageModel allMessagesWithUserId:self.userId].mutableCopy;
         [self.messages removeAllObjects];
         [self.chatMessages enumerateObjectsUsingBlock:^(MSMessageModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [self addChatMessageIntoSelf:obj];
+            [self addChatMessageIntoSelf:obj reload:YES];
         }];
         
         dispatch_sync(dispatch_get_main_queue(), ^{
@@ -110,7 +131,8 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     });
 }
 
-- (void)addChatMessageIntoSelf:(MSMessageModel *)obj {
+//加载消息到聊天界面中
+- (void)addChatMessageIntoSelf:(MSMessageModel *)obj reload:(BOOL)reload {
     __block XHMessage *message;
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:obj.msgTime];
     if (obj.msgType == MSMessageTypeText) {
@@ -154,7 +176,11 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
         message.bubbleMessageType = XHBubbleMessageTypeReceiving;
     }
     
-    [self.messages addObject:message];
+    if (reload) {
+        [self.messages addObject:message];
+    } else {
+        [self addMessage:message];
+    }
 }
 
 /**
@@ -201,16 +227,31 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     chatMessage.voiceUrl = voicePath;
     chatMessage.voiceDuration = voiceDuration;
     chatMessage.msgType = MSMessageTypeVoice;
+    
     [self addChatMessage:chatMessage];
 }
 
+//用户主动发送的消息的加载方式
 - (void)addChatMessage:(MSMessageModel *)chatMessage {
-    [self addChatMessageIntoSelf:chatMessage];
-
-    [[MSReqManager manager] sendMsgWithSendUserId:self.messageSender receiveUserId:self.userId content:chatMessage.msgContent Class:[QBDataResponse class] completionHandler:^(BOOL success, id obj) {
-        if (success) {
-        }
-    }];
+    if (self.isViewLoaded) {
+        [self.chatMessages addObject:chatMessage];
+    }
+    [self addChatMessageIntoSelf:chatMessage reload:NO];
+    [[QBVoiceManager manager] playSendVoice];
+    
+    if ([MSUtil currentVipLevel] == MSLevelVip0) {
+        [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeSendMessage disCount:NO cancleAction:nil confirmAction:^{
+            MSVipViewController *vipVC = [[MSVipViewController alloc] init];
+            [self.navigationController pushViewController:vipVC animated:YES];
+        }];
+    }
+    if ([MSUtil currentVipLevel] > MSLevelVip0) {
+        [[MSReqManager manager] sendMsgWithSendUserId:self.messageSender receiveUserId:self.userId content:chatMessage.msgContent Class:[QBDataResponse class] completionHandler:^(BOOL success, id obj) {
+            if (success) {
+                NSLog(@"消息发送服务器成功");
+            }
+        }];
+    }
 }
 
 

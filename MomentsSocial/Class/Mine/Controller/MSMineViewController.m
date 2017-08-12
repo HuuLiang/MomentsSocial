@@ -12,8 +12,10 @@
 #import "MSMineVipDescView.h"
 #import "MSSettingVC.h"
 #import "MSVipViewController.h"
+#import "QBPhotoManager.h"
+#import "QBUploadManager.h"
 
-@interface MSMineViewController ()
+@interface MSMineViewController () <UIAlertViewDelegate>
 @property (nonatomic) UIImageView    *gradientView;
 @property (nonatomic) MSMineInfoView *infoView;
 @property (nonatomic) MSMineSettingView *settingView;
@@ -69,10 +71,50 @@
     if (!_infoView) {
         self.infoView = [[MSMineInfoView alloc] init];
         [self.view addSubview:_infoView];
-        
-        _infoView.imgUrl = [MSUtil currentProtraitUrl];
-        _infoView.nickName = [MSUtil currentNickName];
         _infoView.userId = [MSUtil currentUserId];
+
+        @weakify(self);
+        _infoView.changeImgAction = ^{
+            @strongify(self);
+            if ([MSUtil currentVipLevel] == MSLevelVip0) {
+                [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeChangeUserInfo disCount:NO cancleAction:nil confirmAction:^{
+                    [self pushVipViewController];
+                }];
+                return ;
+            }
+            [[QBPhotoManager manager] getImageInCurrentViewController:self handler:^(UIImage *pickerImage, NSString *keyName) {
+                NSString *name = [NSString stringWithFormat:@"%@_avatar.jpg", [[NSDate date] stringWithFormat:KDateFormatLong]];
+               [QBUploadManager uploadWithFile:pickerImage fileName:name completionHandler:^(BOOL success, id obj) {
+                   @strongify(self);
+                   if (success) {
+                       [[MSHudManager manager] showHudWithText:@"修改头像成功"];
+                       self.infoView.imgUrl = obj;
+                       [MSUtil registerPortraitUrl:obj];
+                   }
+               }];
+            }];
+        };
+        
+        _infoView.changeNickAction = ^{
+            @strongify(self);
+            if ([MSUtil currentVipLevel] == MSLevelVip0) {
+                [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeChangeUserInfo disCount:NO cancleAction:nil confirmAction:^{
+                    [self pushVipViewController];
+                }];
+                return ;
+            }
+            UIAlertView *alertView = [UIAlertView bk_showAlertViewWithTitle:@"修改昵称" message:@"请输入您的新昵称" cancelButtonTitle:@"取消" otherButtonTitles:@[@"确认"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                if (buttonIndex == 0) {
+                    
+                } else if (buttonIndex == 1) {
+                    self.infoView.nickName = [alertView textFieldAtIndex:0].text;
+                    [[MSHudManager manager] showHudWithText:@"修改昵称成功"];
+                }
+            }];
+            alertView.delegate = self;
+            alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+        };
+        
         
         {
             [_infoView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -82,8 +124,8 @@
             }];
         }
     }
-    
-
+    _infoView.imgUrl = [MSUtil currentProtraitUrl];
+    _infoView.nickName = [MSUtil currentNickName];
     _infoView.vipLevel = [MSUtil currentVipLevel];
 }
 
@@ -132,5 +174,8 @@
         }];
     }
 }
+
+#pragma mark - UIAlertViewDelegate
+
 
 @end

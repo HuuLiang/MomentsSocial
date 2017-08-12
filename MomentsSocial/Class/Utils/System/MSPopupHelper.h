@@ -9,8 +9,20 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, MSPopupType) {
-    MSPopupTypePhoto = 0,
-    MSPopupTypePostMsg
+    MSPopupTypeChangeUserInfo = 0,
+    MSPopupTypeSendMessage,
+    MSPopupTypeUserDetailInfo,
+    MSPopupTypeRegisterVip0,
+    MSPopupTypeRegisterVip1,
+    MSPopupTypeShakeTime,
+    MSPopupTypeCircleVip1,
+    MSPopupTypeCircleVip2,
+    MSPopupTypePostMoment,
+    MSPopupTypePhotoVip1,
+    MSPopupTypePhotoVip2,
+    MSPopupTypeVideoVip1,
+    MSPopupTypeVideoVip2,
+    MSPopupTypeFaceTime
 };
 
 typedef void(^CancleAction)(void);

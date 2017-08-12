@@ -81,13 +81,17 @@ EOM
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "MJRefresh/MJRefresh/MJRefresh.bundle"
+  install_resource "QBPayment/QBPayment/Plugins/DXTXPay/SDK/DXTXResource.bundle"
+  install_resource "QBPayment/QBPayment/Plugins/DXTXPay/SDK/heepayImage.bundle"
+  install_resource "QBPayment/QBPayment/Plugins/WFTPay/SDK/SPaySDKResource.bundle"
   install_resource "QBTPL/QBTPL/AlipaySDK/AlipaySDK.bundle"
-  install_resource "QBTPL/QBTPL/TencentOpenAPI/TencentOpenApi_IOS_Bundle.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "MJRefresh/MJRefresh/MJRefresh.bundle"
+  install_resource "QBPayment/QBPayment/Plugins/DXTXPay/SDK/DXTXResource.bundle"
+  install_resource "QBPayment/QBPayment/Plugins/DXTXPay/SDK/heepayImage.bundle"
+  install_resource "QBPayment/QBPayment/Plugins/WFTPay/SDK/SPaySDKResource.bundle"
   install_resource "QBTPL/QBTPL/AlipaySDK/AlipaySDK.bundle"
-  install_resource "QBTPL/QBTPL/TencentOpenAPI/TencentOpenApi_IOS_Bundle.bundle"
 fi
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
