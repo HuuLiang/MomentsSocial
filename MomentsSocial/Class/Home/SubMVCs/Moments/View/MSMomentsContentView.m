@@ -25,7 +25,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, mutableArr)
         self.delegate = (id<UICollectionViewDelegate>)self;
         self.dataSource = (id<UICollectionViewDataSource>)self;
         
-        self.backgroundColor = [UIColor blueColor];
+        self.backgroundColor = kColor(@"#ffffff");
         layout.minimumLineSpacing = kWidth(10);
         layout.minimumInteritemSpacing = kWidth(10);
         self.collectionViewLayout = layout;
@@ -58,8 +58,10 @@ QBDefineLazyPropertyInitialization(NSMutableArray, mutableArr)
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     MSMomentsContentCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kMSMomentsCellReusableIdentifier forIndexPath:indexPath];
     if (indexPath.item < self.mutableArr.count) {
-        if ([MSUtil currentVipLevel] < _vipLevel && indexPath.item > 2) {
+        if ([MSUtil currentVipLevel] <= _vipLevel && indexPath.item > 2) {
             cell.needBlur = YES;
+        } else {
+            cell.needBlur = NO;
         }
         cell.imgUrl = self.mutableArr[indexPath.item];
     }
@@ -72,7 +74,6 @@ QBDefineLazyPropertyInitialization(NSMutableArray, mutableArr)
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    MSMomentsContentCell *cell = (MSMomentsContentCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (self.browserAction) {
         self.browserAction(@(indexPath.item));
     }
@@ -98,7 +99,6 @@ QBDefineLazyPropertyInitialization(NSMutableArray, mutableArr)
         self.contentView.backgroundColor = kColor(@"#ffffff");
         
         self.imgV = [[UIImageView alloc] init];
-        _imgV.backgroundColor = [UIColor brownColor];
         [self.contentView addSubview:_imgV];
         
         {
@@ -107,6 +107,20 @@ QBDefineLazyPropertyInitialization(NSMutableArray, mutableArr)
             }];
         }
         
+        @weakify(self);
+        [_imgV aspect_hookSelector:@selector(setNeedsLayout) withOptions:AspectPositionAfter usingBlock:^(id <AspectInfo> AspectInfo) {
+            @strongify(self);
+            dispatch_async(dispatch_queue_create(0, 0), ^{
+                UIImageView *targetImgV = (UIImageView *)[AspectInfo instance];
+                UIImage *image = targetImgV.image;
+                if (image && self.needBlur) {
+                    UIImage *blurImage = image.boxBlurImage;
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        targetImgV.image = blurImage;
+                    });
+                }
+            });
+        } error:nil];
     }
     return self;
 }
@@ -116,12 +130,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, mutableArr)
 }
 
 - (void)setImgUrl:(NSString *)imgUrl {
-    @weakify(self);
-//    [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:imgUrl] options:0 progress:nil completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
-//        @strongify(self);
-//        self.imgV.image = self.needBlur ? image.blurImage :image;
-//        [self.imgV setNeedsLayout];
-//    }];
+    [_imgV sd_setImageWithURL:[NSURL URLWithString:imgUrl]];
 }
 
 @end

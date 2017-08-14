@@ -38,9 +38,11 @@
     _blurIndex = blurStartIndex;
     _handler = handler;
     
+    superView = [MSUtil rootViewControlelr].view;
+    
     self.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
     self.backgroundColor = [UIColor colorWithHexString:@"#000000"];
-    [superView.window addSubview:self];
+    [superView addSubview:self];
     
     self.photoScrollView = [SDCycleScrollView cycleScrollViewWithFrame:self.bounds imageURLStringsGroup:imageUrls];
     _photoScrollView.bannerImageViewContentMode = UIViewContentModeScaleAspectFit;
@@ -62,8 +64,16 @@
     [UIView animateWithDuration:0.5 animations:^{
         self.alpha = 1;
     }];
+    if (needBlur && currentIndex >= blurStartIndex) {
+        [self performSelector:@selector(popNoticeView) withObject:nil afterDelay:0.5];
+    }
 }
 
+- (void)popNoticeView {
+    if (self.handler) {
+        self.handler();
+    }
+}
 
 - (void)closeBrowse {
     if (self.closeAction) {

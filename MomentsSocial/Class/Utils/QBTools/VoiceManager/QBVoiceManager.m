@@ -62,6 +62,8 @@
 - (void)playFaceTimeVoice {
     AudioServicesAddSystemSoundCompletion(self.faceTimeId, NULL, NULL, systemAudioCallback, NULL);
     AudioServicesPlaySystemSound(self.faceTimeId);
+    
+    [self performSelector:@selector(endFaceTimeVoice) withObject:nil afterDelay:10];
 }
 
 void systemAudioCallback(SystemSoundID sound,void * clientData) {

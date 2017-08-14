@@ -62,10 +62,10 @@ typedef NS_ENUM(NSInteger, MSUserInfoOpenType) {
 
 typedef NS_ENUM(NSUInteger, MSMessageType) {
     MSMessageTypeText = 1,          //文字消息
-    MSMessageTypePhoto,             //图片消息
-    MSMessageTypeVoice,             //声音
-    MSMessageTypeVideo,             //视频
-    MSMessageTypeFaceTime,          //视频聊天邀请
+    MSMessageTypePhoto = 2,             //图片消息
+    MSMessageTypeVoice = 3,             //声音
+    MSMessageTypeVideo = 4,             //视频
+    MSMessageTypeFaceTime = 5,          //视频聊天邀请
     MSMessageTypeCount
 };
 
@@ -96,7 +96,6 @@ static NSString *const kMSFriendCurrentUserKeyName         = @"kMSFriendCurrentU
 #define MSOpenVipSuccessNotification      @"MSOpenVipSuccessNotification"
 
 #define kMSPostContactInfoNotification    @"kMSPostContactInfoNotification"
-#define kMSPostUnReadCountNotification    @"kMSPostUnReadCountNotification"
 #define kMSPostMessageInfoNotification    @"kMSPostMessageInfoNotification"
 
 #define kMSPostOnlineInfoNotification     @"kMSPostOnlineInfoNotification"

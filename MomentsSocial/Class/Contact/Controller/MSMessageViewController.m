@@ -133,7 +133,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
 
 //加载消息到聊天界面中
 - (void)addChatMessageIntoSelf:(MSMessageModel *)obj reload:(BOOL)reload {
-    __block XHMessage *message;
+    XHMessage *message;
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:obj.msgTime];
     if (obj.msgType == MSMessageTypeText) {
         message = [[XHMessage alloc] initWithText:obj.msgContent

@@ -114,6 +114,7 @@
     
     UIViewController *baseViewController = [MSUtil rootViewControlelr];
     [baseViewController.view addSubview:self.popView];
+    [baseViewController.view bringSubviewToFront:self.popView];
     
     {
         [_popView mas_makeConstraints:^(MASConstraintMaker *make) {

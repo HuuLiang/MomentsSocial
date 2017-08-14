@@ -285,8 +285,11 @@ const char* const kXHMessageAvatarTypeKey   = "XHMessageAvatarTypeKey";
 - (UIImage *)didFinishDownloadWithData:(NSData *)data forURL:(NSURL *)url error:(NSError *)error {
     if (data) {
         [self cachingImageData:data url:url];
+    } else {
+        return nil;
     }
     UIImage *image = [UIImage imageWithData:data];
+    
     if (self.messageAvatarType != XHMessageAvatarTypeNormal) {
         image = [XHMessageAvatarFactory avatarImageNamed:image messageAvatarType:self.messageAvatarType];
     }

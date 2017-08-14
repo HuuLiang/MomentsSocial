@@ -9,6 +9,7 @@
 #import "MSContactView.h"
 #import "MSAutoReplyMessageManager.h"
 #import "MSMessageViewController.h"
+#import "MSContactViewController.h"
 
 @interface MSContactView ()
 @property (nonatomic) UIView *contentView;
@@ -23,6 +24,10 @@
 + (void)showWithReplyMsgInfo:(MSAutoReplyMsg *)replyMsg {
     dispatch_async(dispatch_get_main_queue(), ^{
         UIViewController *baseViewController = [MSUtil rootViewControlelr];
+        UIViewController *contactVC = [MSUtil currentViewController];
+        if ([contactVC isKindOfClass:[MSContactViewController class]]) {
+            return ;
+        }
         MSContactView *contactView = [[MSContactView alloc] initWithReplyMsgInfo:replyMsg handler:^{
             [MSMessageViewController presentMessageWithUserId:replyMsg.userId nickName:replyMsg.nickName portraitUrl:replyMsg.portraitUrl inViewController:baseViewController];
         }];

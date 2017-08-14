@@ -52,7 +52,6 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     [self reloadContactDataSource];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addPostContactInfo:) name:kMSPostContactInfoNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updataBadge:) name:kMSPostUnReadCountNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -79,7 +78,6 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                 dispatch_async(dispatch_get_main_queue(), ^{
                     cell.isOneline = onlineInfo.online;
                 });
-                
             }
         }];
     });
@@ -94,58 +92,69 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 
 - (void)reloadContactDataSource {
     dispatch_async(self.addQueue, ^{
+        [self.dataSource removeAllObjects];
         [self.dataSource addObjectsFromArray:[MSContactModel reloadAllContactInfos]];
+        [MSContactModel refreshBadgeNumber];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
-            [MSContactModel refreshBadgeNumber];
         });
     });
 }
 
 - (void)addPostContactInfo:(NSNotification *)notification {
+//    [self reloadContactDataSource];
     MSContactModel *contactInfo = [notification object];
     dispatch_async(self.addQueue, ^{
-        [self.dataSource enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(MSContactModel * _Nonnull contactModel, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (contactModel.userId == contactInfo.userId) {
-                [self.dataSource removeObjectAtIndex:idx];
-                
-                self.allUnReadCount += 1;
-                [self showBadgeWithCount:self.allUnReadCount];
-                
-                *stop = YES;
-            }
-        }];
+        //如果内存中无数据 直接加载 刷新数据
         
-        [self.dataSource enumerateObjectsUsingBlock:^(MSContactModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ((obj.unreadCount == 0) == (contactInfo.unreadCount == 0) && contactInfo.msgTime > obj.msgTime) {
-                [self.dataSource insertObject:contactInfo atIndex:idx];
-            }
-        }];
+        BOOL needCheck = YES;
+        if (self.dataSource.count == 0) {
+            needCheck = NO;
+            [self.dataSource addObject:contactInfo];
+        }
         
+        __block BOOL exist = NO;  //是否存在于原数据中
+        if (needCheck) {
+            [self.dataSource enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(MSContactModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if (obj.userId == contactInfo.userId) {
+                    [self.dataSource replaceObjectAtIndex:idx withObject:contactInfo];
+                    exist = YES;
+                    *stop = YES;
+                }
+            }];
+            
+            if (!exist) {
+                [self.dataSource addObject:contactInfo];
+            }
+            
+            if (self.dataSource.count > 1) {
+                [self.dataSource sortUsingComparator:^NSComparisonResult(MSContactModel * _Nonnull obj1, MSContactModel * _Nonnull obj2) {
+                    if (obj1.unreadCount == 0 && obj2.unreadCount == 0) {
+                        if (obj1.msgTime > obj2.msgTime) {
+                            return NSOrderedAscending;
+                        } else {
+                            return NSOrderedDescending;
+                        }
+                    } else if (obj1.unreadCount == 0 && obj2.unreadCount != 0) {
+                        return NSOrderedDescending;
+                    } else if (obj1.unreadCount != 0 && obj2.unreadCount == 0) {
+                        return NSOrderedAscending;
+                    } else {
+                        if (obj1.msgTime > obj2.msgTime) {
+                            return NSOrderedAscending;
+                        } else {
+                            return NSOrderedDescending;
+                        }
+                    }
+                }];
+                
+            }
+        }
+        
+        [MSContactModel refreshBadgeNumber];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
-    });
-}
-
-- (void)updataBadge:(NSNotification *)notification {
-    dispatch_async(self.addQueue, ^{
-        self.allUnReadCount = [[notification object] integerValue];
-        [self showBadgeWithCount:self.allUnReadCount];
-    });
-}
-
-- (void)showBadgeWithCount:(NSInteger)allUnReadCount {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (allUnReadCount > 0) {
-            if (allUnReadCount < 100) {
-                self.navigationController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%ld", (unsigned long)_allUnReadCount];
-            } else {
-                self.navigationController.tabBarItem.badgeValue = @"99+";
-            }
-        } else {
-            self.navigationController.tabBarItem.badgeValue = nil;
-        }
     });
 }
 
@@ -178,10 +187,11 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row < self.dataSource.count) {
         MSContactModel *contactModel = self.dataSource[indexPath.row];
-        self.allUnReadCount -= contactModel.unreadCount;
-        [self showBadgeWithCount:self.allUnReadCount];
         contactModel.unreadCount = 0;
         [contactModel saveOrUpdate];
+        if ([contactModel saveOrUpdate]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMSPostContactInfoNotification object:contactModel];
+        }
         
         [MSMessageViewController showMessageWithUserId:contactModel.userId nickName:contactModel.nickName portraitUrl:contactModel.portraitUrl inViewController:self];
     }
@@ -225,8 +235,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                                            //数据库中删除
                                            [MSContactModel deleteObjects:@[contact]];
                                            
-                                           self.allUnReadCount -= contact.unreadCount;
-                                           [self showBadgeWithCount:self.allUnReadCount];
+                                           [MSContactModel refreshBadgeNumber];
                                            
                                            return YES;
                                        }];
@@ -237,14 +246,13 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                                                     backgroundColor:kColor(@"#D8D8D8")
                                                            callback:^BOOL(MGSwipeTableCell * _Nonnull cell)
                                       {
-                                          NSIndexPath *newIndexPath;
                                           if (contact.unreadCount == 0) {
                                               
                                           } else {
                                               contact.unreadCount = 0;
-                                              [contact saveOrUpdate];
-                                              
-                                              
+                                              if ([contact saveOrUpdate]) {
+                                                  [[NSNotificationCenter defaultCenter] postNotificationName:kMSPostContactInfoNotification object:contact];
+                                              }
                                           }
                                           return YES;
                                       }];

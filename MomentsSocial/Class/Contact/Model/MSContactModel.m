@@ -10,6 +10,8 @@
 #import "MSAutoReplyMessageManager.h"
 #import "MSContactView.h"
 #import "MSFaceTimeView.h"
+#import "MSTabBarController.h"
+#import "MSNavigationController.h"
 
 @implementation MSContactModel
 
@@ -30,10 +32,12 @@
 
 + (BOOL)addContactInfoWithReplyMsg:(MSAutoReplyMsg *)replyMsg {
     
-    if (replyMsg.msgType == MSMessageTypeFaceTime) {
-        [MSFaceTimeView showWithReplyMsgInfo:replyMsg];
-    } else {
-        [MSContactView showWithReplyMsgInfo:replyMsg];
+    if ([[NSDate date] timeIntervalSince1970] - replyMsg.msgTime < 10) {
+        if (replyMsg.msgType == MSMessageTypeFaceTime) {
+            [MSFaceTimeView showWithReplyMsgInfo:replyMsg];
+        } else {
+            [MSContactView showWithReplyMsgInfo:replyMsg];
+        }
     }
     
     MSContactModel *contactInfo = [MSContactModel findFirstByCriteria:[NSString stringWithFormat:@"where userId=%ld",(long)replyMsg.userId]];
@@ -47,7 +51,7 @@
     contactInfo.msgTime = replyMsg.msgTime;
     contactInfo.msgType = replyMsg.msgType;
     if (replyMsg.msgType == MSMessageTypeText) {
-        contactInfo.msgContent = contactInfo.msgContent;
+        contactInfo.msgContent = replyMsg.msgContent;
     } else if (replyMsg.msgType == MSMessageTypePhoto) {
         contactInfo.msgContent = @"【图片】";
     } else if (replyMsg.msgType == MSMessageTypeVoice) {
@@ -59,31 +63,35 @@
     }
     contactInfo.unreadCount = contactInfo.unreadCount + 1;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kMSPostContactInfoNotification object:contactInfo];
+    BOOL saveSuccess = [contactInfo saveOrUpdate];
+    if (saveSuccess) {
+        [self refreshBadgeNumber];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMSPostContactInfoNotification object:contactInfo];
+    }
     
-    return [contactInfo saveOrUpdate];
+    return saveSuccess;
 }
 
-//+ (BOOL)addContactInfoUserId:(NSInteger)userId nickName:(NSString *)nickName portraitUrl:(NSString *)portraitUrl {
-//    MSContactModel *contactInfo = [MSContactModel findFirstByCriteria:[NSString stringWithFormat:@"where userId=%ld",(long)userId]];
-//    if (!contactInfo) {
-//        contactInfo = [[MSContactModel alloc] init];
-//        contactInfo.unreadCount = 0;
-//    }
-//    contactInfo.userId = userId;
-//    contactInfo.nickName = nickName;
-//    contactInfo.portraitUrl = portraitUrl;
-//    contactInfo.msgTime = [[NSDate date] timeIntervalSince1970];
-//    contactInfo.msgType = MSMessageTypeText;
-//    contactInfo.msgContent = @"我对你很有感觉呦😊";
-//    contactInfo.unreadCount += 1;
-//    [[NSNotificationCenter defaultCenter] postNotificationName:kMSPostContactInfoNotification object:contactInfo];
-//    return [contactInfo saveOrUpdate];
-//}
-
 + (void)refreshBadgeNumber {
-    NSInteger allUnReadCount = [MSContactModel findSumsWithProperty:@"unreadCount"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kMSPostUnReadCountNotification object:@(allUnReadCount)];
+    dispatch_async(dispatch_queue_create(0, 0), ^{
+        NSInteger allUnReadCount = [MSContactModel findSumsWithProperty:@"unreadCount"];
+        MSTabBarController *tabBarVC = (MSTabBarController *)[MSUtil rootViewControlelr];
+        if (![tabBarVC isKindOfClass:[MSTabBarController class]]) {
+            return ;
+        }
+        MSNavigationController *contactNav = [tabBarVC.viewControllers objectAtIndex:2];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (allUnReadCount > 0) {
+                if (allUnReadCount < 100) {
+                    contactNav.tabBarItem.badgeValue = [NSString stringWithFormat:@"%ld", (unsigned long)allUnReadCount];
+                } else {
+                    contactNav.tabBarItem.badgeValue = @"99+";
+                }
+            } else {
+                contactNav.tabBarItem.badgeValue = nil;
+            }
+        });
+    });
 }
 
 @end

@@ -176,7 +176,6 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     if (indexPath.row < self.dataSource.count) {
         __block MSMomentModel *model = self.dataSource[indexPath.row];
         cell.momentsType = model.type;
-        cell.vipLv = self.circleInfo.vipLv;
         
         @weakify(cell);
         cell.greetAction = ^{
@@ -204,6 +203,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                 if (success) {
                     [[MSHudManager manager] showHudWithText:@"点赞成功"];
                     cell.loved = @(1);
+                    model.likesNumber++;
                     model.loved = YES;
                     [model saveOrUpdate];
                     [self.dataSource replaceObjectAtIndex:indexPath.row withObject:model];
@@ -218,18 +218,23 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
             [self.navigationController pushViewController:listVC animated:YES];
         };
         
-        cell.photoAction = ^(id obj) {
+        cell.photoAction = ^(NSNumber * indexNum) {
             @strongify(self);
-            BOOL needBlur = [MSUtil currentVipLevel] <= self.circleInfo.vipLv;
+            MSPopupType type;
+            if (cell.vipLv == MSLevelVip0) {
+                type = MSPopupTypePhotoVip1;
+            } else {
+                type = MSPopupTypePhotoVip2;
+            }
+
+//            [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypePhotoVip2 cancleAction:nil confirmAction:^{
+//                [self pushVipViewController];
+//            }];
             
-            [[QBPhotoBrowser browse] showPhotoBrowseWithImageUrl:model.moodUrl atIndex:[obj integerValue] needBlur:needBlur blurStartIndex:3 onSuperView:self.view handler:^{
-                MSPopupType type;
-                if (cell.vipLv == MSLevelVip0) {
-                    type = MSPopupTypePhotoVip1;
-                } else {
-                    type = MSPopupTypePhotoVip2;
-                }
+            BOOL needBlur = [MSUtil currentVipLevel] <= self.circleInfo.vipLv;
+            [[QBPhotoBrowser browse] showPhotoBrowseWithImageUrl:model.moodUrl atIndex:[indexNum integerValue] needBlur:needBlur blurStartIndex:3 onSuperView:self.view handler:^{
                 [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypePhotoVip2 cancleAction:nil confirmAction:^{
+                    [[QBPhotoBrowser browse] closeBrowse];
                     [self pushVipViewController];
                 }];
             }];
@@ -274,6 +279,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     MSMomentsCell *momentsCell = (MSMomentsCell *)cell;
     if (indexPath.row < self.dataSource.count) {
         __block MSMomentModel *model = self.dataSource[indexPath.row];
+        momentsCell.vipLv = self.circleInfo.vipLv;
         if (!momentsCell.userImgUrl)            {momentsCell.userImgUrl = model.portraitUrl;}
         if (!momentsCell.nickName)              {momentsCell.nickName = model.nickName;}
         if (!momentsCell.online)                {momentsCell.online = @([[MSOnlineManager manager] onlineWithUserId:model.userId]);}
@@ -291,7 +297,9 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         if (!momentsCell.loved)                 {momentsCell.loved = @([model loved]);}
         
         if (!momentsCell.location) {
+            @weakify(momentsCell);
             [[QBLocationManager manager] getUserLacationNameWithUserId:[NSString stringWithFormat:@"%ld",model.userId] locationName:^(BOOL success, NSString *locationName) {
+                @strongify(momentsCell);
                 momentsCell.location = locationName;
             }];
         }

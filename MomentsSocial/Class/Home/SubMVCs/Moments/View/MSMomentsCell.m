@@ -296,12 +296,12 @@
 
 - (void)setCommentsCount:(NSNumber *)commentsCount {
     _commentsCount = commentsCount;
-    [_commentButton setTitle:[NSString stringWithFormat:@"%ld",(long)commentsCount] forState:UIControlStateNormal];
+    [_commentButton setTitle:[NSString stringWithFormat:@"%ld",(long)[commentsCount integerValue]] forState:UIControlStateNormal];
 }
 
 - (void)setAttentionCount:(NSNumber *)attentionCount {
     _attentionCount = attentionCount;
-    [_attentionButton setTitle:[NSString stringWithFormat:@"%ld",(long)attentionCount] forState:UIControlStateNormal];
+    [_attentionButton setTitle:[NSString stringWithFormat:@"%ld",(long)[attentionCount integerValue]] forState:UIControlStateNormal];
 }
 
 - (void)setGreeted:(NSNumber *)greeted {
@@ -334,6 +334,7 @@
     _dataSource = dataSource;
     
     if (!_photosView.isHidden) {
+        _photosView.vipLevel = _vipLv;
         _photosView.dataArr = self.dataSource;
         CGFloat photoheight = (kScreenWidth - kWidth(140))/3;
         NSInteger lineCount = ceilf([(NSArray *)self.dataSource count] / 3.0);

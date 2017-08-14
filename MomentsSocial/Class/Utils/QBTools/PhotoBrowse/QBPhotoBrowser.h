@@ -20,6 +20,8 @@ typedef void(^BrowseHandler)(void);
                      blurStartIndex:(NSInteger)blurStartIndex
                         onSuperView:(UIView *)superView handler:(BrowseHandler)handler;
 
+- (void)closeBrowse;
+
 @property (nonatomic) QBAction closeAction;
 
 @end

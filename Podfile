@@ -17,7 +17,7 @@ pod 'OpenSSL', '~> 1.0.208'
 pod 'MJRefresh'
 pod 'QBPayment', :subspecs => ['WeChatPayPlugin','AlipayPlugin','DXTXPay']
 
-#pod 'MLeaksFinder', '~> 0.2.1'
+pod 'MLeaksFinder', '~> 0.2.1'
 #pod 'QBNetworking'
 #pod 'QBPayment', :subspecs => ['IappPay']
 
