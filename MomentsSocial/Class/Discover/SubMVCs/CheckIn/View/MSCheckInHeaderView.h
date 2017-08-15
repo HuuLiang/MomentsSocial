@@ -10,6 +10,8 @@
 
 @interface MSCheckInHeaderView : UICollectionReusableView
 
+@property (nonatomic) NSString *imgUrl;
+
 @property (nonatomic) MSAction registerAction;
 
 @property (nonatomic) BOOL canCheckIn;

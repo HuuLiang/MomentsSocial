@@ -19,6 +19,8 @@
 #import "QBPhotoBrowser.h"
 #import "QBVideoPlayer.h"
 #import "MSMessageModel.h"
+#import "MSVipVC.h"
+#import "MSMessageViewController.h"
 
 static NSString *const kMSMomentsCellReusableIdentifier = @"kMSMomentsCellReusableIdentifier";
 
@@ -117,7 +119,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"发帖" style:UIBarButtonItemStylePlain handler:^(id sender) {
         if ([MSUtil currentVipLevel] < MSLevelVip1) {
             [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypePostMoment disCount:NO cancleAction:nil confirmAction:^{
-                [self pushVipViewController];
+                [MSVipVC showVipViewControllerInCurrentVC:self];
             }];
             return ;
         }
@@ -177,6 +179,12 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         __block MSMomentModel *model = self.dataSource[indexPath.row];
         cell.momentsType = model.type;
         
+        @weakify(self);
+        cell.detailAction = ^{
+            @strongify(self);
+            [MSMessageViewController showMessageWithUserId:model.userId nickName:model.nickName portraitUrl:model.portraitUrl inViewController:self];
+        };
+        
         @weakify(cell);
         cell.greetAction = ^{
             @strongify(cell);
@@ -211,7 +219,6 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
             }];
         };
         
-        @weakify(self);
         cell.commentAction = ^{
             @strongify(self);
             MSCommentsListVC *listVC = [[MSCommentsListVC alloc] initWithMomentId:model.moodId];
@@ -226,16 +233,12 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
             } else {
                 type = MSPopupTypePhotoVip2;
             }
-
-//            [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypePhotoVip2 cancleAction:nil confirmAction:^{
-//                [self pushVipViewController];
-//            }];
             
             BOOL needBlur = [MSUtil currentVipLevel] <= self.circleInfo.vipLv;
             [[QBPhotoBrowser browse] showPhotoBrowseWithImageUrl:model.moodUrl atIndex:[indexNum integerValue] needBlur:needBlur blurStartIndex:3 onSuperView:self.view handler:^{
                 [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypePhotoVip2 cancleAction:nil confirmAction:^{
                     [[QBPhotoBrowser browse] closeBrowse];
-                    [self pushVipViewController];
+                    [MSVipVC showVipViewControllerInCurrentVC:self];
                 }];
             }];
         };
@@ -250,7 +253,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                     type = MSPopupTypePhotoVip2;
                 }
                 [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypePhotoVip2 cancleAction:nil confirmAction:^{
-                    [self pushVipViewController];
+                    [MSVipVC showVipViewControllerInCurrentVC:self];
                 }];
             }
             //视频播放

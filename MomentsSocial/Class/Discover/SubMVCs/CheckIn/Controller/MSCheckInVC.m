@@ -12,6 +12,8 @@
 #import "MSCheckInUserCell.h"
 #import "MSReqManager.h"
 #import "MSDisFuctionModel.h"
+#import "MSVipVC.h"
+#import "MSSystemConfigModel.h"
 
 static NSString *const kMSCheckInUserCellReusableIdentifier = @"kMSCheckInUserCellReusableIdentifier";
 static NSString *const kMSCheckInHeaderViewReusableIdentifier = @"kMSCheckInHeaderViewReusableIdentifier";
@@ -133,17 +135,19 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     if (kind == UICollectionElementKindSectionHeader) {
         self.headerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kMSCheckInHeaderViewReusableIdentifier forIndexPath:indexPath];
         _headerView.canCheckIn = [self canCheckIn];
+        _headerView.imgUrl = [MSSystemConfigModel defaultConfig].config.OPEN_IMG;
         
         @weakify(self);
         _headerView.registerAction = ^{
             @strongify(self);
-            if ([MSUtil currentVipLevel] == MSLevelVip0) {
-                [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeRegisterVip0 disCount:NO cancleAction:nil confirmAction:^{
-                    [self pushVipViewController];
-                }];
-            } else if ([MSUtil currentVipLevel] == MSLevelVip1) {
+//            if ([MSUtil currentVipLevel] == MSLevelVip0) {
+//                [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeRegisterVip0 disCount:NO cancleAction:nil confirmAction:^{
+//                    [MSVipVC showVipViewControllerInCurrentVC:self];
+//                }];
+//            } else
+            if ([MSUtil currentVipLevel] == MSLevelVip1) {
                 [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeRegisterVip1 disCount:YES cancleAction:nil confirmAction:^{
-                    [self pushVipViewController];
+                    [MSVipVC showVipViewControllerInCurrentVC:self];
                 }];
             } else {
                 if (![self canCheckIn]) {
@@ -157,6 +161,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         return _headerView;
     } else if (kind == UICollectionElementKindSectionFooter) {
         self.footerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kMSCheckInFooterViewReusableIdentifier forIndexPath:indexPath];
+        _footerView.imgUrl = [MSSystemConfigModel defaultConfig].config.KFC_IMG;
         return _footerView;
     }
     return nil;

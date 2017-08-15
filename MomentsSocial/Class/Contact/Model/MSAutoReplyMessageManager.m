@@ -152,7 +152,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
             randomTime += arc4random() % 16 + 15; //单个user的每条消息的时间间隔 间隔递增 15-30s
             userMsgTime += randomTime;
 #endif
-            MSAutoReplyMsg *replyMsg = [MSAutoReplyMsg findFirstByCriteria:[NSString stringWithFormat:@"where msgId=%ld",msgModel.msgId]];
+            MSAutoReplyMsg *replyMsg = [MSAutoReplyMsg findFirstByCriteria:[NSString stringWithFormat:@"where msgId=%ld",(long)msgModel.msgId]];
             if (!replyMsg) {
                 replyMsg = [[MSAutoReplyMsg alloc] init];
                 replyMsg.userId = userModel.userId;
@@ -164,7 +164,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                     replyMsg.imgUrl = msgModel.photoUrl;
                 } else if (replyMsg.msgType == MSMessageTypeVoice) {
                     replyMsg.voiceUrl = msgModel.voiceUrl;
-                    replyMsg.voiceDuration = [NSString stringWithFormat:@"%f",[MSUtil getVideoLengthWithVideoUrl:msgModel.voiceUrl]];
+                    replyMsg.voiceDuration = [NSString stringWithFormat:@"%.1f",[MSUtil getVideoLengthWithVideoUrl:msgModel.voiceUrl]];
                 } else if (replyMsg.msgType == MSMessageTypeVideo) {
                     replyMsg.videoImgUrl = msgModel.videoImg;
                     replyMsg.videoUrl = msgModel.videoUrl;

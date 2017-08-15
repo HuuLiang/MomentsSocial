@@ -18,6 +18,8 @@
 
 #import "MSDetailPhotosVC.h"
 #import "MSDetailInfoViewController.h"
+#import "MSVipVC.h"
+#import "MSMessageViewController.h"
 
 static NSString *const kMSDetailPhotosCellReusableIdentifier = @"kMSDetailPhotosCellReusableIdentifier";
 
@@ -144,6 +146,28 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
         self.footerView = [[MSDetailFooterView alloc] init];
         _footerView.size = CGSizeMake(kScreenWidth, kWidth(448));
         self.tableView.tableFooterView = _footerView;
+        
+        @weakify(self);
+        _footerView.sendMsgAction = ^{
+            @strongify(self);
+            [MSMessageViewController showMessageWithUserId:self.user.userId nickName:self.user.nickName portraitUrl:self.user.portraitUrl inViewController:self];
+        };
+        
+        _footerView.faceAction = ^{
+            @strongify(self);
+            if ([MSUtil currentVipLevel] == MSLevelVip0) {
+                [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeFaceTime disCount:NO cancleAction:nil confirmAction:^{
+                    [MSVipVC showVipViewControllerInCurrentVC:self];
+                }];
+            } else if ([MSUtil currentVipLevel] == MSLevelVip1) {
+                [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeFaceTimeVip1 disCount:YES cancleAction:nil confirmAction:^{
+                    [MSVipVC showVipViewControllerInCurrentVC:self];
+                }];
+            } else {
+//                [[MSHudManager manager] showHudWithText:@"发起请求失败，请稍后重试"];
+                [MSMessageViewController showMessageWithUserId:self.user.userId nickName:self.user.nickName portraitUrl:self.user.portraitUrl inViewController:self];
+            }
+        };
     }
 }
 
@@ -156,7 +180,7 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == MSDetailSectionPhotos) {
         
-        return self.user.userPhoto.count > 3 ? 3 : self.user.userPhoto.count;
+        return 1;
     }
     return 0;
 }
@@ -173,6 +197,7 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
                 cell.imgUrlC = imgUrl;
             }
         }];
+        
         return cell;
     }
     return nil;
@@ -199,7 +224,7 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
         @strongify(self);
         if ([MSUtil currentVipLevel] == MSLevelVip0) {
             [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeUserDetailInfo disCount:NO cancleAction:nil confirmAction:^{
-                [self pushVipViewController];
+                [MSVipVC showVipViewControllerInCurrentVC:self];
             }];
             return ;
         }

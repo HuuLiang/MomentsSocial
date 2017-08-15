@@ -13,9 +13,9 @@
 #import "MSMessageModel.h"
 #import "MSReqManager.h"
 #import "QBDataResponse.h"
-#import "MSVipViewController.h"
 #import "MSNavigationController.h"
 #import "QBVoiceManager.h"
+#import "MSVipVC.h"
 
 @interface MSMessageViewController ()
 @property (nonatomic) BOOL needReturn;
@@ -103,7 +103,13 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
 
 - (void)postLastMessageInfoToContact {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [MSMessageModel postMessageInfoToContact:[self.chatMessages lastObject]];
+        MSMessageModel *msgModel = [self.chatMessages lastObject];
+        if (!msgModel) {
+            return ;
+        }
+        msgModel.portraitUrl = self.portraitUrl;
+        msgModel.nickName = self.nickName;
+        [MSMessageModel postMessageInfoToContact:msgModel];
     });
 }
 
@@ -241,8 +247,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     
     if ([MSUtil currentVipLevel] == MSLevelVip0) {
         [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeSendMessage disCount:NO cancleAction:nil confirmAction:^{
-            MSVipViewController *vipVC = [[MSVipViewController alloc] init];
-            [self.navigationController pushViewController:vipVC animated:YES];
+            [MSVipVC showVipViewControllerInCurrentVC:self];
         }];
     }
     if ([MSUtil currentVipLevel] > MSLevelVip0) {

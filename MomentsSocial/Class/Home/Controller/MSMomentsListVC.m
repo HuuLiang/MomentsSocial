@@ -12,6 +12,7 @@
 #import "MSCircleModel.h"
 #import "MSReqManager.h"
 #import "MSMomentsVC.h"
+#import "MSVipVC.h"
 
 static NSString *const kMSMomentsListCellReusableIdentifier = @"kMSMomentsListCellReusableIdentifier";
 
@@ -113,7 +114,7 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
                 type = MSPopupTypeCircleVip2;
             }
             [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypeCircleVip2 cancleAction:nil confirmAction:^{
-                [self pushVipViewController];
+                [MSVipVC showVipViewControllerInCurrentVC:self];
             }];
             return;
         }

@@ -52,6 +52,7 @@
         self.userImgV = [[UIImageView alloc] init];
         _userImgV.layer.cornerRadius = kWidth(30);
         _userImgV.layer.masksToBounds = YES;
+        _userImgV.userInteractionEnabled = YES;
         [_backView addSubview:_userImgV];
         
         self.nickLabel = [[UILabel alloc] init];
@@ -130,6 +131,13 @@
 
         
         @weakify(self);
+        [_userImgV bk_whenTapped:^{
+            @strongify(self);
+            if (self.detailAction) {
+                self.detailAction();
+            }
+        }];
+        
         _photosView.browserAction = ^(id obj) {
             @strongify(self);
             if (self.photoAction) {
@@ -306,6 +314,11 @@
 
 - (void)setGreeted:(NSNumber *)greeted {
     _greeted = greeted;
+    if ([_greeted boolValue]) {
+        [_greetButton setTitle:@"已打招呼" forState:UIControlStateNormal];
+        [_greetButton setTitleColor:kColor(@"#666666") forState:UIControlStateNormal];
+        _greetButton.layer.borderColor = kColor(@"#999999").CGColor;
+    }
 }
 
 - (void)setLoved:(NSNumber *)loved {

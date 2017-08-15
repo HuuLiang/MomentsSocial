@@ -58,7 +58,7 @@
             
             self.vip7 = [[MSVipDescView alloc] initWithImgName:@"mine_vip0_chat" desc:@"可参加\n《全名lo聊》"];
             [self addSubview:_vip7];
-        } else if ([MSUtil currentVipLevel] == MSLevelVip1) {
+        } else if ([MSUtil currentVipLevel] > MSLevelVip0) {
             self.vip1 = [[MSVipDescView alloc] initWithImgName:@"mine_vip1_server" desc:@"客服介绍\n交友对象"];
             [self addSubview:_vip1];
             
@@ -80,7 +80,7 @@
             self.openVipButton = [UIButton buttonWithType:UIButtonTypeCustom];
             if ([MSUtil currentVipLevel] == MSLevelVip0) {
                 [_openVipButton setTitle:@"开通VIP" forState:UIControlStateNormal];
-            } else if ([MSUtil currentVipLevel] == MSLevelVip1) {
+            } else if ([MSUtil currentVipLevel] > MSLevelVip0) {
                 [_openVipButton setTitle:@"升级VIP" forState:UIControlStateNormal];
             }
             [_openVipButton setTitleColor:kColor(@"#ffffff") forState:UIControlStateNormal];
@@ -111,73 +111,73 @@
                 [_vip1 mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.left.equalTo(self);
                     make.top.equalTo(_titleLabel.mas_bottom).offset(kWidth(34));
-                    make.size.mas_equalTo(CGSizeMake(kWidth(173), kWidth(172)));
+                    make.size.mas_equalTo(CGSizeMake(ceilf(kWidth(173)), ceilf(kWidth(173))));
                 }];
                 
                 [_vip2 mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.centerY.equalTo(_vip1);
                     make.left.equalTo(_vip1.mas_right);
-                    make.size.mas_equalTo(CGSizeMake(kWidth(173), kWidth(172)));
+                    make.size.mas_equalTo(CGSizeMake(ceilf(kWidth(173)), ceilf(kWidth(173))));
                 }];
                 
                 [_vip3 mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.centerY.equalTo(_vip2);
                     make.left.equalTo(_vip2.mas_right);
-                    make.size.mas_equalTo(CGSizeMake(kWidth(173), kWidth(172)));
+                    make.size.mas_equalTo(CGSizeMake(ceilf(kWidth(173)), ceilf(kWidth(173))));
                 }];
                 
                 [_vip4 mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.centerY.equalTo(_vip3);
                     make.left.equalTo(_vip3.mas_right);
-                    make.size.mas_equalTo(CGSizeMake(kWidth(173), kWidth(172)));
+                    make.size.mas_equalTo(CGSizeMake(ceilf(kWidth(173)), ceilf(kWidth(173))));
                 }];
                 
                 [_vip6 mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.centerX.equalTo(self);
                     make.top.equalTo(_vip1.mas_bottom).offset(kWidth(56));
-                    make.size.mas_equalTo(CGSizeMake(kWidth(173), kWidth(172)));
+                    make.size.mas_equalTo(CGSizeMake(ceilf(kWidth(173)), ceilf(kWidth(173))));
                 }];
                 
                 [_vip5 mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.centerY.equalTo(_vip6);
                     make.right.equalTo(_vip6.mas_left);
-                    make.size.mas_equalTo(CGSizeMake(kWidth(173), kWidth(172)));
+                    make.size.mas_equalTo(CGSizeMake(ceilf(kWidth(173)), ceilf(kWidth(173))));
                 }];
                 
                 [_vip7 mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.centerY.equalTo(_vip6);
                     make.left.equalTo(_vip6.mas_right);
-                    make.size.mas_equalTo(CGSizeMake(kWidth(173), kWidth(172)));
+                    make.size.mas_equalTo(CGSizeMake(ceilf(kWidth(173)), ceilf(kWidth(173))));
                 }];
-            } else if ([MSUtil currentVipLevel] == MSLevelVip1) {
+            } else if ([MSUtil currentVipLevel] >= MSLevelVip0) {
                 [_vip2 mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(_titleLabel.mas_bottom).offset(kWidth(34));
                     make.centerX.equalTo(self);
-                    make.size.mas_equalTo(CGSizeMake(kWidth(173), kWidth(172)));
+                    make.size.mas_equalTo(CGSizeMake(ceilf(kWidth(173)), ceilf(kWidth(173))));
                 }];
                 
                 [_vip1 mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.centerY.equalTo(_vip2);
                     make.right.equalTo(_vip2.mas_left).offset(-kWidth(60));
-                    make.size.mas_equalTo(CGSizeMake(kWidth(173), kWidth(172)));
+                    make.size.mas_equalTo(CGSizeMake(ceilf(kWidth(173)), ceilf(kWidth(173))));
                 }];
                 
                 [_vip3 mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.centerY.equalTo(_vip2);
                     make.left.equalTo(_vip2.mas_right).offset(kWidth(60));
-                    make.size.mas_equalTo(CGSizeMake(kWidth(173), kWidth(172)));
+                    make.size.mas_equalTo(CGSizeMake(ceilf(kWidth(173)), ceilf(kWidth(173))));
                 }];
                 
                 [_vip4 mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(_vip2.mas_bottom).offset(kWidth(56));
                     make.right.equalTo(self.mas_centerX).offset(-kWidth(45));
-                    make.size.mas_equalTo(CGSizeMake(kWidth(173), kWidth(172)));
+                    make.size.mas_equalTo(CGSizeMake(ceilf(kWidth(173)), ceilf(kWidth(173))));
                 }];
                 
                 [_vip5 mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.centerY.equalTo(_vip4);
                     make.left.equalTo(self.mas_centerX).offset(kWidth(45));
-                    make.size.mas_equalTo(CGSizeMake(kWidth(173), kWidth(172)));
+                    make.size.mas_equalTo(CGSizeMake(ceilf(kWidth(173)), ceilf(kWidth(173))));
                 }];
             }
             

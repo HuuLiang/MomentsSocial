@@ -59,6 +59,8 @@
         if (success) {
             [MSUtil setRegisteredWithUUID:response.uuid];
             [MSUtil registerUserId:response.userId];
+            [MSUtil registerNickName:response.nickName];
+            [MSUtil registerPortraitUrl:response.portraitUrl];
             [self showHomeViewController];
         }
     }];
@@ -68,6 +70,7 @@
     [[MSReqManager manager] fetchSystemConfigInfoClass:[MSSystemConfigModel class] completionHandler:^(BOOL success, MSSystemConfigModel * obj) {
         if (success) {
             [MSSystemConfigModel defaultConfig].config = obj.config;
+            [[MSSystemConfigModel defaultConfig] configPayInfoWithConfig:obj.config];
         }
     }];
 }

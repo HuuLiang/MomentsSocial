@@ -17,6 +17,4 @@
 
 - (void)pushIntoDetailVCWithUserId:(NSString *)userId;
 
-- (void)pushVipViewController;
-
 @end

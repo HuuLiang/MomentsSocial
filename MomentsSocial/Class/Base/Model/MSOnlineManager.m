@@ -36,13 +36,6 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     return _onlineManager;
 }
 
-- (dispatch_queue_t)changeQueue {
-    if (!_changeQueue) {
-        _changeQueue = dispatch_queue_create("MomentsSocail_changedOnline_status", nil);
-    }
-    return _changeQueue;
-}
-
 - (dispatch_queue_t)sourceQueue {
     if (!_sourceQueue) {
         _sourceQueue = dispatch_queue_create("MomentsSocial_operateSource_queue", nil);
@@ -182,8 +175,10 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
             }
             if (needSort) {
                 [self.dataSource enumerateObjectsUsingBlock:^(MSOnlineInfo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    if (info.changeTime > obj.changeTime) {
-                        [self.dataSource insertObject:info atIndex:idx];
+                    if ([obj isKindOfClass:[MSOnlineInfo class]]) {
+                        if (info.changeTime > obj.changeTime) {
+                            [self.dataSource insertObject:info atIndex:idx];
+                        }
                     }
                 }];
             } else {
@@ -207,10 +202,12 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     return onlineInfo.online;
 }
 
-- (void)startOnlineChangedEvent {
-    if (_changeQueue) {
+- (void)startOnlineChangedEvent {    
+    if (self.changeQueue) {
         return;
     }
+    self.changeQueue = dispatch_queue_create("MomentsSocail_changedOnline_status", nil);
+
     [self rollingChangeUserOnlineStatus];
 }
 
@@ -219,6 +216,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         __block uint nextRollingReplyTime = kRollingChangeTimeInterval;
         
         if (self.dataSource.count > 0) {
+            NSLog(@"self.dataSource.coun = %ld",self.dataSource.count);
             [self.dataSource enumerateObjectsUsingBlock:^(MSOnlineInfo * _Nonnull onlineInfo, NSUInteger idx, BOOL * _Nonnull stop) {
                 NSTimeInterval currentTimeInterval = [[NSDate date] timeIntervalSince1970];
                 if (onlineInfo.changeTime <= currentTimeInterval) {

@@ -10,7 +10,7 @@
 #import "MSAutoReplyMessageManager.h"
 #import "QBVoiceManager.h"
 #import "MSBaseViewController.h"
-#import "MSVipViewController.h"
+#import "MSVipVC.h"
 
 @interface MSFaceTimeView ()
 
@@ -52,8 +52,7 @@
             [self cancelFaceTimeView];
         } confirmAction:^{
             [self cancelFaceTimeView];
-            MSVipViewController *vipVC = [[MSVipViewController alloc] init];
-            [[MSUtil currentViewController].navigationController pushViewController:vipVC animated:YES];
+            [MSVipVC showVipViewControllerInCurrentVC:[MSUtil rootViewControlelr]];
         }];
     }
 }

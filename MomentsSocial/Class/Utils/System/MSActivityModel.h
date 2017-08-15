@@ -11,4 +11,6 @@
 @interface MSActivityModel : QBDataResponse
 @property (nonatomic) NSString *uuid;
 @property (nonatomic) NSInteger userId;
+@property (nonatomic) NSString *portraitUrl;
+@property (nonatomic) NSString *nickName;
 @end

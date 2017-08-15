@@ -11,9 +11,9 @@
 #import "MSMineSettingView.h"
 #import "MSMineVipDescView.h"
 #import "MSSettingVC.h"
-#import "MSVipViewController.h"
 #import "QBPhotoManager.h"
 #import "QBUploadManager.h"
+#import "MSVipVC.h"
 
 @interface MSMineViewController () <UIAlertViewDelegate>
 @property (nonatomic) UIImageView    *gradientView;
@@ -78,7 +78,7 @@
             @strongify(self);
             if ([MSUtil currentVipLevel] == MSLevelVip0) {
                 [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeChangeUserInfo disCount:NO cancleAction:nil confirmAction:^{
-                    [self pushVipViewController];
+                    [MSVipVC showVipViewControllerInCurrentVC:self];
                 }];
                 return ;
             }
@@ -99,20 +99,13 @@
             @strongify(self);
             if ([MSUtil currentVipLevel] == MSLevelVip0) {
                 [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeChangeUserInfo disCount:NO cancleAction:nil confirmAction:^{
-                    [self pushVipViewController];
+                    [MSVipVC showVipViewControllerInCurrentVC:self];
                 }];
                 return ;
             }
-            UIAlertView *alertView = [UIAlertView bk_showAlertViewWithTitle:@"修改昵称" message:@"请输入您的新昵称" cancelButtonTitle:@"取消" otherButtonTitles:@[@"确认"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                if (buttonIndex == 0) {
-                    
-                } else if (buttonIndex == 1) {
-                    self.infoView.nickName = [alertView textFieldAtIndex:0].text;
-                    [[MSHudManager manager] showHudWithText:@"修改昵称成功"];
-                }
-            }];
-            alertView.delegate = self;
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"修改昵称" message:@"请输入您的新昵称" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
             alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+            [alertView show];
         };
         
         
@@ -162,8 +155,7 @@
             [[MSHudManager manager] showHudWithText:@"您已经是最高级的VIP啦"];
             return ;
         }
-        MSVipViewController *vipVC = [[MSVipViewController alloc] initWithTitle:@"支付订单"];
-        [self.navigationController pushViewController:vipVC animated:YES];
+        [MSVipVC showVipViewControllerInCurrentVC:self];
     };
     
     {
@@ -177,5 +169,14 @@
 
 #pragma mark - UIAlertViewDelegate
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        
+    } else if (buttonIndex == 1) {
+        self.infoView.nickName = [alertView textFieldAtIndex:0].text;
+        [MSUtil registerNickName:[alertView textFieldAtIndex:0].text];
+        [[MSHudManager manager] showHudWithText:@"修改昵称成功"];
+    }
+}
 
 @end

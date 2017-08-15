@@ -50,7 +50,7 @@
         }
         
         UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [closeButton setImage:[UIImage imageNamed:@"gift_close_btn_icon"] forState:UIControlStateNormal];
+        [closeButton setImage:[UIImage imageNamed:@"video_close"] forState:UIControlStateNormal];
         @weakify(self);
         [closeButton bk_addEventHandler:^(id sender) {
             @strongify(self);

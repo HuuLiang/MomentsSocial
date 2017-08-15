@@ -9,11 +9,13 @@
 #import "MSSettingVC.h"
 #import "MSAboutUsVC.h"
 #import "MSAutoActivateVC.h"
+#import "MSSystemConfigModel.h"
 
 static NSString *const kMSSettingCellReusableIdentifier = @"kMSSettingCellReusableIdentifier";
 
 typedef NS_ENUM(NSInteger,MSSettingRow) {
     MSSettingRowAutoActivate = 0,
+    MSSettingRowQQServer,
     MSSettingRowAboutUs,
     MSSettingRowCount
 };
@@ -46,6 +48,30 @@ typedef NS_ENUM(NSInteger,MSSettingRow) {
     [super didReceiveMemoryWarning];
 }
 
+//qq客服
+- (void)contactCustomerService {
+    NSString *contactScheme = [MSSystemConfigModel defaultConfig].config.CONTACT_SCHEME;
+    NSString *contactName = [MSSystemConfigModel defaultConfig].config.CONTACT_NAME;
+    
+    if (contactScheme.length == 0) {
+        return ;
+    }
+    
+    [UIAlertView bk_showAlertViewWithTitle:nil
+                                   message:[NSString stringWithFormat:@"是否联系客服%@？", contactName ?: @""]
+                         cancelButtonTitle:@"取消"
+                         otherButtonTitles:@[@"确认"]
+                                   handler:^(UIAlertView *alertView, NSInteger buttonIndex)
+     {
+         if (buttonIndex == 1) {
+             if ([[UIApplication sharedApplication]canOpenURL:[NSURL URLWithString:contactScheme]]) {
+                 
+                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:contactScheme]];
+             }
+         }
+     }];
+}
+
 #pragma mark - UITableViewDelegate,UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return MSSettingRowCount;
@@ -58,6 +84,8 @@ typedef NS_ENUM(NSInteger,MSSettingRow) {
     if (indexPath.row < MSSettingRowCount) {
         if (indexPath.row == MSSettingRowAutoActivate) {
             cell.textLabel.text = @"自助激活";
+        } else if (indexPath.row == MSSettingRowQQServer) {
+            cell.textLabel.text = @"联系客服";
         } else if (indexPath.row == MSSettingRowAboutUs) {
             cell.textLabel.text = @"关于我们";
         }
@@ -73,6 +101,8 @@ typedef NS_ENUM(NSInteger,MSSettingRow) {
     if (indexPath.row == MSSettingRowAutoActivate) {
         MSAutoActivateVC *activateVC = [[MSAutoActivateVC alloc] initWithTitle:@"自助激活"];
         [self.navigationController pushViewController:activateVC animated:YES];
+    } else if (indexPath.row == MSSettingRowQQServer) {
+        [self contactCustomerService];
     } else if (indexPath.row == MSSettingRowAboutUs) {
         MSAboutUsVC *aboutUsVC = [[MSAboutUsVC alloc] initWithTitle:@"关于我们"];
         [self.navigationController pushViewController:aboutUsVC animated:YES];

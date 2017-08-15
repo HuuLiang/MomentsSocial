@@ -29,11 +29,16 @@
         
         self.backgroundColor = kColor(@"#ffffff");
         
+        UIView *backView = [[UIView alloc] init];
+        backView.backgroundColor = kColor(@"#f0f0f0");
+        backView.layer.cornerRadius = kWidth(56);
+        backView.layer.masksToBounds = YES;
+        [self addSubview:backView];
+        
         self.imgV = [[UIImageView alloc] init];
-        _imgV.layer.cornerRadius = kWidth(56);
-        _imgV.layer.borderWidth = kWidth(4);
-        _imgV.layer.borderColor = kColor(@"#f0f0f0").CGColor;
-        [self addSubview:_imgV];
+        _imgV.layer.cornerRadius = kWidth(52);
+        _imgV.layer.masksToBounds = YES;
+        [backView addSubview:_imgV];
         
         self.titleLabel = [[UILabel alloc] init];
         _titleLabel.textColor = kColor(@"#333333");
@@ -67,7 +72,7 @@
         _descLabel.textColor = kColor(@"#666666");
         _descLabel.font = kFont(13);
         _descLabel.numberOfLines = 0;
-        _descLabel.text = @"如果，你今晚想开放爱爱，点击上方“点击报名”即可，每日同城限报30人，早上8点开始报名，晚上20点结束报名。报名结束后即可开启开房攻略。零点清楚上一日报名数据。报名后不参加开放活动，24小时内无法再次报名。";
+        _descLabel.text = @"如果，你今晚想开房爱爱，点击上方“点击报名”即可，每日同城限报30人，早上8点开始报名，晚上20点结束报名。报名结束后即可开启开房攻略。零点清除上一日报名数据。报名后不参加开放活动，24小时内无法再次报名。";
         [self addSubview:_descLabel];
         
         self.label = [[UILabel alloc] init];
@@ -83,11 +88,17 @@
         _rightLine.backgroundColor = kColor(@"#DCDCDC");
         [self addSubview:_rightLine];
         
+        
         {
-            [_imgV mas_makeConstraints:^(MASConstraintMaker *make) {
+            [backView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self).offset(kWidth(20));
                 make.top.equalTo(self).offset(kWidth(22));
                 make.size.mas_equalTo(CGSizeMake(kWidth(112), kWidth(112)));
+            }];
+            
+            [_imgV mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.center.equalTo(backView);
+                make.size.mas_equalTo(CGSizeMake(kWidth(104), kWidth(104)));
             }];
             
             [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -135,6 +146,10 @@
         }
     }
     return self;
+}
+
+- (void)setImgUrl:(NSString *)imgUrl {
+    [_imgV sd_setImageWithURL:[NSURL URLWithString:imgUrl]];
 }
 
 - (void)setCanCheckIn:(BOOL)canCheckIn {

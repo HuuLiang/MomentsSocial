@@ -34,7 +34,7 @@
             break;
             
         case MSPopupTypeSendMessage:
-            contentMsg = @"很抱歉，该用户开启了防止骚扰，仅接收VIP用户消息，您发送的消息TA可能无法查看";
+            contentMsg = @"很抱歉，该用户设置了防骚扰，只接受VIP信息";
             enterMsg = @"升级VIP";
             break;
             
@@ -92,7 +92,12 @@
         case MSPopupTypeFaceTime:
             contentMsg = @"很抱歉，游客无法视频聊天";
             enterMsg = @"升级VIP";
+            break;
         
+        case MSPopupTypeFaceTimeVip1:
+            contentMsg = @"钻石VIP可发起视频聊天";
+            enterMsg = @"钻石VIP";
+            
         default:
             break;
     }

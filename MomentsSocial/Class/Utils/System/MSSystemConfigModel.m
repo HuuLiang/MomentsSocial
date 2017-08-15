@@ -8,6 +8,15 @@
 
 #import "MSSystemConfigModel.h"
 
+NSString *const kMSPayInfoPAY_VIP_1_1KeyName = @"PAY_VIP_1_1";
+NSString *const kMSPayInfoPAY_VIP_1_2KeyName = @"PAY_VIP_1_2";
+NSString *const kMSPayInfoPAY_VIP_2_1KeyName = @"PAY_VIP_2_1";
+NSString *const kMSPayInfoPAY_VIP_2_2KeyName = @"PAY_VIP_2_2";
+
+@implementation MSPayInfo
+
+@end
+
 @implementation MSConfigInfo
 
 @end
@@ -25,6 +34,32 @@
 
 - (Class)configClass {
     return [MSConfigInfo class];
+}
+
+- (void)configPayInfoWithConfig:(MSConfigInfo *)config {
+    [config.allProperties enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isEqualToString:kMSPayInfoPAY_VIP_1_1KeyName]  || [obj isEqualToString:kMSPayInfoPAY_VIP_1_2KeyName]  || [obj isEqualToString:kMSPayInfoPAY_VIP_2_1KeyName] || [obj isEqualToString:kMSPayInfoPAY_VIP_2_2KeyName]) {
+            [self setValue:[self setValue:[[MSPayInfo alloc] init] value:[config valueForKey:obj]] forKey:obj] ;
+        }
+    }];
+    
+}
+
+- (MSPayInfo *)setValue:(MSPayInfo *)info value:(id)value {
+    [[value componentsSeparatedByString:@"|"] enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (idx == 0) {
+            info.title = obj;
+        } else if (idx == 1) {
+            info.price = [obj integerValue];
+        } else if (idx == 2) {
+            info.days = [obj integerValue];
+        } else if (idx == 3) {
+            info.subTitle = obj;
+        } else if (idx == 4) {
+            info.desc = obj;
+        }
+    }];
+    return info;
 }
 
 @end

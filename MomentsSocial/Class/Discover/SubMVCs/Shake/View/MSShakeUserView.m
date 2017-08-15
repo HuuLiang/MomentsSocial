@@ -83,13 +83,13 @@
             [_hateBtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.mas_centerX).offset(-kWidth(40));
                 make.bottom.equalTo(self.mas_bottom);
-                make.size.mas_equalTo(CGSizeMake(kWidth(100), kWidth(160)));
+                make.size.mas_equalTo(CGSizeMake(kWidth(140), kWidth(160)));
             }];
             
             [_loveBtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.mas_centerX).offset(kWidth(40));
                 make.centerY.equalTo(_hateBtn);
-                make.size.mas_equalTo(CGSizeMake(kWidth(100), kWidth(160)));
+                make.size.mas_equalTo(CGSizeMake(kWidth(140), kWidth(160)));
             }];
             
         }

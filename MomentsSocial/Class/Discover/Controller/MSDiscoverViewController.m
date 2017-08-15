@@ -12,6 +12,7 @@
 #import "MSNearViewController.h"
 #import "MSShakeVC.h"
 #import "MSCheckInVC.h"
+#import "MSVipVC.h"
 
 #import "MSDiscoverModel.h"
 #import "MSReqManager.h"
@@ -70,7 +71,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     @weakify(self);
     [headerImgV bk_whenTapped:^{
         @strongify(self);
-        [self pushVipViewController];
+        [MSVipVC showVipViewControllerInCurrentVC:self];
     }];
 }
 
@@ -111,7 +112,13 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                 MSShakeVC *shakeVC = [[MSShakeVC alloc] initWithTitle:@"摇一摇"];
                 [self.navigationController pushViewController:shakeVC animated:YES];
             } else if (info.funType == 3) {
-                MSCheckInVC *checkInVC = [[MSCheckInVC alloc] initWithTitle:@"今日开放"];
+                if ([MSUtil currentVipLevel] == MSLevelVip0) {
+                    [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeRegisterVip0 disCount:NO cancleAction:nil confirmAction:^{
+                        [MSVipVC showVipViewControllerInCurrentVC:self];
+                    }];
+                    return ;
+                }
+                MSCheckInVC *checkInVC = [[MSCheckInVC alloc] initWithTitle:@"今日开房"];
                 [self.navigationController pushViewController:checkInVC animated:YES];
             }
         };

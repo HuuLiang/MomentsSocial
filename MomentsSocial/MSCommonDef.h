@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger,MSLevel) {
 };
 
 typedef NS_ENUM(NSInteger,MSPayType) {
-    MSPayTypeWeiXin = 0, //微信
+    MSPayTypeWeiXin = 1, //微信
     MSPayTypeAliPay //支付宝
 };
 

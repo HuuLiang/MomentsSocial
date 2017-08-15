@@ -144,8 +144,6 @@
 		EC1BFE551F39BD1D003613D6 /* YFBImageUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC1BFE451F39BD1D003613D6 /* YFBImageUploadManager.m */; };
 		EC1BFE591F39BE23003613D6 /* QBUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC1BFE581F39BE23003613D6 /* QBUploadManager.m */; };
 		EC1BFE901F39D51D003613D6 /* MSPaymentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC1BFE8F1F39D51D003613D6 /* MSPaymentManager.m */; };
-		EC1BFE931F39E80B003613D6 /* MSVipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC1BFE921F39E80B003613D6 /* MSVipViewController.m */; };
-		EC1BFE961F39E8F1003613D6 /* MSPayTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC1BFE951F39E8F1003613D6 /* MSPayTypeCell.m */; };
 		EC35531E1F31827500370A36 /* MSSendMomentsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EC35531D1F31827500370A36 /* MSSendMomentsVC.m */; };
 		EC3553211F31B0A100370A36 /* MSSendMomentHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3553201F31B0A100370A36 /* MSSendMomentHeaderView.m */; };
 		EC35532A1F31B6E600370A36 /* QBDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3553251F31B6E600370A36 /* QBDataManager.m */; };
@@ -158,14 +156,14 @@
 		EC3CB36D1F2F0DA20086F373 /* MSMomentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3CB36C1F2F0DA20086F373 /* MSMomentsCell.m */; };
 		EC3CC1DA1F2F2ECE0086F373 /* MSMomentsContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3CC1D91F2F2ECE0086F373 /* MSMomentsContentView.m */; };
 		EC3CC1DD1F2F606D0086F373 /* MSMomentsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3CC1DC1F2F606D0086F373 /* MSMomentsModel.m */; };
-		EC5383911F3A98D300D2EB0F /* MSPayInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5383901F3A98D300D2EB0F /* MSPayInfoCell.m */; };
-		EC5383941F3A9FAF00D2EB0F /* MSPayDescCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5383931F3A9FAF00D2EB0F /* MSPayDescCell.m */; };
 		EC5383971F3AABFE00D2EB0F /* MSLocalNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5383961F3AABFE00D2EB0F /* MSLocalNotificationManager.m */; };
 		EC53839A1F3AAE4000D2EB0F /* MSAutoReplyMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5383991F3AAE4000D2EB0F /* MSAutoReplyMessageManager.m */; };
 		EC53839E1F3B06A300D2EB0F /* QBVoiceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC53839D1F3B06A300D2EB0F /* QBVoiceManager.m */; };
 		EC5383A11F3B073B00D2EB0F /* MSContactView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5383A01F3B073B00D2EB0F /* MSContactView.m */; };
 		EC5383A41F3B074B00D2EB0F /* MSFaceTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5383A31F3B074B00D2EB0F /* MSFaceTimeView.m */; };
 		EC5383A71F3B0A4500D2EB0F /* UIView+PopAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5383A61F3B0A4500D2EB0F /* UIView+PopAnimation.m */; };
+		EC58C0021F419731002925B5 /* MSVipVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EC58C0011F419731002925B5 /* MSVipVC.m */; };
+		EC58C0051F4199C0002925B5 /* MSVipPayPointCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC58C0041F4199C0002925B5 /* MSVipPayPointCell.m */; };
 		EC848DB61F32BD1300B47E37 /* MSSystemConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DB51F32BD1300B47E37 /* MSSystemConfigModel.m */; };
 		EC848DBC1F32CBD300B47E37 /* MSCircleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DBB1F32CBD300B47E37 /* MSCircleModel.m */; };
 		EC848DC01F33036F00B47E37 /* QBPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DBF1F33036F00B47E37 /* QBPhotoManager.m */; };
@@ -230,7 +228,6 @@
 		ECC11B0A1F26F3DB0093E3EE /* MSReqManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC11B091F26F3DB0093E3EE /* MSReqManager.m */; };
 		ECC11B0D1F26F8AD0093E3EE /* MSActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC11B0C1F26F8AD0093E3EE /* MSActivityModel.m */; };
 		ECC11B281F2724450093E3EE /* NSDate+timeStamp.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC11B101F2724450093E3EE /* NSDate+timeStamp.m */; };
-		ECC11B291F2724450093E3EE /* NSObject+BaseRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC11B121F2724450093E3EE /* NSObject+BaseRepresentation.m */; };
 		ECC11B2A1F2724450093E3EE /* NSObject+PropertyAccessInspecting.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC11B141F2724450093E3EE /* NSObject+PropertyAccessInspecting.m */; };
 		ECC11B2B1F2724450093E3EE /* NSString+dataEncrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC11B161F2724450093E3EE /* NSString+dataEncrypt.m */; };
 		ECC11B2C1F2724450093E3EE /* NSString+getQRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC11B181F2724450093E3EE /* NSString+getQRCode.m */; };
@@ -505,10 +502,6 @@
 		EC1BFE581F39BE23003613D6 /* QBUploadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBUploadManager.m; sourceTree = "<group>"; };
 		EC1BFE8E1F39D51D003613D6 /* MSPaymentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSPaymentManager.h; sourceTree = "<group>"; };
 		EC1BFE8F1F39D51D003613D6 /* MSPaymentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSPaymentManager.m; sourceTree = "<group>"; };
-		EC1BFE911F39E80B003613D6 /* MSVipViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSVipViewController.h; sourceTree = "<group>"; };
-		EC1BFE921F39E80B003613D6 /* MSVipViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSVipViewController.m; sourceTree = "<group>"; };
-		EC1BFE941F39E8F1003613D6 /* MSPayTypeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSPayTypeCell.h; sourceTree = "<group>"; };
-		EC1BFE951F39E8F1003613D6 /* MSPayTypeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSPayTypeCell.m; sourceTree = "<group>"; };
 		EC35531C1F31827500370A36 /* MSSendMomentsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSendMomentsVC.h; sourceTree = "<group>"; };
 		EC35531D1F31827500370A36 /* MSSendMomentsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSSendMomentsVC.m; sourceTree = "<group>"; };
 		EC35531F1F31B0A100370A36 /* MSSendMomentHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSendMomentHeaderView.h; sourceTree = "<group>"; };
@@ -533,10 +526,6 @@
 		EC3CC1D91F2F2ECE0086F373 /* MSMomentsContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSMomentsContentView.m; sourceTree = "<group>"; };
 		EC3CC1DB1F2F606D0086F373 /* MSMomentsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMomentsModel.h; sourceTree = "<group>"; };
 		EC3CC1DC1F2F606D0086F373 /* MSMomentsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSMomentsModel.m; sourceTree = "<group>"; };
-		EC53838F1F3A98D300D2EB0F /* MSPayInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSPayInfoCell.h; sourceTree = "<group>"; };
-		EC5383901F3A98D300D2EB0F /* MSPayInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSPayInfoCell.m; sourceTree = "<group>"; };
-		EC5383921F3A9FAF00D2EB0F /* MSPayDescCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSPayDescCell.h; sourceTree = "<group>"; };
-		EC5383931F3A9FAF00D2EB0F /* MSPayDescCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSPayDescCell.m; sourceTree = "<group>"; };
 		EC5383951F3AABFE00D2EB0F /* MSLocalNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSLocalNotificationManager.h; sourceTree = "<group>"; };
 		EC5383961F3AABFE00D2EB0F /* MSLocalNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSLocalNotificationManager.m; sourceTree = "<group>"; };
 		EC5383981F3AAE4000D2EB0F /* MSAutoReplyMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAutoReplyMessageManager.h; sourceTree = "<group>"; };
@@ -549,6 +538,10 @@
 		EC5383A31F3B074B00D2EB0F /* MSFaceTimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSFaceTimeView.m; sourceTree = "<group>"; };
 		EC5383A51F3B0A4500D2EB0F /* UIView+PopAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+PopAnimation.h"; sourceTree = "<group>"; };
 		EC5383A61F3B0A4500D2EB0F /* UIView+PopAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+PopAnimation.m"; sourceTree = "<group>"; };
+		EC58C0001F419731002925B5 /* MSVipVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSVipVC.h; sourceTree = "<group>"; };
+		EC58C0011F419731002925B5 /* MSVipVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSVipVC.m; sourceTree = "<group>"; };
+		EC58C0031F4199C0002925B5 /* MSVipPayPointCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSVipPayPointCell.h; sourceTree = "<group>"; };
+		EC58C0041F4199C0002925B5 /* MSVipPayPointCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSVipPayPointCell.m; sourceTree = "<group>"; };
 		EC848DB41F32BD1300B47E37 /* MSSystemConfigModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSystemConfigModel.h; sourceTree = "<group>"; };
 		EC848DB51F32BD1300B47E37 /* MSSystemConfigModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSSystemConfigModel.m; sourceTree = "<group>"; };
 		EC848DBA1F32CBD300B47E37 /* MSCircleModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCircleModel.h; sourceTree = "<group>"; };
@@ -681,8 +674,6 @@
 		ECC11B0C1F26F8AD0093E3EE /* MSActivityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSActivityModel.m; sourceTree = "<group>"; };
 		ECC11B0F1F2724450093E3EE /* NSDate+timeStamp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+timeStamp.h"; sourceTree = "<group>"; };
 		ECC11B101F2724450093E3EE /* NSDate+timeStamp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+timeStamp.m"; sourceTree = "<group>"; };
-		ECC11B111F2724450093E3EE /* NSObject+BaseRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BaseRepresentation.h"; sourceTree = "<group>"; };
-		ECC11B121F2724450093E3EE /* NSObject+BaseRepresentation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BaseRepresentation.m"; sourceTree = "<group>"; };
 		ECC11B131F2724450093E3EE /* NSObject+PropertyAccessInspecting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+PropertyAccessInspecting.h"; sourceTree = "<group>"; };
 		ECC11B141F2724450093E3EE /* NSObject+PropertyAccessInspecting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+PropertyAccessInspecting.m"; sourceTree = "<group>"; };
 		ECC11B151F2724450093E3EE /* NSString+dataEncrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+dataEncrypt.h"; sourceTree = "<group>"; };
@@ -1909,8 +1900,8 @@
 				ECC11AF01F26E9F60093E3EE /* MSMineViewController.m */,
 				EC848DC71F330B4A00B47E37 /* MSSettingVC.h */,
 				EC848DC81F330B4A00B47E37 /* MSSettingVC.m */,
-				EC1BFE911F39E80B003613D6 /* MSVipViewController.h */,
-				EC1BFE921F39E80B003613D6 /* MSVipViewController.m */,
+				EC58C0001F419731002925B5 /* MSVipVC.h */,
+				EC58C0011F419731002925B5 /* MSVipVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1933,12 +1924,8 @@
 				ECB58CBA1F2B141D0074E6D8 /* MSMineVipDescView.m */,
 				EC848DCA1F330BD100B47E37 /* MSSettingCell.h */,
 				EC848DCB1F330BD100B47E37 /* MSSettingCell.m */,
-				EC53838F1F3A98D300D2EB0F /* MSPayInfoCell.h */,
-				EC5383901F3A98D300D2EB0F /* MSPayInfoCell.m */,
-				EC1BFE941F39E8F1003613D6 /* MSPayTypeCell.h */,
-				EC1BFE951F39E8F1003613D6 /* MSPayTypeCell.m */,
-				EC5383921F3A9FAF00D2EB0F /* MSPayDescCell.h */,
-				EC5383931F3A9FAF00D2EB0F /* MSPayDescCell.m */,
+				EC58C0031F4199C0002925B5 /* MSVipPayPointCell.h */,
+				EC58C0041F4199C0002925B5 /* MSVipPayPointCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1949,8 +1936,6 @@
 				ECC11B341F27246E0093E3EE /* MSExtensions.h */,
 				ECC11B0F1F2724450093E3EE /* NSDate+timeStamp.h */,
 				ECC11B101F2724450093E3EE /* NSDate+timeStamp.m */,
-				ECC11B111F2724450093E3EE /* NSObject+BaseRepresentation.h */,
-				ECC11B121F2724450093E3EE /* NSObject+BaseRepresentation.m */,
 				ECC11B131F2724450093E3EE /* NSObject+PropertyAccessInspecting.h */,
 				ECC11B141F2724450093E3EE /* NSObject+PropertyAccessInspecting.m */,
 				ECC11B151F2724450093E3EE /* NSString+dataEncrypt.h */,
@@ -2253,7 +2238,6 @@
 				EC1BFE4D1F39BD1D003613D6 /* POSLocking.m in Sources */,
 				EC0CAA881F341D3E00B1C669 /* MSCheckInUserCell.m in Sources */,
 				ECC11B2B1F2724450093E3EE /* NSString+dataEncrypt.m in Sources */,
-				EC5383941F3A9FAF00D2EB0F /* MSPayDescCell.m in Sources */,
 				ECFCAB791F29C63900DC2948 /* MSMomentsListVC.m in Sources */,
 				ECC11AEB1F26E9D70093E3EE /* MSDiscoverViewController.m in Sources */,
 				EC1BFDB11F39A787003613D6 /* UIImage+Utility.m in Sources */,
@@ -2261,7 +2245,6 @@
 				ECA8A9431F37FC8200BABFF9 /* MSShakeUserView.m in Sources */,
 				EC1BFDB21F39A787003613D6 /* UIImage+XHRounded.m in Sources */,
 				ECD9536E1F308BA2006F5737 /* MSShakeView.m in Sources */,
-				ECC11B291F2724450093E3EE /* NSObject+BaseRepresentation.m in Sources */,
 				ECC11AC81F26DA870093E3EE /* SDCollectionViewCell.m in Sources */,
 				EC1BFDEB1F39A787003613D6 /* XHEmotionCollectionViewFlowLayout.m in Sources */,
 				ECC11B311F2724450093E3EE /* UIView+FrameEx.m in Sources */,
@@ -2296,7 +2279,6 @@
 				EC1BFE1B1F39AB18003613D6 /* MSMessageViewController+XHBMessage.m in Sources */,
 				EC848DC01F33036F00B47E37 /* QBPhotoManager.m in Sources */,
 				EC1BFDE61F39A787003613D6 /* XHMessageTableViewCell.m in Sources */,
-				EC1BFE931F39E80B003613D6 /* MSVipViewController.m in Sources */,
 				EC35532B1F31B6E600370A36 /* QBDataResponse.m in Sources */,
 				EC35532A1F31B6E600370A36 /* QBDataManager.m in Sources */,
 				ECC11A521F26DA870093E3EE /* ActionSheetStringPicker.m in Sources */,
@@ -2320,7 +2302,6 @@
 				EC1BFDDA1F39A787003613D6 /* SETextGeometry.m in Sources */,
 				EC1BFDC51F39A787003613D6 /* XHOperationNetworkKit.m in Sources */,
 				EC1BFE551F39BD1D003613D6 /* YFBImageUploadManager.m in Sources */,
-				EC1BFE961F39E8F1003613D6 /* MSPayTypeCell.m in Sources */,
 				ECC11A541F26DA870093E3EE /* SWActionSheet.m in Sources */,
 				ECC11B071F26EFFB0093E3EE /* MSUtil.m in Sources */,
 				EC1BFCCD1F395FE1003613D6 /* MSContactModel.m in Sources */,
@@ -2334,6 +2315,7 @@
 				EC1BFDD11F39A787003613D6 /* FLAnimatedImageView.m in Sources */,
 				ECD953641F306FF5006F5737 /* MSPopupHelper.m in Sources */,
 				EC848DD21F330ECD00B47E37 /* MSAutoActivateVC.m in Sources */,
+				EC58C0021F419731002925B5 /* MSVipVC.m in Sources */,
 				EC1BFDD81F39A787003613D6 /* SETextAttachment.m in Sources */,
 				EC1BFE521F39BD1D003613D6 /* QiniuUploader.m in Sources */,
 				ECB58CD11F2B33050074E6D8 /* MSDetailFooterView.m in Sources */,
@@ -2343,6 +2325,7 @@
 				EC848DE51F334CD300B47E37 /* MSCheckInFooterView.m in Sources */,
 				ECC11B2F1F2724450093E3EE /* UIImage+Resource.m in Sources */,
 				ECFCAB821F29D79D00DC2948 /* UIView+gradient.m in Sources */,
+				EC58C0051F4199C0002925B5 /* MSVipPayPointCell.m in Sources */,
 				ECC11A501F26DA870093E3EE /* ActionSheetLocalePicker.m in Sources */,
 				EC1BFDE91F39A787003613D6 /* XHVoiceRecordHUD.m in Sources */,
 				EC5383A11F3B073B00D2EB0F /* MSContactView.m in Sources */,
@@ -2381,7 +2364,6 @@
 				ECFCAB901F29F34400DC2948 /* MSNearCell.m in Sources */,
 				ECB58CBB1F2B141D0074E6D8 /* MSMineVipDescView.m in Sources */,
 				EC3CB2C01F2EDEF10086F373 /* MSDetailInfoHeaderView.m in Sources */,
-				EC5383911F3A98D300D2EB0F /* MSPayInfoCell.m in Sources */,
 				EC1BFDC81F39A787003613D6 /* XHMessageVideoConverPhotoFactory.m in Sources */,
 				EC1BFDBA1F39A787003613D6 /* XHPhotographyHelper.m in Sources */,
 				EC1BFDBE1F39A787003613D6 /* XHDisplayLocationViewController.m in Sources */,

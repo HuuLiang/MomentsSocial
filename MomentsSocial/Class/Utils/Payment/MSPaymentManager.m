@@ -74,7 +74,7 @@
     orderInfo.orderId = MS_PAYMENT_ORDERID;
     orderInfo.orderPrice = price;
     orderInfo.orderDescription = [NSString stringWithFormat:@"%@增值服务", appName];
-    orderInfo.payType = payType + 1;
+    orderInfo.payType = (long)payType;
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];

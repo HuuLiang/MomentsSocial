@@ -26,12 +26,16 @@
         self.backgroundColor = kColor(@"#ffffff");
         self.contentView.backgroundColor = kColor(@"#ffffff");
         
+        UIView *backView = [[UIView alloc] init];
+        backView.backgroundColor = kColor(@"#f0f0f0");
+        backView.layer.cornerRadius = kWidth(56);
+        backView.layer.masksToBounds = YES;
+        [self.contentView addSubview:backView];
+        
         self.mainImgV = [[UIImageView alloc] init];
-        _mainImgV.layer.cornerRadius = kWidth(56);
-        _mainImgV.layer.borderColor = kColor(@"#F0F0F0").CGColor;
-        _mainImgV.layer.borderWidth = kWidth(4);
+        _mainImgV.layer.cornerRadius = kWidth(52);
         _mainImgV.layer.masksToBounds = YES;
-        [self.contentView addSubview:_mainImgV];
+        [backView addSubview:_mainImgV];
         
         self.titleLabel = [[UILabel alloc] init];
         _titleLabel.textColor = kColor(@"#333333");
@@ -53,21 +57,26 @@
         [self.contentView addSubview:_onlineLabel];
         
         {
-            [_mainImgV mas_makeConstraints:^(MASConstraintMaker *make) {
+            [backView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(self.contentView);
                 make.left.equalTo(self.contentView).offset(kWidth(20));
                 make.size.mas_equalTo(CGSizeMake(kWidth(112), kWidth(112)));
             }];
             
+            [_mainImgV mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.center.equalTo(backView);
+                make.size.mas_equalTo(CGSizeMake(kWidth(104), kWidth(104)));
+            }];
+            
             [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(_mainImgV.mas_right).offset(kWidth(16));
+                make.left.equalTo(_mainImgV.mas_right).offset(kWidth(20));
                 make.bottom.equalTo(self.contentView.mas_centerY).offset(-kWidth(10));
                 make.height.mas_equalTo(_titleLabel.font.lineHeight);
             }];
             
             [_vipImgV mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(_titleLabel);
-                make.left.equalTo(_titleLabel.mas_right).offset(kWidth(16));
+                make.left.equalTo(_titleLabel.mas_right).offset(kWidth(20));
                 make.size.mas_equalTo(CGSizeMake(kWidth(66), kWidth(28)));
             }];
             

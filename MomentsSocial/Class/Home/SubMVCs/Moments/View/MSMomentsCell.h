@@ -15,6 +15,8 @@ typedef NS_ENUM(NSInteger , MSMomentsType) {
 
 @interface MSMomentsCell : UITableViewCell
 
+@property (nonatomic) MSAction detailAction;
+
 @property (nonatomic) MSAction commentAction;
 
 @property (nonatomic) MSAction greetAction;

@@ -37,7 +37,9 @@
     return self;
 }
 
-
+- (void)setImgUrl:(NSString *)imgUrl {
+    [_imgV sd_setImageWithURL:[NSURL URLWithString:imgUrl]];
+}
 
 @end
 

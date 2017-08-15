@@ -12,6 +12,7 @@
 #import "MSReqManager.h"
 #import "MSDisFuctionModel.h"
 #import "MSMessageModel.h"
+#import "MSVipVC.h"
 
 static NSString *const kMSShakeDayKeyName  = @"kMSShakeDayKeyName";
 static NSString *const kMSShakeTimeKeyName = @"kMSShakeTimeKeyName";
@@ -155,7 +156,7 @@ static NSString *const kMSShakeTimeKeyName = @"kMSShakeTimeKeyName";
         }
     } else {
         [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeShakeTime disCount:NO cancleAction:nil confirmAction:^{
-            [self pushVipViewController];
+            [MSVipVC showVipViewControllerInCurrentVC:self];
         }];
         [self motionCancelled:UIEventSubtypeRemoteControlStop withEvent:event];
     }

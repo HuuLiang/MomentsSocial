@@ -10,4 +10,6 @@
 
 @interface MSCheckInFooterView : UICollectionReusableView
 
+@property (nonatomic) NSString *imgUrl;
+
 @end
