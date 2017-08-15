@@ -89,7 +89,9 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         MSUserModel *user = self.dataSource[indexPath.item];
         
         @weakify(cell);
+        @weakify(self);
         cell.greetAction = ^{
+            @strongify(self);
             @strongify(cell);
             if (user.greeted) {
                 [[MSHudManager manager] showHudWithText:@"已经打过招呼"];

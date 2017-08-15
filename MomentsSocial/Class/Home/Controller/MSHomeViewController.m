@@ -124,8 +124,8 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
                     }];
                     return;
                 }
-                MSMomentsVC *momentsVC = [[MSMomentsVC alloc] initWithCircleInfo:info];
-                [self.navigationController pushViewController:momentsVC animated:YES];
+                MSMomentsListVC *listVC = [[MSMomentsListVC alloc] initWithCircleInfo:info];
+                [self.navigationController pushViewController:listVC animated:YES];
             };
         }
         return cell;
@@ -167,8 +167,8 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
                 }];
                 return;
             }
-            MSMomentsVC *momentsVC = [[MSMomentsVC alloc] initWithCircleInfo:info];
-            [self.navigationController pushViewController:momentsVC animated:YES];
+            MSMomentsListVC *listVC = [[MSMomentsListVC alloc] initWithCircleInfo:info];
+            [self.navigationController pushViewController:listVC animated:YES];
         }
     }
 }

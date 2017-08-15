@@ -174,6 +174,7 @@
 		EC848DD91F33242900B47E37 /* MSCheckInVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DD81F33242900B47E37 /* MSCheckInVC.m */; };
 		EC848DDC1F33253400B47E37 /* MSCheckInHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DDB1F33253400B47E37 /* MSCheckInHeaderView.m */; };
 		EC848DE51F334CD300B47E37 /* MSCheckInFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DE41F334CD300B47E37 /* MSCheckInFooterView.m */; };
+		EC96E4611F42CC4600452C75 /* QBCustomPushAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = EC96E4601F42CC4600452C75 /* QBCustomPushAnimation.m */; };
 		ECA8A9431F37FC8200BABFF9 /* MSShakeUserView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA8A9421F37FC8200BABFF9 /* MSShakeUserView.m */; };
 		ECA8A9461F38449500BABFF9 /* MSDiscoverModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA8A9451F38449500BABFF9 /* MSDiscoverModel.m */; };
 		ECA8A9491F3870B400BABFF9 /* MSCommentsListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA8A9481F3870B400BABFF9 /* MSCommentsListVC.m */; };
@@ -562,6 +563,8 @@
 		EC848DDB1F33253400B47E37 /* MSCheckInHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCheckInHeaderView.m; sourceTree = "<group>"; };
 		EC848DE31F334CD300B47E37 /* MSCheckInFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCheckInFooterView.h; sourceTree = "<group>"; };
 		EC848DE41F334CD300B47E37 /* MSCheckInFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCheckInFooterView.m; sourceTree = "<group>"; };
+		EC96E45F1F42CC4600452C75 /* QBCustomPushAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBCustomPushAnimation.h; sourceTree = "<group>"; };
+		EC96E4601F42CC4600452C75 /* QBCustomPushAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBCustomPushAnimation.m; sourceTree = "<group>"; };
 		ECA8A9411F37FC8200BABFF9 /* MSShakeUserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSShakeUserView.h; sourceTree = "<group>"; };
 		ECA8A9421F37FC8200BABFF9 /* MSShakeUserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSShakeUserView.m; sourceTree = "<group>"; };
 		ECA8A9441F38449500BABFF9 /* MSDiscoverModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSDiscoverModel.h; sourceTree = "<group>"; };
@@ -1270,6 +1273,7 @@
 		EC3553221F31B6A000370A36 /* QBTools */ = {
 			isa = PBXGroup;
 			children = (
+				EC96E45E1F42CC1000452C75 /* QBTransitionAnimation */,
 				EC53839B1F3B068C00D2EB0F /* VoiceManager */,
 				EC1BFE561F39BE0A003613D6 /* UploadManager */,
 				EC1BFCD11F39936F003613D6 /* LocationManager */,
@@ -1456,6 +1460,15 @@
 				EC0CAA871F341D3E00B1C669 /* MSCheckInUserCell.m */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		EC96E45E1F42CC1000452C75 /* QBTransitionAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				EC96E45F1F42CC4600452C75 /* QBCustomPushAnimation.h */,
+				EC96E4601F42CC4600452C75 /* QBCustomPushAnimation.m */,
+			);
+			path = QBTransitionAnimation;
 			sourceTree = "<group>";
 		};
 		ECB58CBC1F2B242A0074E6D8 /* Detail */ = {
@@ -2228,6 +2241,7 @@
 				ECC11B281F2724450093E3EE /* NSDate+timeStamp.m in Sources */,
 				EC1BFCD71F399E54003613D6 /* MSMessageModel.m in Sources */,
 				EC1BFDB31F39A787003613D6 /* UIScrollView+XHkeyboardControl.m in Sources */,
+				EC96E4611F42CC4600452C75 /* QBCustomPushAnimation.m in Sources */,
 				EC1BFDEE1F39A787003613D6 /* XHShareMenuView.m in Sources */,
 				ECC118F41F26D8150093E3EE /* AppDelegate+Configurations.m in Sources */,
 				EC5383A41F3B074B00D2EB0F /* MSFaceTimeView.m in Sources */,

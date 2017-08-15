@@ -79,9 +79,9 @@
         if ([MSUtil currentVipLevel] <= MSLevelVip1) {
             self.openVipButton = [UIButton buttonWithType:UIButtonTypeCustom];
             if ([MSUtil currentVipLevel] == MSLevelVip0) {
-                [_openVipButton setTitle:@"开通VIP" forState:UIControlStateNormal];
-            } else if ([MSUtil currentVipLevel] > MSLevelVip0) {
                 [_openVipButton setTitle:@"升级VIP" forState:UIControlStateNormal];
+            } else if ([MSUtil currentVipLevel] > MSLevelVip0) {
+                [_openVipButton setTitle:@"钻石VIP" forState:UIControlStateNormal];
             }
             [_openVipButton setTitleColor:kColor(@"#ffffff") forState:UIControlStateNormal];
             _openVipButton.titleLabel.font = kFont(14);
@@ -241,7 +241,7 @@
             [_label mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerX.equalTo(self);
                 make.top.equalTo(_imgV.mas_bottom).offset(kWidth(20));
-                make.size.mas_equalTo(CGSizeMake(kWidth(172), kFont(12).lineHeight *2));
+                make.size.mas_equalTo(CGSizeMake(kWidth(172), ceilf(kFont(12).lineHeight *2)));
             }];
         }
         

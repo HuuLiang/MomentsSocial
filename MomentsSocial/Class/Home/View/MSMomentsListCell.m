@@ -28,12 +28,16 @@
         self.backgroundColor = kColor(@"#ffffff");
         self.contentView.backgroundColor = kColor(@"#ffffff");
         
+        UIView *backView = [[UIView alloc] init];
+        backView.backgroundColor = kColor(@"#f0f0f0");
+        backView.layer.cornerRadius = kWidth(56);
+        backView.layer.masksToBounds = YES;
+        [self.contentView addSubview:backView];
+        
         self.mainImgV = [[UIImageView alloc] init];
         _mainImgV.layer.cornerRadius = kWidth(52);
-        _mainImgV.layer.borderColor = kColor(@"#F0F0F0").CGColor;
-        _mainImgV.layer.borderWidth = 4.0f;
         _mainImgV.layer.masksToBounds = YES;
-        [self.contentView addSubview:_mainImgV];
+        [backView addSubview:_mainImgV];
         
         self.titleLabel = [[UILabel alloc] init];
         _titleLabel.textColor = kColor(@"#333333");
@@ -58,9 +62,14 @@
         [self.contentView addSubview:_hotImgV];
         
         {
-            [_mainImgV mas_makeConstraints:^(MASConstraintMaker *make) {
+            [backView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(self.contentView);
-                make.left.equalTo(self.contentView).offset(kWidth(12));
+                make.left.equalTo(self.contentView).offset(kWidth(20));
+                make.size.mas_equalTo(CGSizeMake(kWidth(112), kWidth(112)));
+            }];
+            
+            [_mainImgV mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.center.equalTo(backView);
                 make.size.mas_equalTo(CGSizeMake(kWidth(104), kWidth(104)));
             }];
             

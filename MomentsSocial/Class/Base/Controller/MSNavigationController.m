@@ -9,9 +9,10 @@
 #import "MSNavigationController.h"
 #import "MSBaseViewController.h"
 
+#import "QBCustomPushAnimation.h"
 
 @interface MSNavigationController () <UINavigationBarDelegate>
-
+@property (nonatomic) QBCustomPushAnimation *pushAnimation;
 @end
 
 @implementation MSNavigationController
@@ -30,6 +31,14 @@
     
     self.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
     self.delegate = (id<UINavigationControllerDelegate>)self;
+    
+}
+
+- (QBCustomPushAnimation *)pushAnimation {
+    if (!_pushAnimation) {
+        _pushAnimation = [[QBCustomPushAnimation alloc] init];
+    }
+    return _pushAnimation;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,11 +68,15 @@
 //    return nil;
 //}
 //
-//- (nullable id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-//                                            animationControllerForOperation:(UINavigationControllerOperation)operation
-//                                                         fromViewController:(UIViewController *)fromVC
-//                                                           toViewController:(UIViewController *)toVC  NS_AVAILABLE_IOS(7_0) {
-//    return nil;
-//}
+- (nullable id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                            animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                         fromViewController:(UIViewController *)fromVC
+                                                           toViewController:(UIViewController *)toVC  NS_AVAILABLE_IOS(7_0)
+{
+    if(operation == UINavigationControllerOperationPush) {
+        return self.pushAnimation;
+    }
+    return nil;
+}
 
 @end

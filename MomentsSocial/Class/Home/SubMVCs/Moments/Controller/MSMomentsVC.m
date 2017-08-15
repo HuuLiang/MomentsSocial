@@ -180,14 +180,19 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         cell.momentsType = model.type;
         
         @weakify(self);
+        @weakify(cell);
+        @weakify(model);
+
         cell.detailAction = ^{
+            @strongify(model);
             @strongify(self);
             [MSMessageViewController showMessageWithUserId:model.userId nickName:model.nickName portraitUrl:model.portraitUrl inViewController:self];
         };
         
-        @weakify(cell);
         cell.greetAction = ^{
             @strongify(cell);
+            @strongify(self);
+            @strongify(model);
             if (model.greeted) {
                 [[MSHudManager manager] showHudWithText:@"您已经打过招呼"];
                 return ;
@@ -203,11 +208,16 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         
         cell.loveAction = ^{
             @strongify(cell);
+            @strongify(self);
+            @strongify(model);
             if (model.loved) {
                 [[MSHudManager manager] showHudWithText:@"您已经点过赞"];
                 return ;
             }
             [[MSReqManager manager] greetMomentWithMoodId:model.moodId Class:[QBDataResponse class] completionHandler:^(BOOL success, id obj) {
+                @strongify(cell);
+                @strongify(self);
+                @strongify(model);
                 if (success) {
                     [[MSHudManager manager] showHudWithText:@"点赞成功"];
                     cell.loved = @(1);
@@ -221,6 +231,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         
         cell.commentAction = ^{
             @strongify(self);
+            @strongify(model);
             MSCommentsListVC *listVC = [[MSCommentsListVC alloc] initWithMomentId:model.moodId];
             [self.navigationController pushViewController:listVC animated:YES];
         };
@@ -245,6 +256,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         
         cell.VideoAction = ^{
             @strongify(self);
+            @strongify(model);
             MSPopupType type;
             if ([MSUtil currentVipLevel] <= self.circleInfo.vipLv) {
                 if (cell.vipLv == MSLevelVip0) {

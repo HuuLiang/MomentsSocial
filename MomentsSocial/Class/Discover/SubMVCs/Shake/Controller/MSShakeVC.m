@@ -50,7 +50,8 @@ static NSString *const kMSShakeTimeKeyName = @"kMSShakeTimeKeyName";
     
     {
         [_shakeView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(self.view);
+            make.centerX.equalTo(self.view);
+            make.top.equalTo(self.view).offset(kWidth(350));
             make.size.mas_equalTo(CGSizeMake(kWidth(100), kWidth(400)));
         }];
     }
@@ -85,7 +86,8 @@ static NSString *const kMSShakeTimeKeyName = @"kMSShakeTimeKeyName";
     
     {
         [_userView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(self.view);
+            make.centerX.equalTo(self.view);
+            make.top.equalTo(self.view).offset(kWidth(350));
             make.size.mas_equalTo(CGSizeMake(kWidth(300), kWidth(400)));
         }];
     }
