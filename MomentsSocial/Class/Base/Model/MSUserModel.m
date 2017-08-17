@@ -27,7 +27,7 @@
 }
 
 - (BOOL)greeted {
-    MSUserModel *userModel = [MSUserModel findFirstByCriteria:[NSString stringWithFormat:@"%ld",self.userId]];
+    MSUserModel *userModel = [MSUserModel findFirstByCriteria:[NSString stringWithFormat:@"where userId=%ld",self.userId]];
     if (!userModel) {
         return NO;
     }

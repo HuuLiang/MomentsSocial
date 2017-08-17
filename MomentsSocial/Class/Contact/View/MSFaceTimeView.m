@@ -54,6 +54,9 @@
             [self cancelFaceTimeView];
             [MSVipVC showVipViewControllerInCurrentVC:[MSUtil rootViewControlelr]];
         }];
+    } else {
+        [self cancelFaceTimeView];
+        [[MSHudManager manager] showHudWithText:@"对方已挂断"];
     }
 }
 
@@ -141,13 +144,13 @@
             [_refuseButton mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self).offset(kWidth(60));
                 make.bottom.equalTo(self.mas_bottom).offset(-kWidth(40));
-                make.size.mas_equalTo(CGSizeMake(kWidth(120), kWidth(170)));
+                make.size.mas_equalTo(CGSizeMake(kWidth(120), kWidth(250)));
             }];
             
             [_confirmButton mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.mas_right).offset(-kWidth(60));
                 make.bottom.equalTo(self.mas_bottom).offset(-kWidth(40));
-                make.size.mas_equalTo(CGSizeMake(kWidth(120), kWidth(170)));
+                make.size.mas_equalTo(CGSizeMake(kWidth(120), kWidth(250)));
             }];
         }
 

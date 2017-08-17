@@ -25,15 +25,15 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         self.imgVA = [[UIImageView alloc] init];
-        _imgVA.backgroundColor = [UIColor blueColor];
+//        _imgVA.backgroundColor = [UIColor blueColor];
         [self.contentView addSubview:_imgVA];
         
         self.imgVB = [[UIImageView alloc] init];
-        _imgVB.backgroundColor = [UIColor yellowColor];
+//        _imgVB.backgroundColor = [UIColor yellowColor];
         [self.contentView addSubview:_imgVB];
         
         self.imgVC = [[UIImageView alloc] init];
-        _imgVC.backgroundColor = [UIColor brownColor];
+//        _imgVC.backgroundColor = [UIColor brownColor];
         [self.contentView addSubview:_imgVC];
         
         

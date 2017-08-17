@@ -116,9 +116,11 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
 - (void)receivePostMessageInfo:(NSNotification *)notification {
     MSMessageModel *msgModel = [notification object];
     if ([msgModel.sendUserId isEqualToString:self.userId]) {
-        [self.chatMessages addObject:msgModel];
-        [self addChatMessageIntoSelf:msgModel reload:NO];
-        [[QBVoiceManager manager] playReceiveVoice];
+        if ([msgModel saveOrUpdate]) {
+            [self.chatMessages addObject:msgModel];
+            [self addChatMessageIntoSelf:msgModel reload:NO];
+            [[QBVoiceManager manager] playReceiveVoice];
+        }
     }
 }
 
@@ -170,7 +172,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
         message.messageMediaType = XHBubbleMessageMediaTypeVideo;
         message.thumbnailUrl = obj.videoImgUrl;
     } else if (obj.msgType == MSMessageTypeFaceTime) {
-        message = [[XHMessage alloc] initWithText:obj.msgContent
+        message = [[XHMessage alloc] initWithText:@"【视频聊天邀请】"
                                            sender:obj.sendUserId
                                         timestamp:date];
         message.messageMediaType = XHBubbleMessageMediaTypeText;
@@ -239,13 +241,14 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
 
 //用户主动发送的消息的加载方式
 - (void)addChatMessage:(MSMessageModel *)chatMessage {
-    if (self.isViewLoaded) {
+    if ([chatMessage saveOrUpdate] && self.isViewLoaded) {
         [self.chatMessages addObject:chatMessage];
+        [self addChatMessageIntoSelf:chatMessage reload:NO];
+        [[QBVoiceManager manager] playSendVoice];
     }
-    [self addChatMessageIntoSelf:chatMessage reload:NO];
-    [[QBVoiceManager manager] playSendVoice];
     
     if ([MSUtil currentVipLevel] == MSLevelVip0) {
+        [self.messageInputView.inputTextView resignFirstResponder];
         [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeSendMessage disCount:NO cancleAction:nil confirmAction:^{
             [MSVipVC showVipViewControllerInCurrentVC:self];
         }];
@@ -295,14 +298,14 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
                 [self.locationButton setTitle:@"" forState:UIControlStateNormal];
                 [self.locationButton mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.right.equalTo(self.view.mas_right).offset(kWidth(20));
-                    make.top.equalTo(self.view.mas_bottom).offset(kWidth(100));
+                    make.top.equalTo(self.view.mas_top).offset(kWidth(50));
                     make.size.mas_equalTo(CGSizeMake(kWidth(70), kWidth(40)));
                 }];
             } else {
                 [self.locationButton setTitle:locationName forState:UIControlStateNormal];
                 [self.locationButton mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.right.equalTo(self.view.mas_right).offset(kWidth(20));
-                    make.top.equalTo(self.view.mas_bottom).offset(kWidth(50));
+                    make.top.equalTo(self.view.mas_top).offset(kWidth(50));
                     make.size.mas_equalTo(CGSizeMake(width + kWidth(70), kWidth(40)));
                 }];
             }
@@ -313,7 +316,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
         {
             [self.locationButton mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.view.mas_right).offset(kWidth(20));
-                make.top.equalTo(self.view.mas_bottom).offset(kWidth(50));
+                make.top.equalTo(self.view.mas_top).offset(kWidth(50));
                 make.size.mas_equalTo(CGSizeMake(width + kWidth(70), kWidth(40)));
             }];
         }

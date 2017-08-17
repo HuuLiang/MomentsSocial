@@ -117,6 +117,7 @@
         }
     }
     if (info) {
+        _price = info.price;
         _titleLabel.text = info.title;
         _priceLabel.text = [NSString stringWithFormat:@"¥%ld",(long)info.price/100];
         _unitPriceLabel.text = [NSString stringWithFormat:@"%.1f元/天",(float)info.price/100/info.days];

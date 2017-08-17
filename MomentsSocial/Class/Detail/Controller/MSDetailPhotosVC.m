@@ -30,6 +30,8 @@ static NSString *const kMSDetailPhotoCellReusableIdentifier = @"kMSDetailPhotoCe
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = @"相册";
+    
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.minimumLineSpacing = kWidth(20);
     layout.minimumInteritemSpacing = kWidth(10);

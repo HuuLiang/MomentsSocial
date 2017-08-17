@@ -130,4 +130,26 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     return kWidth(180);
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row < self.dataSource.count) {
+        MSFindInfo *info = self.dataSource[indexPath.row];
+        if (info.funType == 1) {
+            MSNearViewController *nearVC = [[MSNearViewController alloc] initWithTitle:@"附近的人"];
+            [self.navigationController pushViewController:nearVC animated:YES];
+        } else if (info.funType == 2) {
+            MSShakeVC *shakeVC = [[MSShakeVC alloc] initWithTitle:@"摇一摇"];
+            [self.navigationController pushViewController:shakeVC animated:YES];
+        } else if (info.funType == 3) {
+            if ([MSUtil currentVipLevel] == MSLevelVip0) {
+                [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeRegisterVip0 disCount:NO cancleAction:nil confirmAction:^{
+                    [MSVipVC showVipViewControllerInCurrentVC:self];
+                }];
+                return ;
+            }
+            MSCheckInVC *checkInVC = [[MSCheckInVC alloc] initWithTitle:@"今日开房"];
+            [self.navigationController pushViewController:checkInVC animated:YES];
+        }
+    }
+}
+
 @end

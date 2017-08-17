@@ -233,9 +233,9 @@
         
         [weakSelf exMainQueue:^{
             weakSelf.messages = messages;
-//            [weakSelf.messageTableView beginUpdates];
+            [weakSelf.messageTableView beginUpdates];
             [weakSelf.messageTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//            [weakSelf.messageTableView endUpdates];
+            [weakSelf.messageTableView endUpdates];
             [weakSelf scrollToBottomAnimated:YES];
         }];
     }];

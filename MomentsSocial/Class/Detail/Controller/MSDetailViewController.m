@@ -203,6 +203,19 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
     return nil;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == MSDetailSectionPhotos) {
+        if ([MSUtil currentVipLevel] == MSLevelVip0) {
+            [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeUserDetailInfo disCount:NO cancleAction:nil confirmAction:^{
+                [MSVipVC showVipViewControllerInCurrentVC:self];
+            }];
+            return ;
+        }
+        MSDetailPhotosVC *photosVC = [[MSDetailPhotosVC alloc] initWithPhotos:self.user.userPhoto];
+        [self.navigationController pushViewController:photosVC animated:YES];
+    }
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == MSDetailSectionPhotos) {
         return kDetailPhotoWidth + kWidth(20);
@@ -229,7 +242,7 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
             return ;
         }
         if (section == MSDetailSectionPhotos) {
-            MSDetailPhotosVC *photosVC = [[MSDetailPhotosVC alloc] initWithTitle:@"相册"];
+            MSDetailPhotosVC *photosVC = [[MSDetailPhotosVC alloc] initWithPhotos:self.user.userPhoto];
             [self.navigationController pushViewController:photosVC animated:YES];
         } else if (section == MSDetailSectionInfo) {
             MSDetailInfoViewController *infoVC = [[MSDetailInfoViewController alloc] initWithTitle:@"个人资料"];

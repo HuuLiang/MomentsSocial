@@ -97,6 +97,12 @@
         case MSPopupTypeFaceTimeVip1:
             contentMsg = @"钻石VIP可发起视频聊天";
             enterMsg = @"钻石VIP";
+            break;
+        
+        case MSPopupTypeMoreMoments:
+            contentMsg = @"升级VIP,查看更多动态！";
+            enterMsg = @"升级VIP";
+            break;
             
         default:
             break;

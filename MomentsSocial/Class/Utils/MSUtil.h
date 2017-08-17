@@ -41,4 +41,6 @@
 
 + (float)getVideoLengthWithVideoUrl:(NSString *)videoUrl;
 
++ (int)getRandomNumber:(int)fromNumber to:(int)toNubmer;
+
 @end

@@ -10,16 +10,21 @@
 
 static const NSTimeInterval kRollingChangeTimeInterval = 5;
 
-static const NSTimeInterval PushUserNewPushTime = 60 * 5;
-static const NSTimeInterval PushUserOldPushTime = 60 * 30;
-static const NSTimeInterval CircleUserNormalTime = 60 * 30;
+//static const NSTimeInterval PushUserNewPushTime = 60 * 5;
+//static const NSTimeInterval PushUserOldPushTime = 60 * 30;
+//static const NSTimeInterval CircleUserNormalTime = 60 * 30;
+
+static const NSTimeInterval PushUserNewPushTime = 60 * 2;
+static const NSTimeInterval PushUserOldPushTime = 60 * 2;
+static const NSTimeInterval CircleUserNormalTime = 60 * 2;
+
 
 @implementation MSOnlineInfo
 
 @end
 
 @interface MSOnlineManager ()
-@property (nonatomic) dispatch_queue_t changeQueue;
+//@property (nonatomic) dispatch_queue_t changeQueue;
 @property (nonatomic) dispatch_queue_t sourceQueue;
 @property (nonatomic) NSMutableArray <MSOnlineInfo *> *dataSource;
 @end
@@ -203,16 +208,16 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 }
 
 - (void)startOnlineChangedEvent {    
-    if (self.changeQueue) {
-        return;
-    }
-    self.changeQueue = dispatch_queue_create("MomentsSocail_changedOnline_status", nil);
+//    if (self.changeQueue) {
+//        return;
+//    }
+//    self.changeQueue = dispatch_queue_create("MomentsSocail_changedOnline_status", nil);
 
     [self rollingChangeUserOnlineStatus];
 }
 
 - (void)rollingChangeUserOnlineStatus {
-    dispatch_async(self.changeQueue, ^{
+    dispatch_async(self.sourceQueue, ^{
         __block uint nextRollingReplyTime = kRollingChangeTimeInterval;
         
         if (self.dataSource.count > 0) {
@@ -252,8 +257,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                 }
             }];
         }
-        
-//        QBLog(@"状态改变池数量%ld 下次判断改变时间 %d",self.dataSource.count,nextRollingReplyTime);
+        QBLog(@"状态改变池数量%ld 下次判断改变时间 %d",self.dataSource.count,nextRollingReplyTime);
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             sleep(nextRollingReplyTime);

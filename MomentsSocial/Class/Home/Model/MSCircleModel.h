@@ -22,6 +22,8 @@
 
 @property (nonatomic) MSLevel vipLv;
 
+@property (nonatomic) NSTimeInterval time;
+
 - (NSInteger)numberWithCircleId:(NSInteger)circleId;
 
 @end

@@ -15,11 +15,12 @@
 #import "QBUploadManager.h"
 #import "MSVipVC.h"
 
-@interface MSMineViewController () <UIAlertViewDelegate>
+@interface MSMineViewController () <UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic) UIImageView    *gradientView;
 @property (nonatomic) MSMineInfoView *infoView;
 @property (nonatomic) MSMineSettingView *settingView;
 @property (nonatomic) MSMineVipDescView *vipView;
+@property (nonatomic) UITableView *tableView;
 @end
 
 @implementation MSMineViewController
@@ -29,7 +30,18 @@
     
     self.view.backgroundColor = kColor(@"#f0f0f0");
     self.navigationController.navigationBar.barStyle = UIBaselineAdjustmentNone;
-        
+    
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    _tableView.backgroundColor = kColor(@"#f0f0f0");
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    [self.view addSubview:_tableView];
+    
+    {
+        [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+    }
     [self configGradientView];
     [self configUserInfoView];
     [self configSettingView];
@@ -123,30 +135,38 @@
 }
 
 - (void)configSettingView {
-    if (!_settingView) {
-        self.settingView = [[MSMineSettingView alloc] init];
-        [self.view addSubview:_settingView];
-        
-        @weakify(self);
-        _settingView.settingAction = ^{
-            @strongify(self);
-            MSSettingVC *settingVC = [[MSSettingVC alloc] initWithTitle:@"设置"];
-            [self.navigationController pushViewController:settingVC animated:YES];
-        };
-        
-        {
-            [_settingView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.view);
-                make.top.equalTo(_infoView.mas_bottom).offset(kWidth(30));
-                make.size.mas_equalTo(CGSizeMake(kWidth(690), kWidth(88)));
-            }];
-        }
+    UIView *headerView = [[UIView alloc] init];
+    headerView.backgroundColor = kColor(@"#f0f0f0");
+    headerView.size = CGSizeMake(kScreenWidth, kWidth(350));
+    
+    self.settingView = [[MSMineSettingView alloc] init];
+    [headerView addSubview:_settingView];
+    
+    @weakify(self);
+    _settingView.settingAction = ^{
+        @strongify(self);
+        MSSettingVC *settingVC = [[MSSettingVC alloc] initWithTitle:@"设置"];
+        [self.navigationController pushViewController:settingVC animated:YES];
+    };
+    
+    {
+        [_settingView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(headerView);
+            make.bottom.equalTo(headerView.mas_bottom).offset(-kWidth(28));
+            make.size.mas_equalTo(CGSizeMake(kWidth(690), kWidth(88)));
+        }];
     }
+    
+    self.tableView.tableHeaderView = headerView;
 }
 
 - (void)configVipView {
+    UIView *footerView = [[UIView alloc] init];
+    footerView.backgroundColor = kColor(@"#f0f0f0");
+    footerView.size = CGSizeMake(kScreenWidth, kWidth(750));
+    
     self.vipView = [[MSMineVipDescView alloc] init];
-    [self.view addSubview:_vipView];
+    [footerView addSubview:_vipView];
     
     @weakify(self);
     _vipView.openVipAction = ^{
@@ -160,11 +180,12 @@
     
     {
         [_vipView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self.view);
-            make.top.equalTo(_settingView.mas_bottom).offset(kWidth(28));
+            make.centerX.equalTo(footerView);
+            make.top.equalTo(footerView).offset(kWidth(28));
             make.size.mas_equalTo(CGSizeMake(kWidth(690), kWidth(674)));
         }];
     }
+    self.tableView.tableFooterView = footerView;
 }
 
 #pragma mark - UIAlertViewDelegate
@@ -178,5 +199,26 @@
         [[MSHudManager manager] showHudWithText:@"修改昵称成功"];
     }
 }
+
+#pragma mark - UITableViewDelegate,UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 0;
+}
+
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+//    return 1;
+//}
+//
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+//    cell.backgroundColor = [UIColor redColor];
+//    return cell;
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return kWidth(100);
+//}
+
 
 @end

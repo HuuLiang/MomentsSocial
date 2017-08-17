@@ -35,15 +35,19 @@
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse) {
+//    if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse) {
+//        [self.locationManager requestWhenInUseAuthorization];
+//    }
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse) {
         [self.locationManager requestWhenInUseAuthorization];
     }
+    
     [self.locationManager startUpdatingLocation];
     
 }
 
 - (BOOL)checkLocationIsEnable {
-    return [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse;
+    return [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways;
 }
 
 - (void)getUserLacationNameWithUserId:(NSString *)userId locationName:(void (^)(BOOL success,NSString *))handler {
@@ -105,7 +109,22 @@
                 //四大直辖市的城市信息无法通过locality获得，只能通过获取省份的方法来获得（如果city为空，则可知为直辖市）
                 city = placemark.administrativeArea;
             }
-            NSString *nameStr = [NSString stringWithFormat:@"%@%@",city,placemark.name];
+            NSString *nameStr;
+            NSString *subNameStr;
+            if (placemark.thoroughfare.length > 0) {
+                subNameStr = placemark.thoroughfare;
+//                nameStr = [NSString stringWithFormat:@"%@%@",city,placemark.thoroughfare];
+            } else {
+                subNameStr = placemark.name;
+//                nameStr = [NSString stringWithFormat:@"%@%@",city,placemark.name];
+            }
+            NSRange range = [subNameStr rangeOfString:city];
+            if (range.location != NSNotFound) {
+                nameStr = [NSString stringWithFormat:@"%@%@",city,[subNameStr substringFromIndex:range.location+range.length]];
+            } else {
+                nameStr = [NSString stringWithFormat:@"%@%@",city,subNameStr];
+            }
+            
             handler(nameStr);
             NSLog(@"city = %@", city);
         } else if (error == nil && [array count] == 0) {

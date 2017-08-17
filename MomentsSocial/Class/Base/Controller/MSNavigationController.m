@@ -74,7 +74,7 @@
                                                            toViewController:(UIViewController *)toVC  NS_AVAILABLE_IOS(7_0)
 {
     if(operation == UINavigationControllerOperationPush) {
-        return self.pushAnimation;
+//        return self.pushAnimation;
     }
     return nil;
 }

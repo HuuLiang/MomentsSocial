@@ -88,8 +88,31 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     if (indexPath.item < self.dataSource.count) {
         MSUserModel *user = self.dataSource[indexPath.item];
         
+        cell.isGreeted = [user greeted];
+        if (!cell.imgUrl) {
+            cell.imgUrl = user.portraitUrl;
+        }
+        if (!cell.nickName) {
+            cell.nickName = user.nickName;
+        }
+        if (!cell.age) {
+            cell.age = user.age;
+        }
+        if (!cell.sex) {
+            cell.sex = user.sex;
+        }
+        
         @weakify(cell);
         @weakify(self);
+        
+        if (!cell.location) {
+            @weakify(cell);
+            [[QBLocationManager manager] getUserLacationNameWithUserId:[NSString stringWithFormat:@"%ld",(long)user.userId] locationName:^(BOOL success, NSString *locationName) {
+                @strongify(cell);
+                cell.location = locationName;
+            }];
+        }
+        
         cell.greetAction = ^{
             @strongify(self);
             @strongify(cell);
@@ -110,33 +133,33 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     return cell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-    MSNearCell *nearCell = (MSNearCell *)cell;
-    if (indexPath.item < self.dataSource.count) {
-        MSUserModel *user = self.dataSource[indexPath.item];
-        nearCell.isGreeted = [user greeted];
-        if (!nearCell.imgUrl) {
-            nearCell.imgUrl = user.portraitUrl;
-        }
-        if (!nearCell.nickName) {
-            nearCell.nickName = user.nickName;
-        }
-        if (!nearCell.age) {
-            nearCell.age = user.age;
-        }
-        if (!nearCell.sex) {
-            nearCell.sex = user.sex;
-        }
-
-        if (!nearCell.location) {
-            @weakify(nearCell);
-            [[QBLocationManager manager] getUserLacationNameWithUserId:[NSString stringWithFormat:@"%ld",(long)user.userId] locationName:^(BOOL success, NSString *locationName) {
-                @strongify(nearCell);
-                nearCell.location = locationName;
-            }];
-        }
-    }
-}
+//- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+//    MSNearCell *nearCell = (MSNearCell *)cell;
+//    if (indexPath.item < self.dataSource.count) {
+//        MSUserModel *user = self.dataSource[indexPath.item];
+//        nearCell.isGreeted = [user greeted];
+//        if (!nearCell.imgUrl) {
+//            nearCell.imgUrl = user.portraitUrl;
+//        }
+//        if (!nearCell.nickName) {
+//            nearCell.nickName = user.nickName;
+//        }
+//        if (!nearCell.age) {
+//            nearCell.age = user.age;
+//        }
+//        if (!nearCell.sex) {
+//            nearCell.sex = user.sex;
+//        }
+//
+//        if (!nearCell.location) {
+//            @weakify(nearCell);
+//            [[QBLocationManager manager] getUserLacationNameWithUserId:[NSString stringWithFormat:@"%ld",(long)user.userId] locationName:^(BOOL success, NSString *locationName) {
+//                @strongify(nearCell);
+//                nearCell.location = locationName;
+//            }];
+//        }
+//    }
+//}
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.item < self.dataSource.count) {

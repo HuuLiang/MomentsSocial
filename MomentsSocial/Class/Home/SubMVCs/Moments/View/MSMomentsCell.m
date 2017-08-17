@@ -14,7 +14,7 @@
 
 @property (nonatomic) UIImageView *userImgV;
 @property (nonatomic) UILabel     *nickLabel;
-@property (nonatomic) UILabel     *onlineLabel;
+@property (nonatomic) UIImageView     *onlineImgV;
 @property (nonatomic) UIButton    *greetButton;
 @property (nonatomic) UILabel     *contentLabel;
 
@@ -60,11 +60,8 @@
         _nickLabel.font = kFont(13);
         [_backView addSubview:_nickLabel];
         
-        self.onlineLabel = [[UILabel alloc] init];
-        _onlineLabel.textColor = kColor(@"#5AC8FA");
-        _onlineLabel.font = kFont(12);
-        [_backView addSubview:_onlineLabel];
-        _onlineLabel.hidden = YES;
+        self.onlineImgV = [[UIImageView alloc] init];
+        [_backView addSubview:_onlineImgV];
         
         self.greetButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_greetButton setTitle:@"打招呼" forState:UIControlStateNormal];
@@ -111,7 +108,7 @@
         self.attentionButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_attentionButton setTitleColor:kColor(@"#999999") forState:UIControlStateNormal];
         _attentionButton.titleLabel.font = kFont(12);
-        [_attentionButton setImage:[UIImage imageNamed:@"near_greeted"] forState:UIControlStateNormal];
+        [_attentionButton setImage:[UIImage imageNamed:@"near_greet"] forState:UIControlStateNormal];
         [_backView addSubview:_attentionButton];
 
         self.lineView = [[UIImageView alloc] init];
@@ -193,10 +190,10 @@
                 make.height.mas_equalTo(_nickLabel.font.lineHeight);
             }];
             
-            [_onlineLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            [_onlineImgV mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(_nickLabel);
                 make.left.equalTo(_nickLabel.mas_right).offset(kWidth(22));
-                make.height.mas_equalTo(_onlineLabel.font.lineHeight);
+                make.size.mas_equalTo(CGSizeMake(kWidth(68), kWidth(32)));
             }];
             
             [_greetButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -289,7 +286,7 @@
 
 - (void)setOnline:(NSNumber *)online {
     _online = online;
-    _onlineLabel.hidden = [_online boolValue];
+    _onlineImgV.image = [UIImage imageNamed:[online boolValue] ? @"moment_online" : @"moment_offline"];
 }
 
 - (void)setContent:(NSString *)content {
@@ -323,7 +320,7 @@
 
 - (void)setLoved:(NSNumber *)loved {
     _loved = loved;
-    [_attentionButton setImage:[UIImage imageNamed:[_loved boolValue] ? @"near_greet" : @"near_greeted"] forState:UIControlStateNormal];
+    [_attentionButton setImage:[UIImage imageNamed:[_loved boolValue] ? @"near_greeted" : @"near_greet"] forState:UIControlStateNormal];
 }
 
 - (void)setMomentsType:(MSMomentsType)momentsType {

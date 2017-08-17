@@ -64,7 +64,7 @@
         {
             [backView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(self.contentView);
-                make.left.equalTo(self.contentView).offset(kWidth(20));
+                make.left.equalTo(self.contentView).offset(kWidth(26));
                 make.size.mas_equalTo(CGSizeMake(kWidth(112), kWidth(112)));
             }];
             
@@ -74,20 +74,20 @@
             }];
             
             [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(_mainImgV.mas_right).offset(kWidth(12));
+                make.left.equalTo(_mainImgV.mas_right).offset(kWidth(30));
                 make.bottom.equalTo(self.contentView.mas_centerY).offset(-kWidth(10));
                 make.height.mas_equalTo(_titleLabel.font.lineHeight);
             }];
             
             [_onlineLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(_titleLabel);
-                make.left.equalTo(_titleLabel.mas_right).offset(kWidth(12));
+                make.left.equalTo(_titleLabel.mas_right).offset(kWidth(16));
                 make.height.mas_equalTo(_onlineLabel.font.lineHeight);
             }];
             
             [_typeImgV mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(_titleLabel);
-                make.left.equalTo(_onlineLabel.mas_right).offset(kWidth(18));
+                make.left.equalTo(_onlineLabel.mas_right).offset(kWidth(24));
                 make.size.mas_equalTo(CGSizeMake(kWidth(66), kWidth(28)));
             }];
             

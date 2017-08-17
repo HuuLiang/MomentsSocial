@@ -217,4 +217,10 @@ static NSString *const kMSAutoReplyMessageTimeRecordKeyName = @"kMSAutoReplyMess
     return audioDurationSeconds;
 }
 
+#pragma mark 随机数
++ (int)getRandomNumber:(int)fromNumber to:(int)toNubmer
+{
+    return (int)(fromNumber + (arc4random() % (toNubmer - fromNumber + 1)));
+}
+
 @end

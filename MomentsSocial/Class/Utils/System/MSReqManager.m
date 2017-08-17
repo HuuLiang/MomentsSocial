@@ -90,7 +90,8 @@
 - (void)fetchMomentsListInfoWithCircleId:(NSInteger)circleId class:(Class)classModel completionHandler:(MSCompletionHandler)handler {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[self params]];
     if (circleId != NSNotFound) {
-        [params addEntriesFromDictionary:@{@"circleId":@(circleId)}];
+        [params addEntriesFromDictionary:@{@"circleId":@(circleId),
+                                           @"pageSize":@(100)}];
     }
     
     [[QBDataManager manager] requestUrl:MS_MOMENTS_URL withParams:params class:classModel handler:^(id obj, NSError *error) {
@@ -107,8 +108,10 @@
 /** 批量推送 */
 - (void)fetchPushUserInfoWithPage:(NSInteger)page size:(NSInteger)pageSize Class:(Class)classModel completionHandler:(MSCompletionHandler)handler {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[self params]];
-    [params addEntriesFromDictionary:@{@"page":@(page),
-                                       @"pageSize":@(pageSize)}];
+    [params addEntriesFromDictionary:@{@"page":@(page)}];
+    if (pageSize > 0) {
+        [params addEntriesFromDictionary:@{@"pageSize":@(pageSize)}];
+    }
     
     [[QBDataManager manager] requestUrl:MS_PUSHUSER_URL withParams:params class:classModel handler:^(id obj, NSError *error) {
         handler([self checkResponseCodeObject:obj error:error],obj);

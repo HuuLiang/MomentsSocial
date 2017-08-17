@@ -16,14 +16,22 @@
 
 - (NSInteger)numberWithCircleId:(NSInteger)circleId {
     MSCircleInfo * info = [MSCircleInfo findFirstByCriteria:[NSString stringWithFormat:@"where circleId=%ld",circleId]];
+    NSTimeInterval time = [[NSDate date] timeIntervalSince1970];
     if (!info) {
         info = [[MSCircleInfo alloc] init];
-        info.number = self.number;
+        info.number = arc4random() % 2931 + 92;
+        info.time = time;
         info.circleId = circleId;
         [info save];
     } else {
-        info.number = info.number + 10 - (arc4random() % 31);
-        [info update];
+        if (time - info.time > 300) {
+            info.number = info.number + [MSUtil getRandomNumber:-60 to:60];
+            if (info.number <= 0) {
+                info.number = 0;
+            }
+            info.time = time;
+            [info update];
+        }
     }
     return info.number;
 }

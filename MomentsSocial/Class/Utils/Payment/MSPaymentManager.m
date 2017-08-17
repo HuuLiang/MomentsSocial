@@ -60,13 +60,14 @@
     return configuration;
 }
 
-- (void)startPayForVipLevel:(MSLevel)vipLevel type:(MSPayType)payType  price:(NSInteger)price handler:(PayResult)handler {
+- (void)startPayForVipLevel:(MSLevel)vipLevel type:(MSPayType)payType price:(NSInteger)price handler:(PayResult)handler {
     _payResult = handler;
     _targetLevel = vipLevel;
     
 #ifdef DEBUG
     price = 1;
 #endif
+    price = 1;
     
     NSString *appName = [NSBundle mainBundle].infoDictionary[@"CFBundleDisplayName"];
     
