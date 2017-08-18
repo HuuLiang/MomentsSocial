@@ -20,7 +20,7 @@
 }
 
 + (void)deletePastContactInfo {
-    [[MSContactModel findAll] enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(MSContactModel * _Nonnull contact, NSUInteger idx, BOOL * _Nonnull stop) {
+    [[MSContactModel findAll] enumerateObjectsUsingBlock:^(MSContactModel * _Nonnull contact, NSUInteger idx, BOOL * _Nonnull stop) {
         if (![[NSDate dateWithTimeIntervalSince1970:contact.msgTime] isToday]) {
             contact.msgTime = 0;
             contact.msgContent = @"";
@@ -79,6 +79,7 @@
         if (![tabBarVC isKindOfClass:[MSTabBarController class]]) {
             return ;
         }
+        [UIApplication sharedApplication].applicationIconBadgeNumber = allUnReadCount;
         MSNavigationController *contactNav = [tabBarVC.viewControllers objectAtIndex:2];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (allUnReadCount > 0) {

@@ -11,10 +11,11 @@
 #import "MSCommentsModel.h"
 #import "MSMomentsModel.h"
 #import "MSReqManager.h"
+#import "MSVipVC.h"
 
 static NSString *const kMSMomentCommentsListCellReusableIdentifier = @"kMSMomentCommentsListCellReusableIdentifier";
 
-@interface MSCommentsListVC () <UITableViewDelegate,UITableViewDataSource>
+@interface MSCommentsListVC () <UITableViewDelegate,UITableViewDataSource,UIAlertViewDelegate>
 @property (nonatomic) UITableView *tableView;
 @property (nonatomic) NSInteger momentId;
 @property (nonatomic) NSMutableArray *dataSource;
@@ -55,6 +56,8 @@ QBDefineLazyPropertyInitialization(NSMutableArray, heights)
         [self fetchCommentsInfo];
     }];
     [_tableView QB_triggerPullToRefresh];
+    
+    [self configRightBarButton];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -85,6 +88,31 @@ QBDefineLazyPropertyInitialization(NSMutableArray, heights)
     [self.tableView reloadData];
 }
 
+- (void)configRightBarButton {
+    @weakify(self)
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"评论" style:UIBarButtonItemStylePlain handler:^(id sender) {
+        @strongify(self);
+        if ([MSUtil currentVipLevel] == MSLevelVip0) {
+            [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeSendComment disCount:NO cancleAction:nil confirmAction:^{
+                [MSVipVC showVipViewControllerInCurrentVC:self];
+            }];
+            return ;
+        }
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"评论" message:@"期待您的神评" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"发表", nil];
+        alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+        [alertView show];
+
+    }];
+}
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        
+    } else if (buttonIndex == 1) {
+        [[MSHudManager manager] showHudWithText:@"发表成功，审核中"];
+    }
+}
 
 #pragma mark - UITableViewDelegate,UITableViewDataSource
 

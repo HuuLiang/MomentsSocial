@@ -118,6 +118,10 @@
                 subNameStr = placemark.name;
 //                nameStr = [NSString stringWithFormat:@"%@%@",city,placemark.name];
             }
+            if (!subNameStr || !city) {
+                handler(@"Location Failed");
+                return ;
+            }
             NSRange range = [subNameStr rangeOfString:city];
             if (range.location != NSNotFound) {
                 nameStr = [NSString stringWithFormat:@"%@%@",city,[subNameStr substringFromIndex:range.location+range.length]];
@@ -145,6 +149,15 @@
     self.location = [locations lastObject];
     self.coordinate = self.location.coordinate;
     NSLog(@"纬度:%f 经度:%f", _coordinate.latitude, _coordinate.longitude);
+    
+    CLGeocoder* geocoder = [[CLGeocoder alloc] init];
+    
+    [geocoder reverseGeocodeLocation:self.location completionHandler:^(NSArray* placemarks, NSError* error) {
+        CLPlacemark *placemark = [placemarks objectAtIndex:0];
+        self.currentLocation = placemark.thoroughfare.length > 0 ? placemark.thoroughfare : placemark.name;
+     }];
+    [manager stopUpdatingLocation];
+
     
     // 2.停止定位
     [manager stopUpdatingLocation];

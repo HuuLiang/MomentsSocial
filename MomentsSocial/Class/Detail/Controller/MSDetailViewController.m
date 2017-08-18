@@ -218,7 +218,11 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == MSDetailSectionPhotos) {
-        return kDetailPhotoWidth + kWidth(20);
+        if (self.user.userPhoto.count > 0) {
+            return kDetailPhotoWidth + kWidth(20);
+        } else {
+            return 0;
+        }
     }
     return 0;
 }

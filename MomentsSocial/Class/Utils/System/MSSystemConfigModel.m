@@ -37,7 +37,7 @@ NSString *const kMSPayInfoPAY_VIP_2_2KeyName = @"PAY_VIP_2_2";
 }
 
 - (void)configPayInfoWithConfig:(MSConfigInfo *)config {
-    [config.allProperties enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [config.allProperties enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if ([obj isEqualToString:kMSPayInfoPAY_VIP_1_1KeyName]  || [obj isEqualToString:kMSPayInfoPAY_VIP_1_2KeyName]  || [obj isEqualToString:kMSPayInfoPAY_VIP_2_1KeyName] || [obj isEqualToString:kMSPayInfoPAY_VIP_2_2KeyName]) {
             [self setValue:[self setValue:[[MSPayInfo alloc] init] value:[config valueForKey:obj]] forKey:obj] ;
         }

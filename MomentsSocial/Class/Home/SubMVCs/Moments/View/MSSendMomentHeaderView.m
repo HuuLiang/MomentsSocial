@@ -102,6 +102,23 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     [self.photosView reloadData];
 }
 
+- (NSInteger)photoCount {
+    NSInteger allCount = _dataSource.count + 1;
+    NSInteger lineCount = allCount % 4 == 0 ? allCount / 4 : allCount/4 + 1;
+    if (lineCount > 1) {
+        CGFloat addHeight = (kScreenWidth - kWidth(110))/4 * (lineCount - 1);
+        [_photosView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.size.mas_equalTo(CGSizeMake(kScreenWidth, kWidth(240) + addHeight));
+        }];
+    }
+
+    return _dataSource.count + 1;
+}
+
+- (void)setLocation:(NSString *)location {
+    _locationLabel.text = location;
+}
+
 #pragma mark - UITextViewDelegate
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     if ([textView.text isEqualToString:kMSSendMomentTextViewPlaceholder]) {

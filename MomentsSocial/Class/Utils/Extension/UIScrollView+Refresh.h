@@ -20,6 +20,6 @@
 
 - (void)QB_pagingRefreshNoMoreData;
 
-
+- (void)QB_addPagingRefreshWithMomentsVip:(MSLevel)vipLevel Handler:(void (^)(void))handler;
 
 @end

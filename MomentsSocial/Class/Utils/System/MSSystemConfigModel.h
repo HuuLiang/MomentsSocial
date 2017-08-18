@@ -20,6 +20,7 @@
 
 @property (nonatomic) NSInteger     PUSH_RATE;
 @property (nonatomic) NSInteger     PUSH_COUNT;
+@property (nonatomic) NSInteger     PUSH_TIME;
 @property (nonatomic) NSString      *SPREAD_IMG;
 @property (nonatomic) NSString      *CONTACT_NAME;
 @property (nonatomic) NSString      *CONTACT_SCHEME;

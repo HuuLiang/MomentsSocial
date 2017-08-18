@@ -14,6 +14,10 @@
 
 @property (nonatomic) UIImage *addImg;
 
+@property (nonatomic) NSInteger photoCount;
+
+@property (nonatomic) NSString *location;
+
 @end
 
 

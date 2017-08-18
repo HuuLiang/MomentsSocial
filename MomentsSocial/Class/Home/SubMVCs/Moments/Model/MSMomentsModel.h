@@ -32,6 +32,8 @@
 @property (nonatomic) NSString *location;
 
 - (BOOL)isGreeted;
+- (void)setUserGreeted:(BOOL)greeted;
+
 - (BOOL)isLoved;
 @end
 

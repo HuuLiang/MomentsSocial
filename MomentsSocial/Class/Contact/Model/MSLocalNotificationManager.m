@@ -33,7 +33,7 @@
         localNotification.soundName = UILocalNotificationDefaultSoundName;
         localNotification.alertBody = @"您有未阅读的消息";
         localNotification.alertAction = @"您有未阅读的消息";
-        localNotification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
+//        localNotification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
         localNotification.userInfo = @{kMSAutoNotificationTypeKeyName:notiDate};
         [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
     }

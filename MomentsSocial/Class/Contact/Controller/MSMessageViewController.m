@@ -254,7 +254,13 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
         }];
     }
     if ([MSUtil currentVipLevel] > MSLevelVip0) {
-        [[MSReqManager manager] sendMsgWithSendUserId:self.messageSender receiveUserId:self.userId content:chatMessage.msgContent Class:[QBDataResponse class] completionHandler:^(BOOL success, id obj) {
+        NSString *content = @"";
+        if (chatMessage.msgType == MSMessageTypeText) {
+            content = chatMessage.msgContent;
+        } else if (chatMessage.msgType == MSMessageTypeVoice) {
+            content = chatMessage.voiceUrl;
+        }
+        [[MSReqManager manager] sendMsgWithSendUserId:self.messageSender receiveUserId:self.userId content:content Class:[QBDataResponse class] completionHandler:^(BOOL success, id obj) {
             if (success) {
                 NSLog(@"消息发送服务器成功");
             }

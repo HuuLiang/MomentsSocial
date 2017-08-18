@@ -112,12 +112,6 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                 MSShakeVC *shakeVC = [[MSShakeVC alloc] initWithTitle:@"摇一摇"];
                 [self.navigationController pushViewController:shakeVC animated:YES];
             } else if (info.funType == 3) {
-                if ([MSUtil currentVipLevel] == MSLevelVip0) {
-                    [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeRegisterVip0 disCount:NO cancleAction:nil confirmAction:^{
-                        [MSVipVC showVipViewControllerInCurrentVC:self];
-                    }];
-                    return ;
-                }
                 MSCheckInVC *checkInVC = [[MSCheckInVC alloc] initWithTitle:@"今日开房"];
                 [self.navigationController pushViewController:checkInVC animated:YES];
             }
@@ -140,13 +134,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
             MSShakeVC *shakeVC = [[MSShakeVC alloc] initWithTitle:@"摇一摇"];
             [self.navigationController pushViewController:shakeVC animated:YES];
         } else if (info.funType == 3) {
-            if ([MSUtil currentVipLevel] == MSLevelVip0) {
-                [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeRegisterVip0 disCount:NO cancleAction:nil confirmAction:^{
-                    [MSVipVC showVipViewControllerInCurrentVC:self];
-                }];
-                return ;
-            }
-            MSCheckInVC *checkInVC = [[MSCheckInVC alloc] initWithTitle:@"今日开房"];
+            MSCheckInVC *checkInVC = [[MSCheckInVC alloc] initWithTitle:@"今夜开房"];
             [self.navigationController pushViewController:checkInVC animated:YES];
         }
     }

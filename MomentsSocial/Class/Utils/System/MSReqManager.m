@@ -100,7 +100,10 @@
 }
 
 - (void)fetchDayHouseInfoClass:(Class)classModel completionHandler:(MSCompletionHandler)handler {
-    [[QBDataManager manager] requestUrl:MS_DAYHOUSE_URL withParams:[self params] class:classModel handler:^(id obj, NSError *error) {
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[self params]];
+    [params addEntriesFromDictionary:@{@"userId":@([MSUtil currentUserId])}];
+
+    [[QBDataManager manager] requestUrl:MS_DAYHOUSE_URL withParams:params class:classModel handler:^(id obj, NSError *error) {
         handler([self checkResponseCodeObject:obj error:error],obj);
     }];
 }
@@ -127,7 +130,8 @@
 /** 摇一摇 附近的人 */
 - (void)fetchNearShakeInfoWithNumber:(NSInteger)userCount Class:(Class)classModel completionHandler:(MSCompletionHandler)handler {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[self params]];
-    [params addEntriesFromDictionary:@{@"number":@(userCount)}];
+    [params addEntriesFromDictionary:@{@"number":@(userCount),
+                                       @"userId":@([MSUtil currentUserId])}];
     
     [[QBDataManager manager] requestUrl:MS_NEARSHAKE_URL withParams:params class:classModel handler:^(id obj, NSError *error) {
         handler([self checkResponseCodeObject:obj error:error],obj);

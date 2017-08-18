@@ -29,6 +29,7 @@ static NSString *const kMSMomentsCellReusableIdentifier = @"kMSMomentsCellReusab
 @property (nonatomic) NSMutableArray *heights;
 @property (nonatomic) NSMutableArray *dataSource;
 @property (nonatomic) MSCircleInfo *circleInfo;
+@property (nonatomic) QBVideoPlayer *videoPlayer;
 @end
 
 @implementation MSMomentsVC
@@ -71,7 +72,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     [_tableView QB_triggerPullToRefresh];
     
     
-    [_tableView QB_addPagingRefreshWithNotice:@"升级VIP,查看更多动态！" Handler:^{
+    [_tableView QB_addPagingRefreshWithMomentsVip:self.circleInfo.vipLv Handler:^{
         @strongify(self);
         if ([MSUtil currentVipLevel] == MSLevelVip0) {
             [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeMoreMoments disCount:NO cancleAction:nil confirmAction:^{
@@ -83,6 +84,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     }];
     
     [self configRightBarButton];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeOnline:) name:kMSPostOnlineInfoNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -91,7 +93,10 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeOnline:) name:kMSPostOnlineInfoNotification object:nil];
+}
+
+- (void)dealloc {
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -102,11 +107,12 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 - (void)changeOnline:(NSNotification *)notification {
     MSOnlineInfo *onlineInfo = [notification object];
     dispatch_async(dispatch_queue_create(0, 0), ^{
-       [self.dataSource enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(MSMomentModel *  _Nonnull momentModel, NSUInteger idx, BOOL * _Nonnull stop) {
+       [self.dataSource enumerateObjectsUsingBlock:^(MSMomentModel *  _Nonnull momentModel, NSUInteger idx, BOOL * _Nonnull stop) {
            if (onlineInfo.userId == momentModel.userId) {
-               MSMomentsCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
+//               MSMomentsCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
                dispatch_async(dispatch_get_main_queue(), ^{
-                   cell.online = @(onlineInfo.online);
+//                   cell.online = [NSNumber numberWithBool:onlineInfo.online];
+                   [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                });
            }
        }];
@@ -129,6 +135,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 - (void)configRightBarButton {
     @weakify(self)
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"发帖" style:UIBarButtonItemStylePlain handler:^(id sender) {
+        @strongify(self);
         if ([MSUtil currentVipLevel] < MSLevelVip1) {
             [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypePostMoment disCount:NO cancleAction:nil confirmAction:^{
                 @strongify(self);
@@ -149,7 +156,9 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     [self.heights removeAllObjects];
     [self.dataSource enumerateObjectsUsingBlock:^(MSMomentModel *  _Nonnull model, NSUInteger idx, BOOL * _Nonnull stop) {
         
-        [[MSOnlineManager manager] addUser:model.userId type:MSUserTypeCircle];
+        [[MSOnlineManager manager] addUser:model.userId type:MSUserTypeCircle handler:^(BOOL online) {
+            
+        }];
         
         __block CGFloat contentHeight = 0;
         
@@ -184,6 +193,26 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     [self.tableView reloadData];
 }
 
+- (void)showVideoPlayerViewWithVideoUrl:(NSString *)videoUrl {
+    //视频播放
+    self.videoPlayer = [[QBVideoPlayer alloc] initWithVideoURL:[NSURL URLWithString:videoUrl]];
+    [self.view addSubview:_videoPlayer];
+    {
+        [_videoPlayer mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+    }
+    [_videoPlayer startToPlay];
+    
+    @weakify(self);
+    _videoPlayer.endPlayAction = ^(id obj) {
+        @strongify(self);
+        [self.videoPlayer pause];
+        [self.videoPlayer removeFromSuperview];
+        self.videoPlayer = nil;
+    };
+}
+
 #pragma mark - UITableViewDelegate,UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -196,21 +225,15 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         __block MSMomentModel *model = self.dataSource[indexPath.row];
         cell.momentsType = model.type;
         
-        @weakify(self);
-        @weakify(cell);
-        @weakify(model);
-
+        @weakify(self,model,cell);
         cell.detailAction = ^{
-            @strongify(model);
-            @strongify(self);
+            @strongify(self,model);
             MSDetailViewController *detailVC = [[MSDetailViewController alloc] initWithUserId:[NSString stringWithFormat:@"%ld",(long)model.userId]];
             [self.navigationController pushViewController:detailVC animated:YES];
         };
         
         cell.greetAction = ^{
-            @strongify(cell);
-            @strongify(self);
-            @strongify(model);
+            @strongify(self,cell,model);
             if (model.greeted) {
                 [[MSHudManager manager] showHudWithText:@"您已经打过招呼"];
                 return ;
@@ -219,27 +242,25 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                 [[MSHudManager manager] showHudWithText:@"打招呼成功"];
                 cell.greeted = @(1);
                 model.greeted = YES;
+                [model setUserGreeted:YES];
                 [model saveOrUpdate];
                 [self.dataSource replaceObjectAtIndex:indexPath.row withObject:model];
             }
         };
         
         cell.loveAction = ^{
-            @strongify(cell);
-            @strongify(self);
-            @strongify(model);
+            @strongify(self,cell,model);
             if (model.loved) {
                 [[MSHudManager manager] showHudWithText:@"您已经点过赞"];
                 return ;
             }
             [[MSReqManager manager] greetMomentWithMoodId:model.moodId Class:[QBDataResponse class] completionHandler:^(BOOL success, id obj) {
-                @strongify(cell);
-                @strongify(self);
-                @strongify(model);
+                @strongify(self,cell,model);
                 if (success) {
                     [[MSHudManager manager] showHudWithText:@"点赞成功"];
                     cell.loved = @(1);
                     model.likesNumber++;
+                    cell.attentionCount = @(model.likesNumber);
                     model.loved = YES;
                     [model saveOrUpdate];
                     [self.dataSource replaceObjectAtIndex:indexPath.row withObject:model];
@@ -248,24 +269,25 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         };
         
         cell.commentAction = ^{
-            @strongify(self);
-            @strongify(model);
+            @strongify(self,model);
             MSCommentsListVC *listVC = [[MSCommentsListVC alloc] initWithMomentId:model.moodId];
             [self.navigationController pushViewController:listVC animated:YES];
         };
         
         cell.photoAction = ^(NSNumber * indexNum) {
-            @strongify(self);
-            MSPopupType type;
+            @strongify(self,model,cell);
+            NSNumber * type;
             if (cell.vipLv == MSLevelVip0) {
-                type = MSPopupTypePhotoVip1;
+                type = @(MSPopupTypePhotoVip1);
             } else {
-                type = MSPopupTypePhotoVip2;
+                type = @(MSPopupTypePhotoVip2);
             }
-            
+            @weakify(type);
             BOOL needBlur = [MSUtil currentVipLevel] <= self.circleInfo.vipLv;
             [[QBPhotoBrowser browse] showPhotoBrowseWithImageUrl:model.moodUrl atIndex:[indexNum integerValue] needBlur:needBlur blurStartIndex:3 onSuperView:self.view handler:^{
-                [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypePhotoVip2 cancleAction:nil confirmAction:^{
+                @strongify(self,type);
+                [[MSPopupHelper helper] showPopupViewWithType:[type integerValue] disCount:[type integerValue] == MSPopupTypePhotoVip2 cancleAction:nil confirmAction:^{
+                    @strongify(self);
                     [[QBPhotoBrowser browse] closeBrowse];
                     [MSVipVC showVipViewControllerInCurrentVC:self];
                 }];
@@ -273,9 +295,8 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         };
         
         cell.VideoAction = ^{
-            @strongify(self);
-            @strongify(model);
-            MSPopupType type;
+            @strongify(self,model,cell);
+            MSPopupType  type;
             if ([MSUtil currentVipLevel] <= self.circleInfo.vipLv) {
                 if (cell.vipLv == MSLevelVip0) {
                     type = MSPopupTypePhotoVip1;
@@ -283,26 +304,12 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                     type = MSPopupTypePhotoVip2;
                 }
                 [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypePhotoVip2 cancleAction:nil confirmAction:^{
+                    @strongify(self);
                     [MSVipVC showVipViewControllerInCurrentVC:self];
                 }];
+                return ;
             }
-            //视频播放
-            QBVideoPlayer * _videoPlayer = [[QBVideoPlayer alloc] initWithVideoURL:[NSURL URLWithString:model.videoUrl]];
-            [self.view addSubview:_videoPlayer];
-            {
-                [_videoPlayer mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.edges.equalTo(self.view);
-                }];
-            }
-            [_videoPlayer startToPlay];
-            
-            @weakify(_videoPlayer);
-            _videoPlayer.endPlayAction = ^(id obj) {
-                @strongify(_videoPlayer);
-                [_videoPlayer pause];
-                [_videoPlayer removeFromSuperview];
-                _videoPlayer = nil;
-            };
+            [self showVideoPlayerViewWithVideoUrl:model.videoUrl];
         };
     }
     return cell;
@@ -342,7 +349,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
             momentsCell.attentionCount = @(model.likesNumber);
 //        }
 //        if (!momentsCell.loved)                 {
-            momentsCell.loved = @([model loved]);
+            momentsCell.loved = @([model isLoved]);
 //        }
         
         if (!momentsCell.location) {

@@ -28,15 +28,14 @@ typedef NS_ENUM(NSInteger,MSUserType) {
 + (instancetype)manager;
 
 
-
 /**
  向在线管理器增加用户
 
  @param userId 用户id
  @param type 用户类型
- @return 返回该用户是否在线 (如需要 可选用)
+ @param handler 返回该用户是否在线 (如需要 可选用)
  */
-- (BOOL)addUser:(NSInteger)userId type:(MSUserType)type;
+- (void)addUser:(NSInteger)userId type:(MSUserType)type handler:(void(^)(BOOL online))handler;
 
 
 

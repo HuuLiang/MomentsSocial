@@ -79,7 +79,10 @@ static NSString *const kMSShakeTimeKeyName = @"kMSShakeTimeKeyName";
         //喜欢逻辑
         
         if ([MSMessageModel addMessageInfoWithUserId:self.user.userId nickName:self.user.nickName portraitUrl:self.user.portraitUrl]) {
+            @strongify(self);
             [[MSHudManager manager] showHudWithText:@"打招呼成功"];
+            self.user.greeted = YES;
+            [self.user saveOrUpdate];
             self.userView.hateAction();
         }
     };

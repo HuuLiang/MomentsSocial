@@ -10,13 +10,13 @@
 
 static const NSTimeInterval kRollingChangeTimeInterval = 5;
 
-//static const NSTimeInterval PushUserNewPushTime = 60 * 5;
-//static const NSTimeInterval PushUserOldPushTime = 60 * 30;
-//static const NSTimeInterval CircleUserNormalTime = 60 * 30;
+static const NSTimeInterval PushUserNewPushTime = 60 * 5;
+static const NSTimeInterval PushUserOldPushTime = 60 * 30;
+static const NSTimeInterval CircleUserNormalTime = 60 * 30;
 
-static const NSTimeInterval PushUserNewPushTime = 60 * 2;
-static const NSTimeInterval PushUserOldPushTime = 60 * 2;
-static const NSTimeInterval CircleUserNormalTime = 60 * 2;
+//static const NSTimeInterval PushUserNewPushTime = 60 * 2;
+//static const NSTimeInterval PushUserOldPushTime = 60 * 2;
+//static const NSTimeInterval CircleUserNormalTime = 60 * 2;
 
 
 @implementation MSOnlineInfo
@@ -52,16 +52,15 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     dispatch_async(self.sourceQueue, ^{
         [self.dataSource removeAllObjects];
         
-        [[MSOnlineInfo findAll] enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(MSOnlineInfo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [self addUser:obj];
-        }];
+        [self.dataSource addObjectsFromArray:[MSOnlineInfo findByCriteria:[NSString stringWithFormat:@"order by changeTime asc"]]];
+        
         
         [self startOnlineChangedEvent];
     });
 }
 
 - (void)setAllPushUserOffline {
-    [[MSOnlineInfo findAll] enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(MSOnlineInfo *  _Nonnull onlineInfo, NSUInteger idx, BOOL * _Nonnull stop) {
+    [[MSOnlineInfo findAll] enumerateObjectsUsingBlock:^(MSOnlineInfo *  _Nonnull onlineInfo, NSUInteger idx, BOOL * _Nonnull stop) {
         if (onlineInfo.type == MSUserTypeNewPush) {
             onlineInfo.type = MSUserTypeOldPush;
             NSTimeInterval currentTimeInterval = [[NSDate date] timeIntervalSince1970];
@@ -84,119 +83,107 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
  @param userId 用户id
  @param type 用户类型 推送用户 圈子用户
  */
-- (BOOL)addUser:(NSInteger)userId type:(MSUserType)type {
-    NSInteger currentUserId = userId;
-    
-    MSUserType currentUserType;
-    BOOL currentUserOnline;
-    NSTimeInterval userChangeTime;
-
-    NSTimeInterval currentTimeInterval = [[NSDate date] timeIntervalSince1970];
-    BOOL userOnline = (arc4random()%2) == 1 ? YES : NO;
-
-    MSOnlineInfo *info = [MSOnlineInfo findFirstByCriteria:[NSString stringWithFormat:@"where userId=%ld",(long)userId]];
-    if (!info) {
-        //如果用户不存在 类型即为传入的类型
-        info = [[MSOnlineInfo alloc] init];
+- (void)addUser:(NSInteger)userId type:(MSUserType)type handler:(void (^)(BOOL))handler {
+    dispatch_async(self.sourceQueue, ^{
+        NSInteger currentUserId = userId;
         
-        currentUserType = type;
+        MSUserType currentUserType;
+        BOOL currentUserOnline;
+        NSTimeInterval userChangeTime;
         
-        if (currentUserType == MSUserTypeNewPush) {
-            userChangeTime = currentTimeInterval + PushUserNewPushTime;
-            currentUserOnline = YES;
-        } else if (currentUserType == MSUserTypeOldPush) {
-            userChangeTime = currentTimeInterval + PushUserOldPushTime;
-            currentUserOnline = userOnline;
+        NSTimeInterval currentTimeInterval = [[NSDate date] timeIntervalSince1970];
+        BOOL userOnline = (arc4random()%2) == 1 ? YES : NO;
+        
+        MSOnlineInfo *info = [MSOnlineInfo findFirstByCriteria:[NSString stringWithFormat:@"where userId=%ld",(long)userId]];
+        if (!info) {
+            //如果用户不存在 类型即为传入的类型
+            info = [[MSOnlineInfo alloc] init];
+            
+            currentUserType = type;
+            
+            if (currentUserType == MSUserTypeNewPush) {
+                userChangeTime = currentTimeInterval + PushUserNewPushTime;
+                currentUserOnline = YES;
+            } else if (currentUserType == MSUserTypeOldPush) {
+                userChangeTime = currentTimeInterval + PushUserOldPushTime;
+                currentUserOnline = userOnline;
+            } else {
+                userChangeTime = currentTimeInterval + CircleUserNormalTime;
+                currentUserOnline = userOnline;
+            }
         } else {
-            userChangeTime = currentTimeInterval + CircleUserNormalTime;
-            currentUserOnline = userOnline;
-        }
-    } else {
-        //如果用户存在 需要判断新传入的类型
-        //  MSUserTypeOldPush 保持原来的类型
-        //  MSUserTypeNewPush 更新到最新的推送用户类型
-        //  MSUserTypeCircle 保持原来的类型
-        if (type == MSUserTypeOldPush) {
-            currentUserType = info.type;
-        } else if (type == MSUserTypeNewPush) {
-            currentUserType = MSUserTypeNewPush;
-        } else {
-            currentUserType = info.type;
+            //如果用户存在 需要判断新传入的类型
+            //  MSUserTypeOldPush 保持原来的类型
+            //  MSUserTypeNewPush 更新到最新的推送用户类型
+            //  MSUserTypeCircle 保持原来的类型
+            if (type == MSUserTypeOldPush) {
+                currentUserType = info.type;
+            } else if (type == MSUserTypeNewPush) {
+                currentUserType = MSUserTypeNewPush;
+            } else {
+                currentUserType = info.type;
+            }
+            
+            //  根据当前用户类型设定更改时间
+            //  MSUserTypeOldPush 保持原来的类型
+            //  MSUserTypeNewPush 更新到最新的推送用户类型
+            //  MSUserTypeCircle 保持原来的类型
+            
+            if (currentUserType == MSUserTypeNewPush) {
+                userChangeTime = currentTimeInterval + PushUserNewPushTime;
+                currentUserOnline = YES;
+            } else if (currentUserType == MSUserTypeOldPush) {
+                userChangeTime = info.changeTime;
+                currentUserOnline = info.online;
+            } else {
+                userChangeTime = info.changeTime;
+                currentUserOnline = info.online;
+            }
         }
         
-        //  根据当前用户类型设定更改时间
-        //  MSUserTypeOldPush 保持原来的类型
-        //  MSUserTypeNewPush 更新到最新的推送用户类型
-        //  MSUserTypeCircle 保持原来的类型
+        info.userId = currentUserId;
+        info.type = currentUserType;
+        info.online = currentUserOnline;
+        info.changeTime = userChangeTime;
         
-        if (currentUserType == MSUserTypeNewPush) {
-            userChangeTime = currentTimeInterval + PushUserNewPushTime;
-            currentUserOnline = YES;
-        } else if (currentUserType == MSUserTypeOldPush) {
-            userChangeTime = info.changeTime;
-            currentUserOnline = info.online;
-        } else {
-            userChangeTime = info.changeTime;
-            currentUserOnline = info.online;
+        if ([info saveOrUpdate]) {
+            [self addUser:info];
         }
-    }
-    
-    info.userId = currentUserId;
-    info.type = currentUserType;
-    info.online = currentUserOnline;
-    info.changeTime = userChangeTime;
-    
-    if ([info saveOrUpdate]) {
-        [self addUser:info];
-    }
-    return info.online;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            handler(info.online);
+        });
+    });
 }
 
 - (void)addUser:(MSOnlineInfo *)info {
-    dispatch_async(self.sourceQueue, ^{
-        //若内存中无数据 直接加入
-        if (self.dataSource.count == 0) {
-            [self.dataSource addObject:info];
-            return ;
+    if (self.dataSource.count == 0) {
+        [self.dataSource addObject:info];
+        return ;
+    }
+    
+    __block NSInteger insertIndex = NSNotFound;
+    __block MSOnlineInfo *oldInfo;
+    [self.dataSource enumerateObjectsUsingBlock:^(MSOnlineInfo * _Nonnull onlineInfo, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (onlineInfo.userId == info.userId) {
+            oldInfo = onlineInfo;
         }
-        
-        //若内存中有数据 判断此用户是否存在于内存中 决定是否加入内存数组
-        __block BOOL needAdd = YES;
-        [self.dataSource enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(MSOnlineInfo * _Nonnull onlineInfo, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (onlineInfo.userId == info.userId) {
-                [self.dataSource replaceObjectAtIndex:idx withObject:info];
-                needAdd = NO;
-                *stop = YES;
-            }
-        }];
-        
-        //如果需要加入内存数据 判断是否小于最后一个元素的更改时间 决定是否进行排序
-        if (needAdd) {
-            BOOL needSort = NO;
-
-            MSOnlineInfo *lastInfo = self.dataSource[self.dataSource.count-1];
-            if (info.changeTime < lastInfo.changeTime) {
-                needSort = YES;
-            }
-            if (needSort) {
-                [self.dataSource enumerateObjectsUsingBlock:^(MSOnlineInfo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    if ([obj isKindOfClass:[MSOnlineInfo class]]) {
-                        if (info.changeTime > obj.changeTime) {
-                            [self.dataSource insertObject:info atIndex:idx];
-                        }
-                    }
-                }];
-            } else {
-                [self.dataSource addObject:info];
-            }
+        if (info.changeTime > onlineInfo.changeTime) {
+            insertIndex = idx;
         }
-    });
+    }];
+    
+    if (insertIndex == NSNotFound) {
+        [self.dataSource addObject:info];
+    } else {
+        [self.dataSource insertObject:info atIndex:insertIndex];
+    }
+    if (oldInfo) {
+        [self.dataSource removeObject:oldInfo];
+    }
 }
 
 - (void)removeUser:(MSOnlineInfo *)info {
-    dispatch_async(self.sourceQueue, ^{
         [self.dataSource removeObject:info];
-    });
 }
 
 - (BOOL)onlineWithUserId:(NSInteger)userId {
@@ -208,11 +195,6 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 }
 
 - (void)startOnlineChangedEvent {    
-//    if (self.changeQueue) {
-//        return;
-//    }
-//    self.changeQueue = dispatch_queue_create("MomentsSocail_changedOnline_status", nil);
-
     [self rollingChangeUserOnlineStatus];
 }
 
@@ -221,7 +203,6 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         __block uint nextRollingReplyTime = kRollingChangeTimeInterval;
         
         if (self.dataSource.count > 0) {
-            NSLog(@"self.dataSource.coun = %ld",self.dataSource.count);
             [self.dataSource enumerateObjectsUsingBlock:^(MSOnlineInfo * _Nonnull onlineInfo, NSUInteger idx, BOOL * _Nonnull stop) {
                 NSTimeInterval currentTimeInterval = [[NSDate date] timeIntervalSince1970];
                 if (onlineInfo.changeTime <= currentTimeInterval) {
@@ -246,7 +227,9 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                     }
                     
                     if ([onlineInfo saveOrUpdate]) {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kMSPostOnlineInfoNotification object:onlineInfo];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kMSPostOnlineInfoNotification object:onlineInfo];
+                        });
                     }
                 } else {
                     NSTimeInterval nextTime = onlineInfo.changeTime - [[NSDate date] timeIntervalSince1970];

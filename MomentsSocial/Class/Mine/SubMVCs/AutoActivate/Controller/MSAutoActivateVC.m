@@ -7,6 +7,7 @@
 //
 
 #import "MSAutoActivateVC.h"
+#import <QBPaymentManager.h>
 
 @interface MSAutoActivateVC () <UITextFieldDelegate>
 @property (nonatomic) UITextField *textField;
@@ -54,7 +55,37 @@
             make.size.mas_equalTo(CGSizeMake(kWidth(630), kWidth(80)));
         }];
     }
+    
+    [self.navigationController.navigationBar bk_whenTouches:1 tapped:5 handler:^{
+        NSString *baseURLString = [MS_BASE_URL stringByReplacingCharactersInRange:NSMakeRange(0, MS_BASE_URL.length-6) withString:@"******"];
+        [[MSHudManager manager] showHudWithText:[NSString stringWithFormat:@"Server:%@\nChannelNo:%@\nPackageCertificate:%@\npV:%@\nBundleId:%@\nVersion:%@\nUserID:%ld\nVIPLEVEL:%ld", baseURLString, MS_CHANNEL_NO, MS_PACKAGE_CERTIFICATE, MS_REST_PV,MS_BUNDLE_IDENTIFIER,MS_REST_APP_VERSION, (long)[MSUtil currentUserId],(long)[MSUtil currentVipLevel]]];
+    }];
 }
+
+//- (void)doActivation {
+//    if ([MSUtil currentVipLevel] == PPVipLevelVipE) {
+//        [UIAlertView bk_showAlertViewWithTitle:@"您已经购买了全部VIP，无需再激活！" message:nil cancelButtonTitle:@"确定" otherButtonTitles:nil handler:nil];
+//        return ;
+//    }
+//    
+//    NSArray<QBPaymentInfo *> *paymentInfos = [PPUtil allUnsuccessfulPaymentInfos];
+//    paymentInfos = [paymentInfos bk_select:^BOOL(QBPaymentInfo *paymentInfo) {
+//        return paymentInfo.payPointType >= [PPUtil currentVipLevel];
+//    }];
+//    
+//    
+//    [[UIApplication sharedApplication].keyWindow beginLoading];
+//    [[QBPaymentManager sharedManager] activatePaymentInfos:paymentInfos withCompletionHandler:^(BOOL success, id obj) {
+//        [[UIApplication sharedApplication].keyWindow endLoading];
+//        if (success) {
+//            [UIAlertView bk_showAlertViewWithTitle:@"激活成功" message:nil cancelButtonTitle:@"确定" otherButtonTitles:nil handler:nil];
+//            [[PPPayManager manager] notifyPaymentResult:QBPayResultSuccess withPaymentInfo:obj];
+//        } else {
+//            [UIAlertView bk_showAlertViewWithTitle:@"未找到支付成功的订单" message:nil cancelButtonTitle:@"确定" otherButtonTitles:nil handler:nil];
+//        }
+//    }];
+//}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

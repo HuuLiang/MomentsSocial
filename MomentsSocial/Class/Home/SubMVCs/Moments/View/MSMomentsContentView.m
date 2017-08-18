@@ -107,20 +107,20 @@ QBDefineLazyPropertyInitialization(NSMutableArray, mutableArr)
             }];
         }
         
-        @weakify(self);
-        [_imgV aspect_hookSelector:@selector(setNeedsLayout) withOptions:AspectPositionAfter usingBlock:^(id <AspectInfo> AspectInfo) {
-            @strongify(self);
-            dispatch_async(dispatch_queue_create(0, 0), ^{
-                UIImageView *targetImgV = (UIImageView *)[AspectInfo instance];
-                UIImage *image = targetImgV.image;
-                if (image && self.needBlur) {
-                    UIImage *blurImage = image.boxBlurImage;
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        targetImgV.image = blurImage;
-                    });
-                }
-            });
-        } error:nil];
+//        @weakify(self);
+//        [_imgV aspect_hookSelector:@selector(setNeedsLayout) withOptions:AspectPositionAfter usingBlock:^(id <AspectInfo> AspectInfo) {
+//            @strongify(self);
+//            dispatch_async(dispatch_queue_create(0, 0), ^{
+//                UIImageView *targetImgV = (UIImageView *)[AspectInfo instance];
+//                UIImage *image = targetImgV.image;
+//                if (image && self.needBlur) {
+//                    UIImage *blurImage = image.boxBlurImage;
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        targetImgV.image = blurImage;
+//                    });
+//                }
+//            });
+//        } error:nil];
     }
     return self;
 }
@@ -130,7 +130,14 @@ QBDefineLazyPropertyInitialization(NSMutableArray, mutableArr)
 }
 
 - (void)setImgUrl:(NSString *)imgUrl {
-    [_imgV sd_setImageWithURL:[NSURL URLWithString:imgUrl]];
+    @weakify(self);
+    [_imgV sd_setImageWithURL:[NSURL URLWithString:imgUrl] placeholderImage:nil options:SDWebImageAvoidAutoSetImage completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        @strongify(self);
+        if (image) {
+//            UIImage *blurImage = image.boxBlurImage;
+            self.imgV.image = self.needBlur ? image.boxBlurImage : image;
+        }
+    }];
 }
 
 @end

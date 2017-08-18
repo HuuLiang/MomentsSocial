@@ -111,11 +111,7 @@
 }
 
 - (void)setOnline:(BOOL)online {
-    if (online) {
-        [_nickOnlineButton setImage:[UIImage imageNamed:@"online"] forState:UIControlStateNormal];
-    } else {
-        _nickOnlineButton.imageView.image = nil;
-    }
+    [_nickOnlineButton setImage:[UIImage imageNamed:online ? @"moment_online" : @"moment_offline"] forState:UIControlStateNormal];
 }
 
 - (void)setLocation:(NSString *)location {

@@ -88,34 +88,21 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     if (indexPath.item < self.dataSource.count) {
         MSUserModel *user = self.dataSource[indexPath.item];
         
-        cell.isGreeted = [user greeted];
-        if (!cell.imgUrl) {
-            cell.imgUrl = user.portraitUrl;
-        }
-        if (!cell.nickName) {
-            cell.nickName = user.nickName;
-        }
-        if (!cell.age) {
-            cell.age = user.age;
-        }
-        if (!cell.sex) {
-            cell.sex = user.sex;
-        }
+        cell.isGreeted = [MSUserModel isGreetedWithUserId:user.userId];
+        cell.imgUrl = user.portraitUrl;
+        cell.nickName = user.nickName;
+        cell.age = user.age;
+        cell.sex = user.sex;
         
-        @weakify(cell);
-        @weakify(self);
+        @weakify(self,cell);
         
-        if (!cell.location) {
-            @weakify(cell);
-            [[QBLocationManager manager] getUserLacationNameWithUserId:[NSString stringWithFormat:@"%ld",(long)user.userId] locationName:^(BOOL success, NSString *locationName) {
-                @strongify(cell);
-                cell.location = locationName;
-            }];
-        }
+        [[QBLocationManager manager] getUserLacationNameWithUserId:[NSString stringWithFormat:@"%ld",(long)user.userId] locationName:^(BOOL success, NSString *locationName) {
+            @strongify(cell);
+            cell.location = locationName;
+        }];
         
         cell.greetAction = ^{
-            @strongify(self);
-            @strongify(cell);
+            @strongify(cell,self);
             if (user.greeted) {
                 [[MSHudManager manager] showHudWithText:@"已经打过招呼"];
             } else {

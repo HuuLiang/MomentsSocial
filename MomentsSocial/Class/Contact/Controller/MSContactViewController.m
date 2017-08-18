@@ -70,8 +70,8 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 
 - (void)changeOnline:(NSNotification *)notification {
     MSOnlineInfo *onlineInfo = [notification object];
-    dispatch_async(dispatch_queue_create(0, 0), ^{
-        [self.dataSource enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(MSContactModel *  _Nonnull contactModel, NSUInteger idx, BOOL * _Nonnull stop) {
+    dispatch_async(self.addQueue, ^{
+        [self.dataSource enumerateObjectsUsingBlock:^(MSContactModel *  _Nonnull contactModel, NSUInteger idx, BOOL * _Nonnull stop) {
             if (onlineInfo.userId == contactModel.userId) {
                 MSContactCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -114,7 +114,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         
         __block BOOL exist = NO;  //是否存在于原数据中
         if (needCheck) {
-            [self.dataSource enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(MSContactModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [self.dataSource enumerateObjectsUsingBlock:^(MSContactModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 if (obj.userId == contactInfo.userId) {
                     [self.dataSource replaceObjectAtIndex:idx withObject:contactInfo];
                     exist = YES;

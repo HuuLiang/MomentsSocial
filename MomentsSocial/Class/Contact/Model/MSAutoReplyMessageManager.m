@@ -16,8 +16,8 @@
 
 static const NSUInteger kRollingTimeInterval = 5;
 static const NSTimeInterval firstPushTime = 0;
-static const NSTimeInterval secondPushTime = 60 * 30;
-static const NSTimeInterval thirdPushTime = 60 * 60;
+//static const NSTimeInterval secondPushTime = 60 * 30;
+//static const NSTimeInterval thirdPushTime = 60 * 60;
 
 static NSString *const kMSAutoReplyMsgObserveTimeKeyName    = @"kMSAutoReplyMsgObserveTimeKeyName";
 static NSString *const kMSAutoReplyMsgPageCountKeyName      = @"kMSAutoReplyMsgPageCountKeyName";
@@ -59,6 +59,9 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 }
 
 - (void)observeAutoReplyTimeInterval {
+    NSInteger pushRate = [MSSystemConfigModel defaultConfig].config.PUSH_RATE;
+    NSInteger pushTime  = [MSSystemConfigModel defaultConfig].config.PUSH_TIME/1000;
+    
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC));
@@ -66,8 +69,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     dispatch_source_set_event_handler(_timer, ^{
         //执行事件
         QBLog(@"注意当前的计时器时间 %ld",(long)self.observeTime);
-        if (_observeTime == firstPushTime || _observeTime == secondPushTime || _observeTime == thirdPushTime) {
-            
+        if (_observeTime == firstPushTime || _observeTime % pushTime == 0) {
             [self fetchBatchReplyUsersInfoWithPage:[self.reqPage integerValue] handler:^(BOOL success) {
                 if (success) {
                     self.reqPage = @([self.reqPage integerValue] + 1);
@@ -100,7 +102,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
             dispatch_resume(_timer);
         } else {
             //是今天 沿用保存的时间继续开始计时器
-            if (_observeTime > thirdPushTime) {
+            if (_observeTime > pushTime * (pushRate - 1)) {
                 //如果在线时间超过规定的时间 则不做处理
                 dispatch_source_cancel(_timer);
                 return;
@@ -228,6 +230,11 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                 }
             }];
         }
+        
+        if (self.dataSource == 0 && self.observeTime > [MSSystemConfigModel defaultConfig].config.PUSH_TIME * ([MSSystemConfigModel defaultConfig].config.PUSH_RATE - 1)) {
+            [MSOnlineManager manager].replyLastPushUser = YES;
+        }
+        
         if (self.dataSource.count > 0) {
             [self activateRollingAutoReplyMsgsEvent];
         }
@@ -263,7 +270,9 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 }
 
 - (void)postReplyMsg:(MSAutoReplyMsg *)replyMsg {
-    [[MSOnlineManager manager] addUser:replyMsg.userId type:MSUserTypeNewPush];    //加入在线管理器
+    [[MSOnlineManager manager] addUser:replyMsg.userId type:MSUserTypeNewPush handler:^(BOOL online) {
+        
+    }];//加入在线管理器
     
     [MSMessageModel addMessageInfoWithReplyMsg:replyMsg]; //加入聊天详情表
     
@@ -288,7 +297,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 @implementation MSAutoReplyMsg
 
 + (void)deletePastAutoReplyMsgInfo {
-    [[MSAutoReplyMsg findAll] enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(MSAutoReplyMsg * _Nonnull replyMsg, NSUInteger idx, BOOL * _Nonnull stop) {
+    [[MSAutoReplyMsg findAll] enumerateObjectsUsingBlock:^(MSAutoReplyMsg * _Nonnull replyMsg, NSUInteger idx, BOOL * _Nonnull stop) {
         if (![[NSDate dateWithTimeIntervalSince1970:replyMsg.msgTime] isToday]) {
             [replyMsg deleteObject];
         }

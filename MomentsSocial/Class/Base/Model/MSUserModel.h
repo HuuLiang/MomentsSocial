@@ -42,6 +42,8 @@
 @property (nonatomic) NSArray <MSUserMsgModel *> *message;
 
 
-- (BOOL)greeted;
+- (BOOL)isGreeted;
+
++ (BOOL)isGreetedWithUserId:(NSInteger)userId;
 
 @end

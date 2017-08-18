@@ -17,6 +17,7 @@
 
 @interface QBLocationManager : NSObject
 + (instancetype)manager;
+@property (nonatomic) NSString *currentLocation;
 - (BOOL)checkLocationIsEnable;
 - (void)loadLocationManager;
 - (void)getUserLacationNameWithUserId:(NSString *)userId locationName:(void(^)(BOOL success,NSString *locationName))handler;

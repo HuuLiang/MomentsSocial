@@ -22,7 +22,7 @@
 #define MS_PAYMENT_RESERVE_DATA     [NSString stringWithFormat:@"%@$%@", MS_REST_APPID, MS_CHANNEL_NO]
 #define MS_PAYMENT_ORDERID          [NSString stringWithFormat:@"%@_%@", [MS_CHANNEL_NO substringFromIndex:MS_CHANNEL_NO.length-14], [[NSUUID UUID].UUIDString.md5 substringWithRange:NSMakeRange(8, 16)]]
 
-#define MS_BASE_URL                    @"http://120.24.252.114:8095"//@"http://fr.shinehoo.com.cn"
+#define MS_BASE_URL                    @"http://cfc.shinehoo.com.cn"//@"http://120.24.252.114:8095"//@"http://fr.shinehoo.com.cn"
 #define MS_STANDBY_BASE_URL            @"http://sfs.dswtg.com"
 
 #define MS_ACTIVATION_URL              @"/cfc/activat.htm"                            //激活

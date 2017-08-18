@@ -7,6 +7,7 @@
 //
 
 #import "MSPopupHelper.h"
+#import "MSMessageViewController.h"
 
 @interface MSPopupHelper ()
 @property (nonatomic) MSPopupView *popView;
@@ -104,6 +105,11 @@
             enterMsg = @"升级VIP";
             break;
             
+        case MSPopupTypeSendComment:
+            contentMsg = @"很抱歉,游客无法发表评论";
+            enterMsg = @"升级VIP";
+            break;
+
         default:
             break;
     }
@@ -117,6 +123,11 @@
                       confirmMsg:(NSString *)confirmMsg confirmAction:(ConfirmAction)confirmAction
 {
     @weakify(self);
+    if (self.popView) {
+        [self.popView removeFromSuperview];
+        self.popView = nil;
+    }
+    
     self.popView = [[MSPopupView alloc] initWithMsg:msg dicCount:disCount cancleMsg:cancleMsg cancleAction:cancleAction confirmMsg:confirmMsg confirmAction:confirmAction hideAction:^{
         @strongify(self);
         [self.popView removeFromSuperview];
@@ -124,6 +135,10 @@
     }];
     
     UIViewController *baseViewController = [MSUtil rootViewControlelr];
+    UIViewController *messageViewController = [MSUtil currentViewController];
+    if ([messageViewController isKindOfClass:[MSMessageViewController class]]) {
+        baseViewController = messageViewController;
+    }
     [baseViewController.view addSubview:self.popView];
     [baseViewController.view bringSubviewToFront:self.popView];
     
@@ -175,7 +190,7 @@
         [_backView addSubview:_shapeView];
         
         self.msgLabel = [[UILabel alloc] init];
-        _msgLabel.textColor = kColor(@"#333333");
+        _msgLabel.textColor = kColor(@"#ffffff");
         _msgLabel.font = kFont(15);
         _msgLabel.numberOfLines = 0;
         _msgLabel.text = msg;

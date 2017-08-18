@@ -9,6 +9,7 @@
 #import "MSSendMomentsVC.h"
 #import "MSSendMomentHeaderView.h"
 #import "QBPhotoManager.h"
+#import "QBLocationManager.h"
 
 @interface MSSendMomentsVC () <UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic) UITableView *tableView;
@@ -33,6 +34,7 @@
     [self configTableHeaderView];
     [self configTableFooterView];
     [self configBarButtonItems];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,15 +66,24 @@
 }
 
 - (void)configTableHeaderView {
-    __block MSSendMomentHeaderView *headerView = [[MSSendMomentHeaderView alloc] init];
-    headerView.size = CGSizeMake(kScreenWidth, kWidth(500));
-    self.tableView.tableHeaderView = headerView;
+    self.headerView = [[MSSendMomentHeaderView alloc] init];
+    _headerView.location = [QBLocationManager manager].currentLocation;
+    _headerView.size = CGSizeMake(kScreenWidth, kWidth(500));
+    self.tableView.tableHeaderView = _headerView;
     
-    @weakify(headerView);
-    headerView.getPhotoAction = ^{
+    @weakify(self);
+    _headerView.getPhotoAction = ^{
+        @strongify(self);
         [[QBPhotoManager manager] getImageInCurrentViewController:self handler:^(UIImage *pickerImage, NSString *keyName) {
-            @strongify(headerView);
-            headerView.addImg = pickerImage;
+            @strongify(self);
+            self.headerView.addImg = pickerImage;
+            NSInteger lineCount = self.headerView.photoCount % 4 == 0 ? self.headerView.photoCount / 4 : self.headerView.photoCount/4 + 1;
+            if (lineCount > 1) {
+                CGFloat addHeight = (kScreenWidth - kWidth(110))/4 * (lineCount - 1);
+                self.headerView.size = CGSizeMake(kScreenWidth, kWidth(500) + addHeight);
+                self.tableView.tableHeaderView = self.headerView;
+                [self.tableView reloadData];
+            }
         }];
     };
 }

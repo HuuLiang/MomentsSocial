@@ -649,21 +649,7 @@ static CGPoint  delayOffset = {0.0};
     [self.view bringSubviewToFront:inputView];
     
     _messageInputView = inputView;
-    
-    UIImageView *giftImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"chat_send_gift"]];
-    giftImageView.userInteractionEnabled = YES;
-    giftImageView.frame = CGRectMake(self.view.frame.size.width - kWidth(156), inputFrame.origin.y - kWidth(40) - kWidth(224), kWidth(112), kWidth(112));
-    [self.view addSubview:giftImageView];
-    [self.view bringSubviewToFront:giftImageView];
-    
-    @weakify(self);
-    [giftImageView bk_whenTapped:^{
-        @strongify(self);
-        [self popGiftView];
-    }];
-    
-    _giftImageView = giftImageView;
-    
+        
     // 设置手势滑动，默认添加一个bar的高度值
     self.messageTableView.messageInputBarHeight = CGRectGetHeight(_messageInputView.bounds);
 }

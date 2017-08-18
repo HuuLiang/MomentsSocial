@@ -43,6 +43,19 @@
     }
 }
 
+- (void)QB_addPagingRefreshWithMomentsVip:(MSLevel)vipLevel Handler:(void (^)(void))handler {
+    NSString *notiStr = nil;
+    if ([MSUtil currentVipLevel] == MSLevelVip0) {
+        notiStr = @"升级VIP,查看更多动态！";
+    } else {
+        notiStr = @"------  我是有底线的  ------";
+    }
+    if (!self.footer) {
+        MJRefreshAutoNormalFooter *refreshFooter = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:handler];
+        [refreshFooter setTitle:notiStr forState:MJRefreshStateIdle];
+        self.footer = refreshFooter;
+    }
+}
 
 - (void)QB_pagingRefreshNoMoreData {
     [self.footer endRefreshingWithNoMoreData];

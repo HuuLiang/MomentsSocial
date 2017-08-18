@@ -67,7 +67,6 @@
 #ifdef DEBUG
     price = 1;
 #endif
-    price = 1;
     
     NSString *appName = [NSBundle mainBundle].infoDictionary[@"CFBundleDisplayName"];
     

@@ -18,7 +18,7 @@
 }
 
 + (void)deletePastMessageInfo {
-    [[MSMessageModel findAll] enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(MSMessageModel *  _Nonnull messageModel, NSUInteger idx, BOOL * _Nonnull stop) {
+    [[MSMessageModel findAll] enumerateObjectsUsingBlock:^(MSMessageModel *  _Nonnull messageModel, NSUInteger idx, BOOL * _Nonnull stop) {
         if (![[NSDate dateWithTimeIntervalSince1970:messageModel.msgTime] isToday]) {
             [messageModel deleteObject];
         }
@@ -71,21 +71,24 @@
 + (void)postMessageInfoToContact:(MSMessageModel *)msgModel {
     NSInteger userId = [msgModel.sendUserId integerValue] == [MSUtil currentUserId] ? [msgModel.receiveUserId integerValue] : [msgModel.sendUserId integerValue];
     MSContactModel *contactInfo = [MSContactModel findFirstByCriteria:[NSString stringWithFormat:@"where userId=%ld",userId]];
-    if (contactInfo && contactInfo.msgTime == msgModel.msgTime) {
-        return;
-    } else {
+    if (!contactInfo) {
         contactInfo = [[MSContactModel alloc] init];
-        contactInfo.userId = userId;
-        contactInfo.nickName = msgModel.nickName;
-        contactInfo.portraitUrl = msgModel.portraitUrl;
-        contactInfo.msgType = msgModel.msgType;
-        contactInfo.msgTime = msgModel.msgTime;
-        contactInfo.unreadCount = 0;
-        contactInfo.msgContent = msgModel.msgContent;
-        [contactInfo saveOrUpdate];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMSPostContactInfoNotification object:contactInfo];
+    } else {
+        if (contactInfo.msgTime == msgModel.msgTime) {
+            return;
+        }
     }
+    contactInfo.userId = userId;
+    contactInfo.nickName = msgModel.nickName;
+    contactInfo.portraitUrl = msgModel.portraitUrl;
+    contactInfo.msgType = msgModel.msgType;
+    contactInfo.msgTime = msgModel.msgTime;
+    contactInfo.unreadCount = 0;
+    contactInfo.msgContent = msgModel.msgContent;
+    [contactInfo saveOrUpdate];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMSPostContactInfoNotification object:contactInfo];
+
 }
 
 

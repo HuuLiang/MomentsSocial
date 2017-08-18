@@ -23,11 +23,22 @@
 }
 
 + (NSArray *)transients {
-    return @[@"phone",@"sex",@"age",@"marital",@"weight",@"weixin",@"portraitUrl",@"income",@"birthday",@"nickName",@"city",@"education",@"qq",@"vocation",@"height",@"constellation",@"userPhoto",@"vipLv"];
+    return @[@"phone",@"sex",@"age",@"marital",@"weight",@"weixin",@"portraitUrl",@"income",@"birthday",@"nickName",@"city",@"education",@"qq",@"vocation",@"height",@"constellation",@"userPhoto",@"vipLv",@"message"];
 }
 
-- (BOOL)greeted {
-    MSUserModel *userModel = [MSUserModel findFirstByCriteria:[NSString stringWithFormat:@"where userId=%ld",self.userId]];
+- (BOOL)isGreeted {
+    if (_userId == 10000262) {
+        
+    }
+    MSUserModel *userModel = [MSUserModel findFirstByCriteria:[NSString stringWithFormat:@"where userId=%ld",(long)_userId]];
+    if (!userModel) {
+        return NO;
+    }
+    return userModel.greeted;
+}
+
++ (BOOL)isGreetedWithUserId:(NSInteger)userId {
+    MSUserModel *userModel = [MSUserModel findFirstByCriteria:[NSString stringWithFormat:@"where userId=%ld",(long)userId]];
     if (!userModel) {
         return NO;
     }

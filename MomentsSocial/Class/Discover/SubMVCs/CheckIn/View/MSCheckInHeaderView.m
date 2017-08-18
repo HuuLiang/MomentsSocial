@@ -43,7 +43,7 @@
         self.titleLabel = [[UILabel alloc] init];
         _titleLabel.textColor = kColor(@"#333333");
         _titleLabel.font = kFont(15);
-        _titleLabel.text = @"今日开房";
+        _titleLabel.text = @"今夜开房";
         [self addSubview:_titleLabel];
         
         self.subLabel = [[UILabel alloc] init];

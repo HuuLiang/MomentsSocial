@@ -7,6 +7,7 @@
 //
 
 #import "MSMomentsModel.h"
+#import "MSUserModel.h"
 
 @implementation MSMomentCommentsInfo
 
@@ -22,14 +23,27 @@
     return [MSMomentCommentsInfo class];
 }
 
+- (void)setUserGreeted:(BOOL)greeted {
+    MSUserModel *userModel = [MSUserModel findFirstByCriteria:[NSString stringWithFormat:@"where userId=%ld",(long)_userId]];
+    if (!userModel) {
+        userModel = [[MSUserModel alloc] init];
+    }
+    userModel.userId = _userId;
+    userModel.greeted = greeted;
+    
+    [userModel saveOrUpdate];
+}
+
 - (BOOL)isGreeted {
-    MSMomentModel *model = [MSMomentModel findFirstByCriteria:[NSString stringWithFormat:@"where moodId=%ld",(long)self.moodId]];
-    return model ? model.greeted : NO;
+    return [MSUserModel isGreetedWithUserId:_userId];
 }
 
 - (BOOL)isLoved {
     MSMomentModel *model = [self.class findFirstByCriteria:[NSString stringWithFormat:@"where moodId=%ld",(long)_moodId]];
-    return model ? model.loved : NO;
+    if (!model) {
+        return NO;
+    }
+    return model.loved;
 }
 
 + (NSArray *)transients {

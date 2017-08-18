@@ -71,6 +71,8 @@
         if (success) {
             [MSSystemConfigModel defaultConfig].config = obj.config;
             [[MSSystemConfigModel defaultConfig] configPayInfoWithConfig:obj.config];
+            
+            [[MSAutoReplyMessageManager manager] startAutoReplyMsgEvent];
         }
     }];
 }
@@ -201,8 +203,6 @@
     [QBUploadManager registerWithSecretKey:MS_UPLOAD_SECRET_KEY accessKey:MS_UPLOAD_ACCESS_KEY scope:MS_UPLOAD_SCOPE];
 
     [self fetchSystemConfigInfo];
-    
-    [[MSAutoReplyMessageManager manager] startAutoReplyMsgEvent];
     
     [[QBLocationManager manager] loadLocationManager];
     

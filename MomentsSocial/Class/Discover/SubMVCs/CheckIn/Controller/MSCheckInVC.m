@@ -55,8 +55,10 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     
     [self fetchDayHouseInfo];
     
+    @weakify(self);
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, [self timeIntervalSinceNowFormDate:[self canCheckIn] ? 20 : 8] * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        @strongify(self);
         //执行事件
         [self.collectionView reloadData];
     });
@@ -100,7 +102,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
             [self.dataSource addObjectsFromArray:obj.users];
             
             if ([self canCheckIn]) {
-                [_collectionView reloadData];
+                [self.collectionView reloadData];
             }
         }
     }];
@@ -140,13 +142,14 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         @weakify(self);
         _headerView.registerAction = ^{
             @strongify(self);
-//            if ([MSUtil currentVipLevel] == MSLevelVip0) {
-//                [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeRegisterVip0 disCount:NO cancleAction:nil confirmAction:^{
-//                    [MSVipVC showVipViewControllerInCurrentVC:self];
-//                }];
-//            } else
-            if ([MSUtil currentVipLevel] == MSLevelVip1) {
+            if ([MSUtil currentVipLevel] == MSLevelVip0) {
+                [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeRegisterVip0 disCount:NO cancleAction:nil confirmAction:^{
+                    @strongify(self);
+                    [MSVipVC showVipViewControllerInCurrentVC:self];
+                }];
+            } else if ([MSUtil currentVipLevel] == MSLevelVip1) {
                 [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeRegisterVip1 disCount:YES cancleAction:nil confirmAction:^{
+                    @strongify(self);
                     [MSVipVC showVipViewControllerInCurrentVC:self];
                 }];
             } else {
