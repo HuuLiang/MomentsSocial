@@ -105,7 +105,9 @@
     } else if (payResult == MSPayResultCancle) {
         [[MSHudManager manager] showHudWithText:@"支付取消"];
     }
-    hander(payResult == MSPayResultSuccess);
+    if (hander) {
+        hander(payResult == MSPayResultSuccess);
+    }
 }
 
 - (void)handleOpenURL:(NSURL *)url {

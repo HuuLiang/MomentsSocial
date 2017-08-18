@@ -12,6 +12,10 @@
 #import "XHAudioPlayerHelper.h"
 #import <AVFoundation/AVFoundation.h>
 #import "QBVideoPlayer.h"
+#import "MSMsgVipNoticeCell.h"
+#import "MSVipVC.h"
+
+static NSString *const kMSMessageVipNoticeCellReusableIdentifier = @"kMSMessageVipNoticeCellReusableIdentifier";
 
 @implementation MSMessageViewController (XHBMessage)
 
@@ -53,6 +57,33 @@
         [cell.avatarButton sd_setImageWithURL:[NSURL URLWithString:self.portraitUrl] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"default_Img"]];;
     }
     
+}
+
+//配置自定义cell高度
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath targetMessage:(id<XHMessageModel>)message {
+    return kWidth(60);
+}
+
+//配置自定义cell样式
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath targetMessage:(id<XHMessageModel>)message {
+    message = (XHMessage *)message;
+    MSMsgVipNoticeCell *cell;
+    if (message.messageMediaType == XHBubbleMessageMediaTypeCustom) {
+        cell = (MSMsgVipNoticeCell *)[tableView dequeueReusableCellWithIdentifier:kMSMessageVipNoticeCellReusableIdentifier forIndexPath:indexPath];
+        
+        @weakify(self);
+        cell.noticeAction = ^{
+            [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeSendMessage disCount:NO cancleAction:nil confirmAction:^{
+                @strongify(self);
+                [MSVipVC showVipViewControllerInCurrentVC:self];
+            }];
+        };
+    }
+    return cell;
+}
+
+- (void)registerCustomVipNoticeCell {
+    [self.messageTableView registerClass:[MSMsgVipNoticeCell class] forCellReuseIdentifier:kMSMessageVipNoticeCellReusableIdentifier];
 }
 
 #pragma mark - XHMessageTableViewCellDelegate

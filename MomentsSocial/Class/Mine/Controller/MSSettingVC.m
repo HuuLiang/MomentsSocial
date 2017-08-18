@@ -10,12 +10,14 @@
 #import "MSAboutUsVC.h"
 #import "MSAutoActivateVC.h"
 #import "MSSystemConfigModel.h"
+#import "MSActivityVC.h"
 
 static NSString *const kMSSettingCellReusableIdentifier = @"kMSSettingCellReusableIdentifier";
 
 typedef NS_ENUM(NSInteger,MSSettingRow) {
     MSSettingRowAutoActivate = 0,
     MSSettingRowQQServer,
+    MSSettingRowActivity,
     MSSettingRowAboutUs,
     MSSettingRowCount
 };
@@ -86,6 +88,8 @@ typedef NS_ENUM(NSInteger,MSSettingRow) {
             cell.textLabel.text = @"自助激活";
         } else if (indexPath.row == MSSettingRowQQServer) {
             cell.textLabel.text = @"联系客服";
+        } else if (indexPath.row == MSSettingRowActivity) {
+            cell.textLabel.text = @"活动相关";
         } else if (indexPath.row == MSSettingRowAboutUs) {
             cell.textLabel.text = @"关于我们";
         }
@@ -103,6 +107,9 @@ typedef NS_ENUM(NSInteger,MSSettingRow) {
         [self.navigationController pushViewController:activateVC animated:YES];
     } else if (indexPath.row == MSSettingRowQQServer) {
         [self contactCustomerService];
+    } else if (indexPath.row == MSSettingRowActivity) {
+        MSActivityVC *activityVC = [[MSActivityVC alloc] initWithTitle:@"活动相关"];
+        [self.navigationController pushViewController:activityVC animated:YES];
     } else if (indexPath.row == MSSettingRowAboutUs) {
         MSAboutUsVC *aboutUsVC = [[MSAboutUsVC alloc] initWithTitle:@"关于我们"];
         [self.navigationController pushViewController:aboutUsVC animated:YES];

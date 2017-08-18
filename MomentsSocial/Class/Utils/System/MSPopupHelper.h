@@ -25,7 +25,9 @@ typedef NS_ENUM(NSInteger, MSPopupType) {
     MSPopupTypeFaceTime,
     MSPopupTypeFaceTimeVip1,
     MSPopupTypeMoreMoments,
-    MSPopupTypeSendComment
+    MSPopupTypeSendComment,
+    MSPopupTypeBookLuoVip1,
+    MSPopupTypeBookLuoVip2
 };
 
 typedef void(^CancleAction)(void);

@@ -38,6 +38,8 @@
 @property (nonatomic, strong) UIView *headerContainerView;
 @property (nonatomic, strong) UIActivityIndicatorView *loadMoreActivityIndicatorView;
 
+@property (nonatomic,strong) dispatch_queue_t changeMessageDataSourceQueue;
+
 /**
  *  管理本机的摄像和图片库的工具对象
  */
@@ -216,7 +218,10 @@
 #pragma mark - DataSource Change
 
 - (void)exChangeMessageDataSourceQueue:(void (^)())queue {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), queue);
+    if (!_changeMessageDataSourceQueue) {
+        _changeMessageDataSourceQueue = dispatch_queue_create("change_message_dataSource_queue", nil);
+    }
+    dispatch_async(self.changeMessageDataSourceQueue, queue);
 }
 
 - (void)exMainQueue:(void (^)())queue {
@@ -226,18 +231,27 @@
 - (void)addMessage:(XHMessage *)addedMessage {
     WEAKSELF
     [self exChangeMessageDataSourceQueue:^{
-        NSMutableArray *messages = [NSMutableArray arrayWithArray:weakSelf.messages];
-        [messages addObject:addedMessage];
-
-        __block NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count - 1 inSection:0];
-        
         [weakSelf exMainQueue:^{
-            weakSelf.messages = messages;
+            [weakSelf.messages addObject:addedMessage];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:weakSelf.messages.count - 1 inSection:0];
             [weakSelf.messageTableView beginUpdates];
             [weakSelf.messageTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
             [weakSelf.messageTableView endUpdates];
             [weakSelf scrollToBottomAnimated:YES];
         }];
+        
+//        NSMutableArray *messages = [NSMutableArray arrayWithArray:weakSelf.messages];
+//        [messages addObject:addedMessage];
+//
+//        __block NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count - 1 inSection:0];
+//        
+//        [weakSelf exMainQueue:^{
+//            weakSelf.messages = messages;
+//            [weakSelf.messageTableView beginUpdates];
+//            [weakSelf.messageTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//            [weakSelf.messageTableView endUpdates];
+//            [weakSelf scrollToBottomAnimated:YES];
+//        }];
     }];
 }
 
@@ -1226,7 +1240,7 @@ static CGPoint  delayOffset = {0.0};
     id <XHMessageModel> message = [self.dataSource messageForRowAtIndexPath:indexPath];
     
     // 如果需要定制复杂的业务UI，那么就实现该DataSource方法
-    if ([self.dataSource respondsToSelector:@selector(tableView:cellForRowAtIndexPath:targetMessage:)] && message.messageMediaType >= XHBubbleMessageMediaTypeCustom) {
+    if ([self.dataSource respondsToSelector:@selector(tableView:cellForRowAtIndexPath:targetMessage:)] && message.messageMediaType == XHBubbleMessageMediaTypeCustom) {
         UITableViewCell *tableViewCell = [self.dataSource tableView:tableView cellForRowAtIndexPath:indexPath targetMessage:message];
         return tableViewCell;
     }

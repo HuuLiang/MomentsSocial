@@ -22,6 +22,12 @@
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:MS_ABOUTUS_URL]];
     [_webView loadRequest:request];
+    
+    {
+        [_webView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

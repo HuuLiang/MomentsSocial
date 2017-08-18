@@ -15,7 +15,6 @@
 #import "QBDataResponse.h"
 #import "MSNavigationController.h"
 #import "QBVoiceManager.h"
-#import "MSVipVC.h"
 
 @interface MSMessageViewController ()
 @property (nonatomic) BOOL needReturn;
@@ -76,7 +75,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
             [self dismissViewControllerAnimated:YES completion:nil];
         }];
     }
-    
+    [self registerCustomVipNoticeCell];
     [self configLocationUI];
 }
 
@@ -176,6 +175,11 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
                                            sender:obj.sendUserId
                                         timestamp:date];
         message.messageMediaType = XHBubbleMessageMediaTypeText;
+    } else if (obj.msgType == MSMessageTypeVipNotice) {
+        message = [[XHMessage alloc] initWithText:@""
+                                           sender:self.userId
+                                        timestamp:date];
+        message.messageMediaType = XHBubbleMessageMediaTypeCustom;
     }
     
     if ([obj.sendUserId isEqualToString:self.messageSender]) {
@@ -239,6 +243,12 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     [self addChatMessage:chatMessage];
 }
 
+- (void)addVipNoticeMessage {
+    MSMessageModel *noticeMsg = [MSMessageModel vipNoticeMessage];
+    [self addChatMessageIntoSelf:noticeMsg reload:NO];
+    [[QBVoiceManager manager] playReceiveVoice];
+}
+
 //用户主动发送的消息的加载方式
 - (void)addChatMessage:(MSMessageModel *)chatMessage {
     if ([chatMessage saveOrUpdate] && self.isViewLoaded) {
@@ -249,9 +259,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     
     if ([MSUtil currentVipLevel] == MSLevelVip0) {
         [self.messageInputView.inputTextView resignFirstResponder];
-        [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeSendMessage disCount:NO cancleAction:nil confirmAction:^{
-            [MSVipVC showVipViewControllerInCurrentVC:self];
-        }];
+        [self addVipNoticeMessage];
     }
     if ([MSUtil currentVipLevel] > MSLevelVip0) {
         NSString *content = @"";

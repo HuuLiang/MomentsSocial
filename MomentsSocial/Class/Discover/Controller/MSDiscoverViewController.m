@@ -13,6 +13,8 @@
 #import "MSShakeVC.h"
 #import "MSCheckInVC.h"
 #import "MSVipVC.h"
+#import "MSBookStoreViewController.h"
+#import "MSLuoChatViewController.h"
 
 #import "MSDiscoverModel.h"
 #import "MSReqManager.h"
@@ -88,6 +90,45 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     }];
 }
 
+- (void)pushSubVCWithInfo:(MSFindInfo *)findInfo {
+    @weakify(self);
+    if (findInfo.funType == 1) {
+        MSNearViewController *nearVC = [[MSNearViewController alloc] initWithTitle:findInfo.name];
+        [self.navigationController pushViewController:nearVC animated:YES];
+    } else if (findInfo.funType == 2) {
+        MSShakeVC *shakeVC = [[MSShakeVC alloc] initWithTitle:findInfo.name];
+        [self.navigationController pushViewController:shakeVC animated:YES];
+    } else if (findInfo.funType == 3) {
+        MSCheckInVC *checkInVC = [[MSCheckInVC alloc] initWithTitle:findInfo.name];
+        [self.navigationController pushViewController:checkInVC animated:YES];
+    } else if (findInfo.funType == 4) {
+        if ([MSUtil currentVipLevel] == MSLevelVip0) {
+            [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeBookLuoVip1 disCount:NO cancleAction:nil confirmAction:^{
+                @strongify(self);
+                [MSVipVC showVipViewControllerInCurrentVC:self];
+            }];
+            return;
+        } else {
+            [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeBookLuoVip2 disCount:NO cancleAction:nil confirmAction:nil];
+        }
+//        MSBookStoreViewController *bookStoreVC = [[MSBookStoreViewController alloc] initWithTitle:findInfo.name];
+//        [self.navigationController pushViewController:bookStoreVC animated:YES];
+    } else if (findInfo.funType == 5) {
+        if ([MSUtil currentVipLevel] == MSLevelVip0) {
+            [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeBookLuoVip1 disCount:NO cancleAction:nil confirmAction:^{
+                @strongify(self);
+                [MSVipVC showVipViewControllerInCurrentVC:self];
+            }];
+            return;
+        } else {
+            [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeBookLuoVip2 disCount:NO cancleAction:nil confirmAction:nil];
+        }
+//        MSLuoChatViewController *luoChatVC = [[MSLuoChatViewController alloc] initWithTitle:findInfo.name];
+//        [self.navigationController pushViewController:luoChatVC animated:YES];
+    }
+
+}
+
 #pragma mark - UITableViewDelegate,UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -105,16 +146,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         @weakify(self);
         cell.joinAction = ^{
             @strongify(self);
-            if (info.funType == 1) {
-                MSNearViewController *nearVC = [[MSNearViewController alloc] initWithTitle:@"附近的人"];
-                [self.navigationController pushViewController:nearVC animated:YES];
-            } else if (info.funType == 2) {
-                MSShakeVC *shakeVC = [[MSShakeVC alloc] initWithTitle:@"摇一摇"];
-                [self.navigationController pushViewController:shakeVC animated:YES];
-            } else if (info.funType == 3) {
-                MSCheckInVC *checkInVC = [[MSCheckInVC alloc] initWithTitle:@"今日开房"];
-                [self.navigationController pushViewController:checkInVC animated:YES];
-            }
+            [self pushSubVCWithInfo:info];
         };
     }
     return cell;
@@ -127,16 +159,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row < self.dataSource.count) {
         MSFindInfo *info = self.dataSource[indexPath.row];
-        if (info.funType == 1) {
-            MSNearViewController *nearVC = [[MSNearViewController alloc] initWithTitle:@"附近的人"];
-            [self.navigationController pushViewController:nearVC animated:YES];
-        } else if (info.funType == 2) {
-            MSShakeVC *shakeVC = [[MSShakeVC alloc] initWithTitle:@"摇一摇"];
-            [self.navigationController pushViewController:shakeVC animated:YES];
-        } else if (info.funType == 3) {
-            MSCheckInVC *checkInVC = [[MSCheckInVC alloc] initWithTitle:@"今夜开房"];
-            [self.navigationController pushViewController:checkInVC animated:YES];
-        }
+        [self pushSubVCWithInfo:info];
     }
 }
 

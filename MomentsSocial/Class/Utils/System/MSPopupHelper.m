@@ -110,6 +110,16 @@
             enterMsg = @"升级VIP";
             break;
 
+        case MSPopupTypeBookLuoVip1:
+            contentMsg = @"很抱歉，游客无法游览此区域";
+            enterMsg = @"升级VIP";
+            break;
+            
+        case MSPopupTypeBookLuoVip2:
+            contentMsg = @"功能升级中，正在招募，预计8月底上线，敬请期待";
+            enterMsg = @"期待ing";
+            break;
+            
         default:
             break;
     }

@@ -10,5 +10,6 @@
 
 @interface MSMessageViewController (XHBMessage)
 
+- (void)registerCustomVipNoticeCell;
 
 @end

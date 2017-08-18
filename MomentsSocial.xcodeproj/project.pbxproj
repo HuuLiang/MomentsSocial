@@ -164,6 +164,11 @@
 		EC5383A71F3B0A4500D2EB0F /* UIView+PopAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5383A61F3B0A4500D2EB0F /* UIView+PopAnimation.m */; };
 		EC58C0021F419731002925B5 /* MSVipVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EC58C0011F419731002925B5 /* MSVipVC.m */; };
 		EC58C0051F4199C0002925B5 /* MSVipPayPointCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC58C0041F4199C0002925B5 /* MSVipPayPointCell.m */; };
+		EC6C040E1F46C133001E7BC3 /* MSActivityVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EC6C040D1F46C133001E7BC3 /* MSActivityVC.m */; };
+		EC6C04191F46C310001E7BC3 /* MSBookStoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC6C04181F46C310001E7BC3 /* MSBookStoreViewController.m */; };
+		EC6C041C1F46C324001E7BC3 /* MSLuoChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC6C041B1F46C324001E7BC3 /* MSLuoChatViewController.m */; };
+		EC6C041F1F46D719001E7BC3 /* MSMsgVipNoticeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC6C041E1F46D719001E7BC3 /* MSMsgVipNoticeCell.m */; };
+		EC6C04221F46F901001E7BC3 /* MSScrollLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EC6C04211F46F901001E7BC3 /* MSScrollLabel.m */; };
 		EC848DB61F32BD1300B47E37 /* MSSystemConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DB51F32BD1300B47E37 /* MSSystemConfigModel.m */; };
 		EC848DBC1F32CBD300B47E37 /* MSCircleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DBB1F32CBD300B47E37 /* MSCircleModel.m */; };
 		EC848DC01F33036F00B47E37 /* QBPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DBF1F33036F00B47E37 /* QBPhotoManager.m */; };
@@ -543,6 +548,16 @@
 		EC58C0011F419731002925B5 /* MSVipVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSVipVC.m; sourceTree = "<group>"; };
 		EC58C0031F4199C0002925B5 /* MSVipPayPointCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSVipPayPointCell.h; sourceTree = "<group>"; };
 		EC58C0041F4199C0002925B5 /* MSVipPayPointCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSVipPayPointCell.m; sourceTree = "<group>"; };
+		EC6C040C1F46C133001E7BC3 /* MSActivityVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSActivityVC.h; sourceTree = "<group>"; };
+		EC6C040D1F46C133001E7BC3 /* MSActivityVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSActivityVC.m; sourceTree = "<group>"; };
+		EC6C04171F46C310001E7BC3 /* MSBookStoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSBookStoreViewController.h; sourceTree = "<group>"; };
+		EC6C04181F46C310001E7BC3 /* MSBookStoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSBookStoreViewController.m; sourceTree = "<group>"; };
+		EC6C041A1F46C324001E7BC3 /* MSLuoChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSLuoChatViewController.h; sourceTree = "<group>"; };
+		EC6C041B1F46C324001E7BC3 /* MSLuoChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSLuoChatViewController.m; sourceTree = "<group>"; };
+		EC6C041D1F46D719001E7BC3 /* MSMsgVipNoticeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMsgVipNoticeCell.h; sourceTree = "<group>"; };
+		EC6C041E1F46D719001E7BC3 /* MSMsgVipNoticeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSMsgVipNoticeCell.m; sourceTree = "<group>"; };
+		EC6C04201F46F901001E7BC3 /* MSScrollLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSScrollLabel.h; sourceTree = "<group>"; };
+		EC6C04211F46F901001E7BC3 /* MSScrollLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSScrollLabel.m; sourceTree = "<group>"; };
 		EC848DB41F32BD1300B47E37 /* MSSystemConfigModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSystemConfigModel.h; sourceTree = "<group>"; };
 		EC848DB51F32BD1300B47E37 /* MSSystemConfigModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSSystemConfigModel.m; sourceTree = "<group>"; };
 		EC848DBA1F32CBD300B47E37 /* MSCircleModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCircleModel.h; sourceTree = "<group>"; };
@@ -1363,6 +1378,81 @@
 			path = VoiceManager;
 			sourceTree = "<group>";
 		};
+		EC6C040B1F46C100001E7BC3 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				EC6C040C1F46C133001E7BC3 /* MSActivityVC.h */,
+				EC6C040D1F46C133001E7BC3 /* MSActivityVC.m */,
+			);
+			path = Activity;
+			sourceTree = "<group>";
+		};
+		EC6C040F1F46C2B6001E7BC3 /* LuoChat */ = {
+			isa = PBXGroup;
+			children = (
+				EC6C04101F46C2B6001E7BC3 /* Controller */,
+				EC6C04111F46C2B6001E7BC3 /* Model */,
+				EC6C04121F46C2B6001E7BC3 /* View */,
+			);
+			path = LuoChat;
+			sourceTree = "<group>";
+		};
+		EC6C04101F46C2B6001E7BC3 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				EC6C041A1F46C324001E7BC3 /* MSLuoChatViewController.h */,
+				EC6C041B1F46C324001E7BC3 /* MSLuoChatViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		EC6C04111F46C2B6001E7BC3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		EC6C04121F46C2B6001E7BC3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		EC6C04131F46C2E5001E7BC3 /* BookStore */ = {
+			isa = PBXGroup;
+			children = (
+				EC6C04141F46C2E5001E7BC3 /* Controller */,
+				EC6C04151F46C2E5001E7BC3 /* Model */,
+				EC6C04161F46C2E5001E7BC3 /* View */,
+			);
+			path = BookStore;
+			sourceTree = "<group>";
+		};
+		EC6C04141F46C2E5001E7BC3 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				EC6C04171F46C310001E7BC3 /* MSBookStoreViewController.h */,
+				EC6C04181F46C310001E7BC3 /* MSBookStoreViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		EC6C04151F46C2E5001E7BC3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		EC6C04161F46C2E5001E7BC3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		EC848DBD1F33036F00B47E37 /* ImagePicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -1375,6 +1465,7 @@
 		EC848DC11F330B2800B47E37 /* SubMVCs */ = {
 			isa = PBXGroup;
 			children = (
+				EC6C040B1F46C100001E7BC3 /* Activity */,
 				EC848DC21F330B2800B47E37 /* AboutUs */,
 				EC848DC31F330B2800B47E37 /* AutoActivate */,
 			);
@@ -1633,6 +1724,8 @@
 			children = (
 				EC1BFE1C1F39B033003613D6 /* QBVideoPlayer.h */,
 				EC1BFE1D1F39B033003613D6 /* QBVideoPlayer.m */,
+				EC6C04201F46F901001E7BC3 /* MSScrollLabel.h */,
+				EC6C04211F46F901001E7BC3 /* MSScrollLabel.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1805,6 +1898,8 @@
 				EC5383A01F3B073B00D2EB0F /* MSContactView.m */,
 				EC5383A21F3B074B00D2EB0F /* MSFaceTimeView.h */,
 				EC5383A31F3B074B00D2EB0F /* MSFaceTimeView.m */,
+				EC6C041D1F46D719001E7BC3 /* MSMsgVipNoticeCell.h */,
+				EC6C041E1F46D719001E7BC3 /* MSMsgVipNoticeCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2019,9 +2114,11 @@
 		ECFCAB861F29F02B00DC2948 /* SubMVCs */ = {
 			isa = PBXGroup;
 			children = (
-				EC848DD31F33241700B47E37 /* CheckIn */,
 				ECFCAB871F29F02B00DC2948 /* Near */,
 				ECD953651F308B1B006F5737 /* Shake */,
+				EC848DD31F33241700B47E37 /* CheckIn */,
+				EC6C04131F46C2E5001E7BC3 /* BookStore */,
+				EC6C040F1F46C2B6001E7BC3 /* LuoChat */,
 			);
 			path = SubMVCs;
 			sourceTree = "<group>";
@@ -2248,6 +2345,7 @@
 				EC1BFDE51F39A787003613D6 /* XHMessageTableView.m in Sources */,
 				EC1BFDE21F39A787003613D6 /* XHBaseTableViewCell.m in Sources */,
 				EC1BFE481F39BD1D003613D6 /* POSAdjustedAssetReaderIOS7.m in Sources */,
+				EC6C04191F46C310001E7BC3 /* MSBookStoreViewController.m in Sources */,
 				EC1BFDC11F39A787003613D6 /* XHMessageTableViewController.m in Sources */,
 				EC1BFE4D1F39BD1D003613D6 /* POSLocking.m in Sources */,
 				EC0CAA881F341D3E00B1C669 /* MSCheckInUserCell.m in Sources */,
@@ -2259,6 +2357,7 @@
 				ECA8A9431F37FC8200BABFF9 /* MSShakeUserView.m in Sources */,
 				EC1BFDB21F39A787003613D6 /* UIImage+XHRounded.m in Sources */,
 				ECD9536E1F308BA2006F5737 /* MSShakeView.m in Sources */,
+				EC6C041F1F46D719001E7BC3 /* MSMsgVipNoticeCell.m in Sources */,
 				ECC11AC81F26DA870093E3EE /* SDCollectionViewCell.m in Sources */,
 				EC1BFDEB1F39A787003613D6 /* XHEmotionCollectionViewFlowLayout.m in Sources */,
 				ECC11B311F2724450093E3EE /* UIView+FrameEx.m in Sources */,
@@ -2331,6 +2430,7 @@
 				EC848DD21F330ECD00B47E37 /* MSAutoActivateVC.m in Sources */,
 				EC58C0021F419731002925B5 /* MSVipVC.m in Sources */,
 				EC1BFDD81F39A787003613D6 /* SETextAttachment.m in Sources */,
+				EC6C041C1F46C324001E7BC3 /* MSLuoChatViewController.m in Sources */,
 				EC1BFE521F39BD1D003613D6 /* QiniuUploader.m in Sources */,
 				ECB58CD11F2B33050074E6D8 /* MSDetailFooterView.m in Sources */,
 				EC1BFDDD1F39A787003613D6 /* SETextMagnifierCaret.m in Sources */,
@@ -2365,6 +2465,7 @@
 				ECB58CC81F2B25DB0074E6D8 /* MSDetailModel.m in Sources */,
 				EC1BFDD31F39A787003613D6 /* SECompatibility.m in Sources */,
 				ECC11B2A1F2724450093E3EE /* NSObject+PropertyAccessInspecting.m in Sources */,
+				EC6C04221F46F901001E7BC3 /* MSScrollLabel.m in Sources */,
 				EC1BFDCD1F39A787003613D6 /* XHEmotionManager.m in Sources */,
 				ECC118D61F26D0760093E3EE /* main.m in Sources */,
 				EC1BFDD61F39A787003613D6 /* SELinkText.m in Sources */,
@@ -2393,6 +2494,7 @@
 				ECC11A4F1F26DA870093E3EE /* ActionSheetDistancePicker.m in Sources */,
 				EC1BFDE41F39A787003613D6 /* XHMessageBubbleView.m in Sources */,
 				ECFCAB701F298EB400DC2948 /* MSHomeCategoryCell.m in Sources */,
+				EC6C040E1F46C133001E7BC3 /* MSActivityVC.m in Sources */,
 				ECC11A531F26DA870093E3EE /* DistancePickerView.m in Sources */,
 				EC1BFCCA1F395FC2003613D6 /* MSMessageViewController.m in Sources */,
 				EC1BFDB91F39A787003613D6 /* XHMessageBubbleHelper.m in Sources */,

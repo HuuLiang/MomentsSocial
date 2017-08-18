@@ -91,5 +91,10 @@
 
 }
 
++ (MSMessageModel *)vipNoticeMessage {
+    MSMessageModel *messageModel = [[MSMessageModel alloc] init];
+    messageModel.msgType = MSMessageTypeVipNotice;
+    return messageModel;
+}
 
 @end

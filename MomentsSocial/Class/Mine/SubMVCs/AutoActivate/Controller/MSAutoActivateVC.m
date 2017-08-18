@@ -8,6 +8,8 @@
 
 #import "MSAutoActivateVC.h"
 #import <QBPaymentManager.h>
+#import <QBPaymentInfo.h>
+#import "MSPaymentManager.h"
 
 @interface MSAutoActivateVC () <UITextFieldDelegate>
 @property (nonatomic) UITextField *textField;
@@ -62,29 +64,29 @@
     }];
 }
 
-//- (void)doActivation {
-//    if ([MSUtil currentVipLevel] == PPVipLevelVipE) {
-//        [UIAlertView bk_showAlertViewWithTitle:@"您已经购买了全部VIP，无需再激活！" message:nil cancelButtonTitle:@"确定" otherButtonTitles:nil handler:nil];
-//        return ;
-//    }
-//    
-//    NSArray<QBPaymentInfo *> *paymentInfos = [PPUtil allUnsuccessfulPaymentInfos];
-//    paymentInfos = [paymentInfos bk_select:^BOOL(QBPaymentInfo *paymentInfo) {
-//        return paymentInfo.payPointType >= [PPUtil currentVipLevel];
-//    }];
-//    
-//    
-//    [[UIApplication sharedApplication].keyWindow beginLoading];
-//    [[QBPaymentManager sharedManager] activatePaymentInfos:paymentInfos withCompletionHandler:^(BOOL success, id obj) {
-//        [[UIApplication sharedApplication].keyWindow endLoading];
-//        if (success) {
-//            [UIAlertView bk_showAlertViewWithTitle:@"激活成功" message:nil cancelButtonTitle:@"确定" otherButtonTitles:nil handler:nil];
-//            [[PPPayManager manager] notifyPaymentResult:QBPayResultSuccess withPaymentInfo:obj];
-//        } else {
-//            [UIAlertView bk_showAlertViewWithTitle:@"未找到支付成功的订单" message:nil cancelButtonTitle:@"确定" otherButtonTitles:nil handler:nil];
-//        }
-//    }];
-//}
+- (void)doActivation {
+    if ([MSUtil currentVipLevel] == MSLevelVip2) {
+        [UIAlertView bk_showAlertViewWithTitle:@"您已经购买了全部VIP，无需再激活！" message:nil cancelButtonTitle:@"确定" otherButtonTitles:nil handler:nil];
+        return ;
+    }
+    
+    NSArray<QBPaymentInfo *> *paymentInfos = [QBPaymentInfo allPaymentInfos];
+    paymentInfos = [paymentInfos bk_select:^BOOL(QBPaymentInfo *paymentInfo) {
+        return paymentInfo.targetPayPointType >= MSLevelVip2;
+    }];
+    
+    
+    [[UIApplication sharedApplication].keyWindow beginLoading];
+    [[QBPaymentManager sharedManager] activatePaymentInfos:paymentInfos withCompletionHandler:^(BOOL success, id obj) {
+        [[UIApplication sharedApplication].keyWindow endLoading];
+        if (success) {
+            [UIAlertView bk_showAlertViewWithTitle:@"激活成功" message:nil cancelButtonTitle:@"确定" otherButtonTitles:nil handler:nil];
+            [[MSPaymentManager manager] commitPayResult:MSPayResultSuccess handler:nil];
+        } else {
+            [UIAlertView bk_showAlertViewWithTitle:@"未找到支付成功的订单" message:nil cancelButtonTitle:@"确定" otherButtonTitles:nil handler:nil];
+        }
+    }];
+}
 
 
 - (void)didReceiveMemoryWarning {

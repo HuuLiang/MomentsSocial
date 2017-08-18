@@ -40,4 +40,6 @@
 
 + (BOOL)addMessageInfoWithUserId:(NSInteger)userId nickName:(NSString *)nickName portraitUrl:(NSString *)portraitUrl;
 
++ (MSMessageModel *)vipNoticeMessage;
+
 @end

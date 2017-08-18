@@ -22,4 +22,6 @@ typedef void(^PayResult)(BOOL success);
 
 - (void)startPayForVipLevel:(MSLevel)vipLevel type:(MSPayType)payType  price:(NSInteger)price handler:(PayResult)handler;
 
+- (void)commitPayResult:(MSPayResult)payResult handler:(PayResult)hander;
+
 @end

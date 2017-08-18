@@ -39,7 +39,8 @@
 #define MS_LIKES_URL                   @"/cfc/likes.htm"                              //点赞
 #define MS_SENDMSG_URL                 @"/cfc/userMessage.htm"                        //发送消息
 
-#define MS_ABOUTUS_URL                 @""
+#define MS_ACTIVITY_URL                @"http://cfc.shinehoo.com.cn/cfc/huodongshuoming.html" //活动相关
+#define MS_ABOUTUS_URL                 @"http://cfc.shinehoo.com.cn/cfc/guanyuwomen.html" //关于我们
 
 #define MS_ENCRYPT_PASSWORD            @"qb%Fr@2016_&"
 

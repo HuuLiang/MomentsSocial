@@ -66,6 +66,7 @@ typedef NS_ENUM(NSUInteger, MSMessageType) {
     MSMessageTypeVoice = 3,             //声音
     MSMessageTypeVideo = 4,             //视频
     MSMessageTypeFaceTime = 5,          //视频聊天邀请
+    MSMessageTypeVipNotice = 6,           //开通VIP提醒
     MSMessageTypeCount
 };
 

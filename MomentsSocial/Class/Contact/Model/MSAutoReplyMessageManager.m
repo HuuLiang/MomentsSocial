@@ -117,7 +117,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 - (void)fetchBatchReplyUsersInfoWithPage:(NSInteger)page handler:(void(^)(BOOL success))handler {
     [[MSReqManager manager] fetchPushUserInfoWithPage:page size:[MSSystemConfigModel defaultConfig].config.PUSH_COUNT Class:[MSAutoReplyBatchResponse class] completionHandler:^(BOOL success, MSAutoReplyBatchResponse * obj) {
         if (success) {
-            [self insertUserMsgIntoReplyCache:obj.pushUser sort:NO];
+            [self insertUserMsgIntoReplyCache:obj.pushUser sort:YES];
         }
         handler(obj.pushUser.count > 0);
     }];
@@ -134,6 +134,8 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 - (void)insertUserMsgIntoReplyCache:(NSArray <MSUserModel *> *)users sort:(BOOL)sort {
     __block NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970]; //初始化回复时间
 
+    NSMutableArray <MSAutoReplyMsg *> * replyMsgsSource = [[NSMutableArray alloc] init];
+    
     [users enumerateObjectsUsingBlock:^(MSUserModel * _Nonnull userModel, NSUInteger userIndex, BOOL * _Nonnull stop) {
         if (userIndex == 0) {
             timeInterval = timeInterval + 10; //初始化first user回复时间 延迟 10s
@@ -142,6 +144,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
             timeInterval = timeInterval + 10;
 #else
             timeInterval = timeInterval + arc4random() % 61 + 60; //初始化后续user的回复时间 间隔 60-120s
+//            timeInterval = timeInterval + 10;
 #endif
         }
         
@@ -151,8 +154,10 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 #ifdef DEBUG
             userMsgTime += 2;
 #else
-            randomTime += arc4random() % 16 + 15; //单个user的每条消息的时间间隔 间隔递增 15-30s
+            randomTime += arc4random() % 21 + 20; //单个user的每条消息的时间间隔 间隔递增 20-40s
             userMsgTime += randomTime;
+//            randomTime += arc4random() % 5 + 5;
+//            userMsgTime += randomTime;
 #endif
             MSAutoReplyMsg *replyMsg = [MSAutoReplyMsg findFirstByCriteria:[NSString stringWithFormat:@"where msgId=%ld",(long)msgModel.msgId]];
             if (!replyMsg) {
@@ -173,17 +178,18 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                 } else {
                     replyMsg.msgContent = msgModel.content;
                 }
-                replyMsg.msgTime = userMsgTime;
-//                replyMsg.replyed = NO;
-                [replyMsg saveOrUpdate];
                 
-                [self operateReplySource:@[replyMsg] type:MSReplyDataSourceTypeAdd];
+                replyMsg.msgTime = userMsgTime;
+                
+                if ([replyMsg saveOrUpdate]) {
+                    [replyMsgsSource addObject:replyMsg];
+                }
             }
         }];
     }];
     
     if (sort) {
-        [self operateReplySource:nil type:MSReplyDataSourceTypeSort];
+        [self operateReplySource:replyMsgsSource type:MSReplyDataSourceTypeSort];
     }
     
     if (self.dataSource.count > 0) {
@@ -204,8 +210,11 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 
 - (void)loadAutoReplyMsgsCache {
     [self.dataSource removeAllObjects];
-    [self operateReplySource:[MSAutoReplyMsg findAll] type:MSReplyDataSourceTypeAdd];
+    NSArray <MSAutoReplyMsg *> *oldReplyMsgs = [MSAutoReplyMsg findAll];
     //如果还有今日消息未备推送 则立即启动推送循环
+    if (oldReplyMsgs.count > 0) {
+        [self operateReplySource:oldReplyMsgs type:MSReplyDataSourceTypeSort];
+    }
 }
 
 - (void)operateReplySource:(NSArray <MSAutoReplyMsg *> *)replyMsgs type:(MSReplyDataSourceType)type {
@@ -218,6 +227,8 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         } else if (type == MSReplyDataSourceTypeDel) {
             [self.dataSource removeObjectsInArray:replyMsgs];
         } else if (type == MSReplyDataSourceTypeSort) {
+            [self.dataSource addObjectsFromArray:replyMsgs];
+            
             [self.dataSource sortWithOptions:NSSortStable
                              usingComparator:^NSComparisonResult(MSAutoReplyMsg *  _Nonnull replyMsg1, MSAutoReplyMsg *  _Nonnull replyMsg2)
             {
@@ -242,6 +253,10 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 }
 
 - (void)rollingAutoReplyMsgs {
+//    [self.dataSource enumerateObjectsUsingBlock:^(MSAutoReplyMsg * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//        NSLog(@"nickName:%@ type:%ld time:%ld",obj.nickName,(MSMessageType)obj.msgType,(long)obj.msgTime);
+//    }];
+    
     dispatch_async(self.replyQueue, ^{
         __block uint nextRollingReplyTime = kRollingTimeInterval;
         
