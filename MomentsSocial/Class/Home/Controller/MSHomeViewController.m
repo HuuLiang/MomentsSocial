@@ -164,7 +164,7 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
     const CGFloat itemSpacing = [self collectionView:collectionView layout:collectionViewLayout minimumInteritemSpacingForSectionAtIndex:indexPath.section];
     if (indexPath.section == 0) {
         CGFloat width = (fullWidth - sectionInsets.left - sectionInsets.right - itemSpacing)/2;
-        return CGSizeMake(width, width);
+        return CGSizeMake(floorf(width), floorf(width));
     } else if (indexPath.section == 1) {
         CGFloat width = fullWidth - sectionInsets.left - sectionInsets.right;
         return CGSizeMake(width, kWidth(144));

@@ -81,7 +81,7 @@ static NSString *const kMSVipPayPointCellReusableIdentifier = @"kMSVipPayPointCe
     {
         [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.equalTo(self.view);
-            make.size.mas_equalTo(CGSizeMake(kWidth(610), kWidth(820)));
+            make.size.mas_equalTo(CGSizeMake(kWidth(610), kWidth(900)));
         }];
     }
     
@@ -140,45 +140,58 @@ static NSString *const kMSVipPayPointCellReusableIdentifier = @"kMSVipPayPointCe
     footerView.size = CGSizeMake(kWidth(610), kWidth(216));
     self.tableView.tableFooterView = footerView;
     
-    UIButton *wxButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [wxButton setTitle:@"微信支付" forState:UIControlStateNormal];
-    [wxButton setTitleColor:kColor(@"#ffffff") forState:UIControlStateNormal];
-    wxButton.titleLabel.font = kFont(14);
-    wxButton.layer.cornerRadius = 3;
-    wxButton.backgroundColor = kColor(@"#00AC0A");
-    [footerView addSubview:wxButton];
+    CGFloat footerHeight = 0;
     
-    UIButton *aliButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [aliButton setTitle:@"支付宝" forState:UIControlStateNormal];
-    [aliButton setTitleColor:kColor(@"#ffffff") forState:UIControlStateNormal];
-    aliButton.titleLabel.font = kFont(14);
-    aliButton.layer.cornerRadius = 3;
-    aliButton.backgroundColor = kColor(@"#49ABF5");
-    [footerView addSubview:aliButton];
-    
-    @weakify(self);
-    [wxButton bk_addEventHandler:^(id sender) {
-        @strongify(self);
-        [self payWithType:MSPayTypeWeiXin];
-    } forControlEvents:UIControlEventTouchUpInside];
-    
-    [aliButton bk_addEventHandler:^(id sender) {
-        @strongify(self);
-        [self payWithType:MSPayTypeAliPay];
-    } forControlEvents:UIControlEventTouchUpInside];
+    if ([[MSPaymentManager manager] weixinPayEnable]) {
+        UIButton *wxButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [wxButton setTitle:@"微信支付" forState:UIControlStateNormal];
+        [wxButton setTitleColor:kColor(@"#ffffff") forState:UIControlStateNormal];
+        wxButton.titleLabel.font = kFont(14);
+        wxButton.layer.cornerRadius = 3;
+        wxButton.backgroundColor = kColor(@"#00AC0A");
+        [footerView addSubview:wxButton];
+        
+        @weakify(self);
+        [wxButton bk_addEventHandler:^(id sender) {
+            @strongify(self);
+            [self payWithType:MSPayTypeWeiXin];
+        } forControlEvents:UIControlEventTouchUpInside];
 
-    {
         [wxButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.top.equalTo(footerView);
             make.size.mas_equalTo(CGSizeMake(kWidth(450), kWidth(76)));
         }];
-        
-        [aliButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(footerView);
-            make.top.equalTo(wxButton.mas_bottom).offset(kWidth(20));
-            make.size.mas_equalTo(CGSizeMake(kWidth(450), kWidth(76)));
-        }];
+
+        footerHeight += kWidth(120);
     }
+    
+    if ([[MSPaymentManager manager] aliPayEnable]) {
+        UIButton *aliButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [aliButton setTitle:@"支付宝" forState:UIControlStateNormal];
+        [aliButton setTitleColor:kColor(@"#ffffff") forState:UIControlStateNormal];
+        aliButton.titleLabel.font = kFont(14);
+        aliButton.layer.cornerRadius = 3;
+        aliButton.backgroundColor = kColor(@"#49ABF5");
+        [footerView addSubview:aliButton];
+        
+        @weakify(self);
+        [aliButton bk_addEventHandler:^(id sender) {
+            @strongify(self);
+            [self payWithType:MSPayTypeAliPay];
+        } forControlEvents:UIControlEventTouchUpInside];
+        
+        {
+            
+            [aliButton mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(footerView);
+                make.bottom.equalTo(footerView.mas_bottom).offset(-kWidth(40));
+                make.size.mas_equalTo(CGSizeMake(kWidth(450), kWidth(76)));
+            }];
+        }
+        
+        footerHeight += kWidth(120);
+    }
+    footerView.size = CGSizeMake(kWidth(610), footerHeight);
 }
 
 - (void)payWithType:(MSPayType)type {

@@ -379,16 +379,15 @@
             _displayTextView = displayTextView;
             
             // 5.配置消息已读标示
-            if (!_readDoneLabel) {
+//            if (!_readDoneLabel) {
                 UILabel *readDoneLabel = [[UILabel alloc] init];
-                readDoneLabel.text = message.readDone ? @"已读" : @"未读";
-                NSLog(@"%@,%p",readDoneLabel.text,readDoneLabel);
                 readDoneLabel.textColor = kColor(@"#666666");
                 readDoneLabel.textAlignment = NSTextAlignmentRight;
                 readDoneLabel.font = [UIFont systemFontOfSize:8];
+                readDoneLabel.hidden = message.messageMediaType == XHBubbleMessageTypeSending;
                 [self addSubview:readDoneLabel];
                 _readDoneLabel = readDoneLabel;
-            }
+//            }
         }
         
         // 3、初始化显示图片的控件
@@ -480,7 +479,7 @@
     [super layoutSubviews];
     
     XHBubbleMessageMediaType currentType = self.message.messageMediaType;
-    
+    self.readDoneLabel.hidden = YES;
     switch (currentType) {
         case XHBubbleMessageMediaTypeText:
         case XHBubbleMessageMediaTypeVoice:
@@ -502,10 +501,9 @@
                 
                 if (self.message.bubbleMessageType == XHBubbleMessageTypeSending) {
                     self.readDoneLabel.hidden = NO;
+                    self.readDoneLabel.text = self.message.readDone ? @"已读" : @"未读";
                     self.readDoneLabel.frame = CGRectMake(0, 0, 20, 10);
                     self.readDoneLabel.center = CGPointMake(bubbleFrame.origin.x - 10, self.bubbleImageView.centerY);
-                } else {
-                    self.readDoneLabel.hidden = YES;
                 }
             }
             

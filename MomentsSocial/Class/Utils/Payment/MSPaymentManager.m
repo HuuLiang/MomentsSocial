@@ -47,15 +47,15 @@
                       @"notifyUrl":@"http://phas.rdgongcheng.cn/pd-has/notifyByAlipayNew.json",
                       @"partner":@""};
     
-    QBPaymentConfigurationDetail *weixin = [[QBPaymentConfigurationDetail alloc] init];
-    weixin.type = @(1008);
-    weixin.config = @{@"appId":@"wx633c4131be881cb1",
-                      @"signKey":@"201hdaldie999900djw01dl458575580",
-                      @"mchId":@"1319692301",
-                      @"notifyUrl":@"http://phas.rdgongcheng.cn/pd-has/notifyWx.json"};
+//    QBPaymentConfigurationDetail *weixin = [[QBPaymentConfigurationDetail alloc] init];
+//    weixin.type = @(1008);
+//    weixin.config = @{@"appId":@"wx633c4131be881cb1",
+//                      @"signKey":@"201hdaldie999900djw01dl458575580",
+//                      @"mchId":@"1319692301",
+//                      @"notifyUrl":@"http://phas.rdgongcheng.cn/pd-has/notifyWx.json"};
     
     QBPaymentConfiguration *configuration = [[QBPaymentConfiguration alloc] init];
-    configuration.weixin = weixin;
+//    configuration.weixin = weixin;
     configuration.alipay = alipay;
     return configuration;
 }
@@ -116,6 +116,14 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     [[QBPaymentManager sharedManager] applicationWillEnterForeground:application];
+}
+
+- (BOOL)weixinPayEnable {
+    return [[QBPaymentManager sharedManager] pluginTypeForPaymentType:QBPaymentTypeWeChat] != QBPluginTypeNone;
+}
+
+- (BOOL)aliPayEnable {
+    return [[QBPaymentManager sharedManager] pluginTypeForPaymentType:QBPaymentTypeAlipay] != QBPluginTypeNone;
 }
 
 @end

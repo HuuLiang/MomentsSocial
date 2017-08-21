@@ -47,8 +47,10 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 - (void)startAutoReplyMsgEvent {
     [[MSLocalNotificationManager manager] startAutoLocalNotification]; //开启本地轮询通知
     [self deleteYesterdayMessages]; //删除过期数据
-    [self loadAutoReplyMsgsCache];  //加载今日未推送消息
-    [self observeAutoReplyTimeInterval]; //开始监控启动时常 获取批量推送消息
+//    if ([MSUtil currentVipLevel] == MSLevelVip0) {
+        [self loadAutoReplyMsgsCache];  //加载今日未推送消息
+        [self observeAutoReplyTimeInterval]; //开始监控启动时常 获取批量推送消息
+//    }
 }
 
 - (void)deleteYesterdayMessages {
@@ -152,7 +154,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         __block NSTimeInterval randomTime = 0;
         [userModel.message enumerateObjectsUsingBlock:^(MSUserMsgModel * _Nonnull msgModel, NSUInteger msgIndex, BOOL * _Nonnull stop) {
 #ifdef DEBUG
-            userMsgTime += 2;
+            userMsgTime += 4;
 #else
             randomTime += arc4random() % 21 + 20; //单个user的每条消息的时间间隔 间隔递增 20-40s
             userMsgTime += randomTime;
@@ -260,9 +262,11 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     dispatch_async(self.replyQueue, ^{
         __block uint nextRollingReplyTime = kRollingTimeInterval;
         
-        if (self.dataSource.count > 0) {
-            [self.dataSource enumerateObjectsUsingBlock:^(MSAutoReplyMsg * _Nonnull replyMsg, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSArray *copyDataSource = self.dataSource.mutableCopy;
+        if (copyDataSource.count > 0) {
+            [copyDataSource enumerateObjectsUsingBlock:^(MSAutoReplyMsg * _Nonnull replyMsg, NSUInteger idx, BOOL * _Nonnull stop) {
                 NSTimeInterval currentTimeInterval = [[NSDate date] timeIntervalSince1970];
+//                NSLog(@"idx=%ld nickName:%@ type:%ld time:%ld",(long)idx,replyMsg.nickName,(MSMessageType)replyMsg.msgType,(long)replyMsg.msgTime);
                 if (replyMsg.msgTime <= currentTimeInterval) {
                     [self postReplyMsg:replyMsg];
                 } else {
@@ -285,17 +289,20 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 }
 
 - (void)postReplyMsg:(MSAutoReplyMsg *)replyMsg {
-    [[MSOnlineManager manager] addUser:replyMsg.userId type:MSUserTypeNewPush handler:^(BOOL online) {
-        
-    }];//加入在线管理器
-    
-    [MSMessageModel addMessageInfoWithReplyMsg:replyMsg]; //加入聊天详情表
-    
-    if ([MSContactModel addContactInfoWithReplyMsg:replyMsg]) {
-        //加入消息详情表
-        [replyMsg deleteObject];
-        [self operateReplySource:@[replyMsg] type:MSReplyDataSourceTypeDel];
-    }
+//    if ([MSUtil currentVipLevel] == MSLevelVip0) {
+        [[MSOnlineManager manager] addUser:replyMsg.userId type:MSUserTypeNewPush handler:^(BOOL online) {
+            
+        }];//加入在线管理器
+        [MSMessageModel addMessageInfoWithReplyMsg:replyMsg]; //加入聊天详情表
+        if ([MSContactModel addContactInfoWithReplyMsg:replyMsg]) {
+            //加入消息详情表
+            [replyMsg deleteObject];
+            [self operateReplySource:@[replyMsg] type:MSReplyDataSourceTypeDel];
+        }
+//    } else {
+//        [replyMsg deleteObject];
+//        [self operateReplySource:@[replyMsg] type:MSReplyDataSourceTypeDel];
+//    }
 }
 
 @end

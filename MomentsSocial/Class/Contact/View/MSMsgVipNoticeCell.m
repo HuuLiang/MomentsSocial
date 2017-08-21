@@ -25,7 +25,7 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.accessoryType = UITableViewCellAccessoryNone;
         
-        NSString *allStr = @"您不是vip，当前用户无法接受到您的信息哦，点此开通。";
+        NSString *allStr = @"您不是vip，当前用户无法接收到您的信息哦，点此开通。";
         NSString *subStr = @"点此开通。";
         NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:allStr
                                                                                      attributes:@{NSForegroundColorAttributeName:kColor(@"#999999"),NSFontAttributeName:kFont(13)}];

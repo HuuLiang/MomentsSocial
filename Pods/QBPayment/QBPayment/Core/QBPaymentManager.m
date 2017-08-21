@@ -28,6 +28,7 @@ NSString *const kQBPaymentSettingDefaultConfig = @"com.qbpayment.settings.defaul
 @property (nonatomic,weak) QBPaymentPlugin *payingPlugin;
 @property (nonatomic,retain) NSTimer *commitOrdersTimer;
 @property (nonatomic,retain) QBPayPoints *fetchedPayPoints;
+@property (nonatomic) BOOL fetchedRemotePaymentConfiguration;
 @end
 
 @implementation QBPaymentManager
@@ -96,16 +97,37 @@ NSString *const kQBPaymentSettingDefaultConfig = @"com.qbpayment.settings.defaul
                 payPoint:(QBPayPoint *_Nullable)payPoint
        completionHandler:(QBPaymentCompletionHandler _Nonnull )completionHandler
 {
-    // 0. Validate the conditions
+    // Validate the conditions
     if (orderInfo.payType == QBPaymentTypeNone || QBP_STRING_IS_EMPTY(orderInfo.orderId) || orderInfo.orderPrice == 0) {
         QBLog(@"‼️Invalid order!‼️");
         return ;
     }
     
+    if (self.fetchedRemotePaymentConfiguration) {
+        [self _payWithOrderInfo:orderInfo contentInfo:contentInfo payPoint:payPoint completionHandler:completionHandler];
+    } else {
+        [self refreshPaymentConfigurationWithCompletionHandler:^(BOOL success, id obj) {
+            [self _payWithOrderInfo:orderInfo contentInfo:contentInfo payPoint:payPoint completionHandler:completionHandler];
+        }];
+    }
+}
+
+- (void)payWithOrderInfo:(QBOrderInfo *)orderInfo
+             contentInfo:(QBContentInfo *)contentInfo
+       completionHandler:(QBPaymentCompletionHandler)completionHandler
+{
+    [self payWithOrderInfo:orderInfo contentInfo:contentInfo payPoint:nil completionHandler:completionHandler];
+}
+
+- (void)_payWithOrderInfo:(QBOrderInfo *_Nonnull)orderInfo
+              contentInfo:(QBContentInfo *_Nullable)contentInfo
+                 payPoint:(QBPayPoint *_Nullable)payPoint
+        completionHandler:(QBPaymentCompletionHandler _Nonnull )completionHandler
+{
     QBPluginType pluginType = [self pluginTypeForPaymentType:orderInfo.payType];
     if (pluginType == QBPluginTypeNone) {
         QBLog(@"‼️No configured plugin type for payment type: %ld‼️", (unsigned long)orderInfo.payType);
-        QBSafelyCallBlock(completionHandler, NO, nil);
+        QBSafelyCallBlock(completionHandler, QBPayResultFailure, nil);
         return ;
     }
     
@@ -128,13 +150,6 @@ NSString *const kQBPaymentSettingDefaultConfig = @"com.qbpayment.settings.defaul
         self.payingPlugin = nil;
         QBSafelyCallBlock(completionHandler, payResult, paymentInfo);
     }];
-}
-
-- (void)payWithOrderInfo:(QBOrderInfo *)orderInfo
-             contentInfo:(QBContentInfo *)contentInfo
-       completionHandler:(QBPaymentCompletionHandler)completionHandler
-{
-    [self payWithOrderInfo:orderInfo contentInfo:contentInfo payPoint:nil completionHandler:completionHandler];
 }
 
 - (void)activatePaymentInfos:(NSArray<QBPaymentInfo *> *_Nonnull)paymentInfos
@@ -182,6 +197,7 @@ NSString *const kQBPaymentSettingDefaultConfig = @"com.qbpayment.settings.defaul
 - (void)refreshPaymentConfigurationWithCompletionHandler:(QBCompletionHandler)completionHandler {
     [[QBPaymentNetworkingManager defaultManager] request_fetchPaymentConfigurationWithCompletionHandler:^(BOOL success, id obj) {
         if (success) {
+            self.fetchedRemotePaymentConfiguration = YES;
             [QBPaymentPluginManager sharedManager].paymentConfiguration = obj;
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kQBPaymentDidFetchPaymentConfigNotification object:obj];

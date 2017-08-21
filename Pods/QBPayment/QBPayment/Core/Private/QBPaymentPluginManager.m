@@ -15,7 +15,7 @@ static NSString *const kQBPaymentConfigurationCryptionPassword = @"eiafjsiajo339
 @interface QBPaymentPluginManager ()
 @property (nonatomic,retain) NSMutableArray<QBPaymentPlugin *> *plugins;
 @property (nonatomic,retain,readonly) NSArray<NSString *> *pluginClassNames;
-@property (nonatomic,retain) NSDictionary *pluginConfiguration;
+//@property (nonatomic,retain) NSDictionary *pluginConfiguration;
 @end
 
 @implementation QBPaymentPluginManager

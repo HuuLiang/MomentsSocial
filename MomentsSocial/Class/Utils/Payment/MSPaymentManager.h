@@ -24,4 +24,8 @@ typedef void(^PayResult)(BOOL success);
 
 - (void)commitPayResult:(MSPayResult)payResult handler:(PayResult)hander;
 
+- (BOOL)weixinPayEnable;
+
+- (BOOL)aliPayEnable;
+
 @end

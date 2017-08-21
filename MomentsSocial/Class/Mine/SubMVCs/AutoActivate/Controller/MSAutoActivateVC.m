@@ -41,7 +41,7 @@
     @weakify(self);
     [_activateButton bk_addEventHandler:^(id sender) {
         @strongify(self);
-        [self activateInfo];
+        [self doActivation];
     } forControlEvents:UIControlEventTouchUpInside];
     
     {
@@ -88,13 +88,8 @@
     }];
 }
 
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-}
-
-- (void)activateInfo {
-    
 }
 
 - (void)viewDidLayoutSubviews {
