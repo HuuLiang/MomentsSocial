@@ -68,7 +68,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     dispatch_source_set_timer(_timer, delayTime, 1*NSEC_PER_SEC, 0);
     dispatch_source_set_event_handler(_timer, ^{
         //执行事件
-        QBLog(@"注意当前的计时器时间 %ld",(long)self.observeTime);
+//        QBLog(@"注意当前的计时器时间 %ld",(long)self.observeTime);
         if (_observeTime == firstPushTime || _observeTime % pushTime == 0) {
             [self fetchBatchReplyUsersInfoWithPage:[self.reqPage integerValue] handler:^(BOOL success) {
                 if (success) {
@@ -275,7 +275,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
             }];
         }
         
-        QBLog(@"回复池数量%ld 下次循环推送时间 %d",self.dataSource.count,nextRollingReplyTime);
+//        QBLog(@"回复池数量%ld 下次循环推送时间 %d",self.dataSource.count,nextRollingReplyTime);
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             sleep(nextRollingReplyTime);

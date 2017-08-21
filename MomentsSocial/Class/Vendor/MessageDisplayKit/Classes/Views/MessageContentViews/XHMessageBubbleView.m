@@ -382,6 +382,7 @@
             if (!_readDoneLabel) {
                 UILabel *readDoneLabel = [[UILabel alloc] init];
                 readDoneLabel.text = message.readDone ? @"已读" : @"未读";
+                NSLog(@"%@,%p",readDoneLabel.text,readDoneLabel);
                 readDoneLabel.textColor = kColor(@"#666666");
                 readDoneLabel.textAlignment = NSTextAlignmentRight;
                 readDoneLabel.font = [UIFont systemFontOfSize:8];

@@ -148,10 +148,13 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
 //进入页面重新加载所有消息
 - (void)reloadChatMessage {
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        
+        NSArray *reverseMsgs = [[[MSMessageModel allMessagesWithUserId:self.userId] reverseObjectEnumerator] allObjects];
+        
         NSMutableArray *allChatMsgs = [[NSMutableArray alloc] init];
         __block BOOL readDone = NO;
         //默认消息未未读 逆序 当遍历到消息发送者为机器人时  则之后的所有用户发出的消息为已读
-        [[MSMessageModel allMessagesWithUserId:self.userId] enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(MSMessageModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [reverseMsgs enumerateObjectsUsingBlock:^(MSMessageModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             if ([obj.sendUserId isEqualToString:self.userId]) {
                 readDone = YES;
             }
@@ -253,6 +256,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     chatMessage.msgType = MSMessageTypeText;
     chatMessage.msgContent = message;
     chatMessage.readDone = NO;
+    chatMessage.nickName = [MSUtil currentNickName];
     [self addChatMessage:chatMessage];
 }
 
@@ -278,7 +282,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     chatMessage.voiceUrl = voicePath;
     chatMessage.voiceDuration = voiceDuration;
     chatMessage.msgType = MSMessageTypeVoice;
-    
+    chatMessage.nickName = [MSUtil currentNickName];
     [self addChatMessage:chatMessage];
 }
 

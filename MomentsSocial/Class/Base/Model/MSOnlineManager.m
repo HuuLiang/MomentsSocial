@@ -240,7 +240,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                 }
             }];
         }
-        QBLog(@"状态改变池数量%ld 下次判断改变时间 %d",self.dataSource.count,nextRollingReplyTime);
+//        QBLog(@"状态改变池数量%ld 下次判断改变时间 %d",self.dataSource.count,nextRollingReplyTime);
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             sleep(nextRollingReplyTime);
