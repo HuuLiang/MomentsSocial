@@ -36,6 +36,14 @@
     return info.number;
 }
 
+- (Class)titlesElementClass {
+    return [NSString class];
+}
+
+- (Class)coversElementClass {
+    return [NSString class];
+}
+
 @end
 
 

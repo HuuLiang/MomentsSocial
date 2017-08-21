@@ -10,4 +10,6 @@
 
 @interface MSScrollLabel : UIView
 
+@property (nonatomic) NSArray *titlesArr;
+
 @end

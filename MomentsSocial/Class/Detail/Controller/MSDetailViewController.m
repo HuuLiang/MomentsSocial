@@ -164,7 +164,6 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
                     [MSVipVC showVipViewControllerInCurrentVC:self];
                 }];
             } else {
-//                [[MSHudManager manager] showHudWithText:@"发起请求失败，请稍后重试"];
                 [MSMessageViewController showMessageWithUserId:self.user.userId nickName:self.user.nickName portraitUrl:self.user.portraitUrl inViewController:self];
             }
         };

@@ -34,7 +34,7 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-    _collectionView.backgroundColor = kColor(@"#f0f0f0");
+    _collectionView.backgroundColor = kColor(@"#ffffff");
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
     [_collectionView registerClass:[MSHomeMomentsCell class] forCellWithReuseIdentifier:kMSHomeMomentsCellReusableIdentifier];
@@ -82,15 +82,28 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     if (section == 0) {
-        return self.response.hotCircle.count;
-    } else if (section == 1) {
         return self.response.circle.count;
+    } else if (section == 1) {
+        return self.response.hotCircle.count;
     }
     return 0;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
+        MSHomeCategoryCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kMSHomeCategoryCellReusableIdentifier forIndexPath:indexPath];
+        if (indexPath.item < self.response.circle.count) {
+            MSCircleInfo *info = self.response.circle[indexPath.item];
+            cell.vipLevel = info.vipLv;
+            cell.titles = info.titles;
+            cell.title = info.name;
+            cell.imgsUrl = info.covers;
+            cell.coverImgUrl = info.coverImg;
+            cell.circleType = info.coverType;
+            cell.backUrl = info.circleImg;
+        }
+        return cell;
+    } else if (indexPath.section == 1) {
         MSHomeMomentsCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kMSHomeMomentsCellReusableIdentifier forIndexPath:indexPath];
         if (indexPath.item < self.response.hotCircle.count) {
             MSCircleInfo *info = self.response.hotCircle[indexPath.row];
@@ -101,58 +114,12 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
             cell.vipLevel = info.vipLv;
         }
         return cell;
-    } else if (indexPath.section == 1) {
-        MSHomeCategoryCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kMSHomeCategoryCellReusableIdentifier forIndexPath:indexPath];
-        if (indexPath.item < self.response.circle.count) {
-            MSCircleInfo *info = self.response.circle[indexPath.row];
-            cell.imgUrl = info.circleImg;
-            cell.title = info.name;
-            cell.subTitle = info.circleDesc;
-            cell.vipLevel = info.vipLv;
-            @weakify(self);
-            cell.joinAction = ^{
-                @strongify(self);
-                if (info.vipLv > [MSUtil currentVipLevel]) {
-                    MSPopupType type;
-                    if (info.vipLv == MSLevelVip1) {
-                        type = MSPopupTypeCircleVip1;
-                    } else {
-                        type = MSPopupTypeCircleVip2;
-                    }
-                    [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypeCircleVip2 cancleAction:nil confirmAction:^{
-                        [MSVipVC showVipViewControllerInCurrentVC:self];
-                    }];
-                    return;
-                }
-                MSMomentsListVC *listVC = [[MSMomentsListVC alloc] initWithCircleInfo:info];
-                [self.navigationController pushViewController:listVC animated:YES];
-            };
-        }
-        return cell;
     }
     return nil;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        if (indexPath.item < self.response.hotCircle.count) {
-            MSCircleInfo *info = self.response.hotCircle[indexPath.row];
-            if (info.vipLv > [MSUtil currentVipLevel]) {
-                MSPopupType type;
-                if (info.vipLv == MSLevelVip1) {
-                    type = MSPopupTypeCircleVip1;
-                } else {
-                    type = MSPopupTypeCircleVip2;
-                }
-                [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypeCircleVip2 cancleAction:nil confirmAction:^{
-                    [MSVipVC showVipViewControllerInCurrentVC:self];
-                }];
-                return;
-            }
-            MSMomentsVC *momentsVC = [[MSMomentsVC alloc] initWithCircleInfo:info];
-            [self.navigationController pushViewController:momentsVC animated:YES];
-        }
-    } else if (indexPath.section == 1) {
         if (indexPath.item < self.response.circle.count) {
             MSCircleInfo *info = self.response.circle[indexPath.row];
             if (info.vipLv > [MSUtil currentVipLevel]) {
@@ -170,6 +137,24 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
             MSMomentsListVC *listVC = [[MSMomentsListVC alloc] initWithCircleInfo:info];
             [self.navigationController pushViewController:listVC animated:YES];
         }
+    } else if (indexPath.section == 1) {
+        if (indexPath.item < self.response.hotCircle.count) {
+            MSCircleInfo *info = self.response.hotCircle[indexPath.row];
+            if (info.vipLv > [MSUtil currentVipLevel]) {
+                MSPopupType type;
+                if (info.vipLv == MSLevelVip1) {
+                    type = MSPopupTypeCircleVip1;
+                } else {
+                    type = MSPopupTypeCircleVip2;
+                }
+                [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypeCircleVip2 cancleAction:nil confirmAction:^{
+                    [MSVipVC showVipViewControllerInCurrentVC:self];
+                }];
+                return;
+            }
+            MSMomentsVC *momentsVC = [[MSMomentsVC alloc] initWithCircleInfo:info];
+            [self.navigationController pushViewController:momentsVC animated:YES];
+        }
     }
 }
 
@@ -178,11 +163,11 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
     const UIEdgeInsets sectionInsets = [self collectionView:collectionView layout:collectionViewLayout insetForSectionAtIndex:indexPath.section];
     const CGFloat itemSpacing = [self collectionView:collectionView layout:collectionViewLayout minimumInteritemSpacingForSectionAtIndex:indexPath.section];
     if (indexPath.section == 0) {
-        CGFloat width = fullWidth - sectionInsets.left - sectionInsets.right;
-        return CGSizeMake(width, kWidth(144));
-    } else if (indexPath.section == 1) {
         CGFloat width = (fullWidth - sectionInsets.left - sectionInsets.right - itemSpacing)/2;
         return CGSizeMake(width, width);
+    } else if (indexPath.section == 1) {
+        CGFloat width = fullWidth - sectionInsets.left - sectionInsets.right;
+        return CGSizeMake(width, kWidth(144));
     }
     return CGSizeZero;
 }
@@ -191,9 +176,9 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
     if (kind == UICollectionElementKindSectionHeader) {
         MSHomeCollectionHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kMSHomeCollectionHeaderViewReusableIdentifier forIndexPath:indexPath];
         if (indexPath.section == 0) {
-            headerView.title = @"热门圈";
-        } else if (indexPath.section == 1) {
             headerView.title = @"全部圈子";
+        } else if (indexPath.section == 1) {
+            headerView.title = @"热门圈";
         }
         return headerView;
     } else if (kind == UICollectionElementKindSectionFooter) {
@@ -214,7 +199,7 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
     if (section == 0) {
-        return UIEdgeInsetsMake(1, 0, 1, 0);
+        return UIEdgeInsetsMake(kWidth(20), kWidth(20), kWidth(20), kWidth(20));
     } else if (section == 1) {
         return UIEdgeInsetsMake(1, 0, 1, 0);
     }
@@ -223,18 +208,18 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
     if (section == 0) {
-        return 0;
+        return kWidth(20);
     } else if (section == 1) {
-        return 1.5;
+        return 0;
     }
     return 0;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
     if (section == 0) {
-        return 1.5;
+        return kWidth(20);
     } else if (section == 1) {
-        return 1.5;
+        return 0;
     }
     return 0;
 }

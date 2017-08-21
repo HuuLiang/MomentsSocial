@@ -75,8 +75,8 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
             [self dismissViewControllerAnimated:YES completion:nil];
         }];
     }
-    [self registerCustomVipNoticeCell];
-    [self configLocationUI];
+    [self registerCustomVipNoticeCell]; //注册提示的cell样式
+    [self configLocationUI];             //设置定位UI
 }
 
 - (void)didReceiveMemoryWarning {
@@ -100,6 +100,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+//更新最后一条消息到消息界面
 - (void)postLastMessageInfoToContact {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         MSMessageModel *msgModel = [self.chatMessages lastObject];
@@ -112,6 +113,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     });
 }
 
+//接收到推送的消息
 - (void)receivePostMessageInfo:(NSNotification *)notification {
     MSMessageModel *msgModel = [notification object];
     if ([msgModel.sendUserId isEqualToString:self.userId]) {
@@ -119,14 +121,51 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
             [self.chatMessages addObject:msgModel];
             [self addChatMessageIntoSelf:msgModel reload:NO];
             [[QBVoiceManager manager] playReceiveVoice];
+            
+            //更新消息阅读状态
+            [self changeMsgReadStatus];
         }
     }
 }
 
+- (void)changeMsgReadStatus {
+    dispatch_async(self.changeMessageDataSourceQueue, ^{
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+        [self.messages enumerateObjectsUsingBlock:^(XHMessage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj.sender isEqualToString:self.messageSender]) {
+                obj.readDone = YES;
+                [self.messages replaceObjectAtIndex:idx withObject:obj];
+                [indexPaths addObject:[NSIndexPath indexPathForRow:idx inSection:0]];
+            }
+        }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.messageTableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+        });
+    });
+}
+
+
+//进入页面重新加载所有消息
 - (void)reloadChatMessage {
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        self.chatMessages = [MSMessageModel allMessagesWithUserId:self.userId].mutableCopy;
+        NSMutableArray *allChatMsgs = [[NSMutableArray alloc] init];
+        __block BOOL readDone = NO;
+        //默认消息未未读 逆序 当遍历到消息发送者为机器人时  则之后的所有用户发出的消息为已读
+        [[MSMessageModel allMessagesWithUserId:self.userId] enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(MSMessageModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj.sendUserId isEqualToString:self.userId]) {
+                readDone = YES;
+            }
+            if (readDone && [obj.sendUserId isEqualToString:self.messageSender]) {
+                obj.readDone = YES;
+            }
+            [allChatMsgs addObject:obj];
+        }];
+        
+        //设置过阅读状态消息逆序加入聊天数组中 更新到界面里
+        [self.chatMessages addObjectsFromArray:[[allChatMsgs reverseObjectEnumerator] allObjects]];
+        
         [self.messages removeAllObjects];
+
         [self.chatMessages enumerateObjectsUsingBlock:^(MSMessageModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             [self addChatMessageIntoSelf:obj reload:YES];
         }];
@@ -177,7 +216,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
         message.messageMediaType = XHBubbleMessageMediaTypeText;
     } else if (obj.msgType == MSMessageTypeVipNotice) {
         message = [[XHMessage alloc] initWithText:@""
-                                           sender:self.userId
+                                           sender:@""
                                         timestamp:date];
         message.messageMediaType = XHBubbleMessageMediaTypeCustom;
     }
@@ -213,7 +252,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     chatMessage.msgTime = dateTime;
     chatMessage.msgType = MSMessageTypeText;
     chatMessage.msgContent = message;
-    
+    chatMessage.readDone = NO;
     [self addChatMessage:chatMessage];
 }
 
@@ -243,6 +282,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     [self addChatMessage:chatMessage];
 }
 
+//提示用户付费的vip消息提示
 - (void)addVipNoticeMessage {
     MSMessageModel *noticeMsg = [MSMessageModel vipNoticeMessage];
     [self addChatMessageIntoSelf:noticeMsg reload:NO];

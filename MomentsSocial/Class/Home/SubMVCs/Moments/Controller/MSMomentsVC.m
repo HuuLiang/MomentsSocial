@@ -109,9 +109,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     dispatch_async(dispatch_queue_create(0, 0), ^{
        [self.dataSource enumerateObjectsUsingBlock:^(MSMomentModel *  _Nonnull momentModel, NSUInteger idx, BOOL * _Nonnull stop) {
            if (onlineInfo.userId == momentModel.userId) {
-//               MSMomentsCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
                dispatch_async(dispatch_get_main_queue(), ^{
-//                   cell.online = [NSNumber numberWithBool:onlineInfo.online];
                    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                });
            }

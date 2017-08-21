@@ -322,5 +322,7 @@
 //- (void)popGiftView;
 
 //- (void)showPayView;
+@property (nonatomic,strong) dispatch_queue_t changeMessageDataSourceQueue;
+
 
 @end

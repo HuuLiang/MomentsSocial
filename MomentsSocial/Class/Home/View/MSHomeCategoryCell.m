@@ -7,13 +7,18 @@
 //
 
 #import "MSHomeCategoryCell.h"
+#import "MSScrollLabel.h"
+#import "MSRollView.h"
+#import "FXBlurView.h"
 
 @interface MSHomeCategoryCell ()
-@property (nonatomic) UIImageView *mainImgV;
+@property (nonatomic) UIImageView *backImgV;
+@property (nonatomic) UIImageView *shadowImgV;
+//@property (nonatomic) FXBlurView  *blurView;
+@property (nonatomic) MSRollView  *rollImgV;
+@property (nonatomic) UIImageView *centerImgV;
 @property (nonatomic) UILabel     *titleLabel;
-@property (nonatomic) UIImageView *vipImgV;
-@property (nonatomic) UILabel     *descLabel;
-@property (nonatomic) UIButton    *joinButton;
+@property (nonatomic) MSScrollLabel *scrollLabel;
 @end
 
 @implementation MSHomeCategoryCell
@@ -26,120 +31,151 @@
         self.backgroundColor = kColor(@"#ffffff");
         self.contentView.backgroundColor = kColor(@"#ffffff");
         
-        UIView *backView = [[UIView alloc] init];
-        backView.backgroundColor = kColor(@"#f0f0f0");
-        backView.layer.cornerRadius = kWidth(56);
-        backView.layer.masksToBounds = YES;
-        [self.contentView addSubview:backView];
+        self.backImgV = [[UIImageView alloc] init];
+        _backImgV.contentMode = UIViewContentModeScaleAspectFit;
+        [self.contentView addSubview:_backImgV];
         
-        self.mainImgV = [[UIImageView alloc] init];
-        _mainImgV.layer.cornerRadius = kWidth(52);
-        _mainImgV.layer.masksToBounds = YES;
-        [backView addSubview:_mainImgV];
-
+//        self.blurView = [[FXBlurView alloc] initWithFrame:frame];
+//        self.blurView.updateInterval = 1 /60.;
+//        [_blurView setBlurRadius:40];
+////        self.blurView.tintColor = [UIColor colorWithRed:0 green:0.5 blue:0.5 alpha:1];
+//        [self.contentView addSubview:_blurView];
+//        [_blurView updateAsynchronously:NO completion:^{
+//            
+//            _blurView.frame = self.bounds;
+//        }];
+//        _blurView.hidden = YES;
+        
+        self.shadowImgV = [[UIImageView alloc] init];
+        [self.contentView addSubview:_shadowImgV];
+        
         self.titleLabel = [[UILabel alloc] init];
-        _titleLabel.textColor = kColor(@"#333333");
-        _titleLabel.font = kFont(16);
-        _titleLabel.textAlignment = NSTextAlignmentCenter;
+        _titleLabel.textColor = kColor(@"#ffffff");
+        _titleLabel.font = kFont(15);
         [self.contentView addSubview:_titleLabel];
         
-        self.vipImgV = [[UIImageView alloc] init];
-        [self addSubview:_vipImgV];
+        self.scrollLabel = [[MSScrollLabel alloc] initWithFrame:CGRectMake(0, frame.size.height - kWidth(60), frame.size.width, kWidth(30))];
+        [self.contentView addSubview:_scrollLabel];
         
-        self.descLabel = [[UILabel alloc] init];
-        _descLabel.textColor = kColor(@"#999999");
-        _descLabel.font = kFont(12);
-        _descLabel.textAlignment = NSTextAlignmentCenter;
-        _descLabel.numberOfLines = 0;
-        [self.contentView addSubview:_descLabel];
+        self.centerImgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"home_star"]];
+        [self.contentView addSubview:_centerImgV];
+        _centerImgV.hidden = YES;
         
-        self.joinButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_joinButton setTitle:@"加入" forState:UIControlStateNormal];
-        [_joinButton setTitleColor:kColor(@"#ffffff") forState:UIControlStateNormal];
-        _joinButton.titleLabel.font = kFont(12);
-        _joinButton.layer.cornerRadius = kWidth(24);
-        _joinButton.layer.masksToBounds = YES;
-        [self.contentView addSubview:_joinButton];
-        
-        @weakify(self);
-        [_joinButton bk_addEventHandler:^(id sender) {
-            @strongify(self);
-            if (self.joinAction) {
-                self.joinAction();
-            }
-        } forControlEvents:UIControlEventTouchUpInside];
+        self.rollImgV = [[MSRollView alloc] initWithFrame:CGRectMake(0, 0, kWidth(108), kWidth(108))];
+        [self.contentView addSubview:_rollImgV];
+        _rollImgV.hidden = YES;
         
         {
-            [backView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.contentView);
-                make.top.equalTo(self.contentView).offset(kWidth(34));
-                make.size.mas_equalTo(CGSizeMake(kWidth(112), kWidth(112)));
+            [_backImgV mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.edges.equalTo(self.contentView);
             }];
             
-            [_mainImgV mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.center.equalTo(backView);
-                make.size.mas_equalTo(CGSizeMake(kWidth(104), kWidth(104)));
+            [_shadowImgV mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.edges.equalTo(self.contentView);
             }];
-
             
-            [_vipImgV mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.contentView.mas_centerX).offset(kWidth(24));
-                make.top.equalTo(_mainImgV.mas_top).offset(2);
-                make.size.mas_equalTo(CGSizeMake(kWidth(64), kWidth(28)));
-            }];
+//            [_blurView mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.edges.equalTo(self.contentView);
+//            }];
             
             [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerX.equalTo(self.contentView);
-                make.top.equalTo(_mainImgV.mas_bottom).offset(kWidth(20));
+                make.bottom.equalTo(_scrollLabel.mas_top).offset(-kWidth(16));
                 make.height.mas_equalTo(_titleLabel.font.lineHeight);
             }];
             
-            [_descLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            [_centerImgV mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerX.equalTo(self.contentView);
-                make.top.equalTo(_titleLabel.mas_bottom).offset(kWidth(20));
-                make.width.mas_equalTo(kWidth(220));
+                make.bottom.equalTo(_titleLabel.mas_top).offset(-kWidth(20));
+                make.size.mas_equalTo(CGSizeMake(kWidth(84) , kWidth(74)));
             }];
             
-            [_joinButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            [_rollImgV mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerX.equalTo(self.contentView);
-                make.bottom.equalTo(self.contentView.mas_bottom).offset(-kWidth(22));
-                make.size.mas_equalTo(CGSizeMake(kWidth(120), kWidth(48)));
+                make.bottom.equalTo(_titleLabel.mas_top).offset(-kWidth(20));
+                make.size.mas_equalTo(CGSizeMake(kWidth(108) , kWidth(108)));
             }];
         }
-        
     }
     return self;
 }
 
-- (void)setImgUrl:(NSString *)imgUrl {
-    [_mainImgV sd_setImageWithURL:[NSURL URLWithString:imgUrl]];
+- (void)setBackUrl:(NSString *)backUrl {
+    @weakify(self);
+    [_backImgV sd_setImageWithURL:[NSURL URLWithString:backUrl] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        @strongify(self);
+        if (_circleType == MSCircleTypeBlur) {
+            _backImgV.image = nil;
+            if (image.images.count > 0) {
+                self.backImgV.image = image.images[0].otherBlurImage;
+                NSMutableArray *blurImgs = [NSMutableArray array];
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                    [image.images enumerateObjectsUsingBlock:^(UIImage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                        [blurImgs addObject:obj.otherBlurImage];
+                    }];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.backImgV setAnimationImages:blurImgs];
+                        [self.backImgV setAnimationDuration:2];
+                        self.backImgV.animationRepeatCount = 0;
+                        [self.backImgV startAnimating];
+                    });
+                });
+            }
+        }
+    }];
+}
+
+- (void)setCoverImgUrl:(NSString *)coverImgUrl {
+    _coverImgUrl = coverImgUrl;
+}
+
+- (void)setImgsUrl:(NSArray *)imgsUrl {
+    _imgsUrl = imgsUrl;
 }
 
 - (void)setTitle:(NSString *)title {
     _titleLabel.text = title;
 }
 
-- (void)setSubTitle:(NSString *)subTitle {
-    _descLabel.text = subTitle;
+- (void)setTitles:(NSArray *)titles {
+    _titles = titles;
 }
 
 - (void)setVipLevel:(MSLevel)vipLevel {
-    if (vipLevel == MSLevelVip0) {
-        _vipImgV.image = [UIImage imageNamed:@"level_vip_0"];
-    } else if (vipLevel == MSLevelVip1) {
-        _vipImgV.image = [UIImage imageNamed:@"level_vip_1"];
-    } else if (vipLevel == MSLevelVip2) {
-        _vipImgV.image = [UIImage imageNamed:@"level_vip_2"];
-    } else {
-        _vipImgV.image = nil;
+    _vipLevel = vipLevel;
+}
+
+- (void)setCircleType:(MSCircleType)circleType {
+    _circleType = circleType;
+    _shadowImgV.image = nil;
+    _centerImgV.hidden = YES;
+    _rollImgV.hidden = YES;
+//    _blurView.hidden = YES;
+    if (circleType == MSCircleTypeNone) {
+        _shadowImgV.backgroundColor = [kColor(@"#000000") colorWithAlphaComponent:0.25];
+        
+    } else if (circleType == MSCircleTypeBlur) {
+//        _blurView.hidden = NO;
+//        _blurView.tintColor = [kColor(@"#A538BC") colorWithAlphaComponent:0.45];
+        
+        _shadowImgV.backgroundColor = [kColor(@"#A538BC") colorWithAlphaComponent:0.45];
+//        _shadowImgV.hidden = YES;
+    } else if (circleType == MSCircleTypeCover) {
+        _centerImgV.hidden = NO;
+        [_shadowImgV sd_setImageWithURL:[NSURL URLWithString:_coverImgUrl]];
+        
+    } else if (circleType == MSCircleTypeScroll) {
+        _rollImgV.hidden = NO;
+        [_shadowImgV sd_setImageWithURL:[NSURL URLWithString:_coverImgUrl]];
+        _rollImgV.imgUrls = _imgsUrl;
     }
 }
 
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     
-    UIImage *backgroundImg = [_joinButton setGradientWithSize:_joinButton.size Colors:@[kColor(@"#EF6FB0"),kColor(@"#ED465C")] direction:leftToRight];
-    [_joinButton setBackgroundImage:backgroundImg forState:UIControlStateNormal];
+    _scrollLabel.titlesArr = _titles;
 }
 
 @end

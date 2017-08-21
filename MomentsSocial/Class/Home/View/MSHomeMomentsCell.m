@@ -14,6 +14,7 @@
 @property (nonatomic) UILabel       *descLabel;
 @property (nonatomic) UIImageView   *vipImgV;
 @property (nonatomic) UILabel       *onlineLabel;
+@property (nonatomic) UIImageView   *lineV;
 @end
 
 @implementation MSHomeMomentsCell
@@ -56,6 +57,10 @@
         _onlineLabel.textAlignment = NSTextAlignmentRight;
         [self.contentView addSubview:_onlineLabel];
         
+        self.lineV = [[UIImageView alloc] init];
+        _lineV.backgroundColor = kColor(@"#f0f0f0");
+        [self.contentView addSubview:_lineV];
+        
         {
             [backView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(self.contentView);
@@ -90,6 +95,11 @@
                 make.centerY.equalTo(self.contentView);
                 make.right.equalTo(self.contentView.mas_right).offset(-kWidth(20));
                 make.height.mas_equalTo(_onlineLabel.font.lineHeight);
+            }];
+            
+            [_lineV mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.bottom.centerX.equalTo(self.contentView);
+                make.size.mas_equalTo(CGSizeMake(frame.size.width, 1));
             }];
         }
     }

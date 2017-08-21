@@ -38,7 +38,6 @@
 @property (nonatomic, strong) UIView *headerContainerView;
 @property (nonatomic, strong) UIActivityIndicatorView *loadMoreActivityIndicatorView;
 
-@property (nonatomic,strong) dispatch_queue_t changeMessageDataSourceQueue;
 
 /**
  *  管理本机的摄像和图片库的工具对象

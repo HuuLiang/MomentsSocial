@@ -179,6 +179,8 @@
 		EC848DD91F33242900B47E37 /* MSCheckInVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DD81F33242900B47E37 /* MSCheckInVC.m */; };
 		EC848DDC1F33253400B47E37 /* MSCheckInHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DDB1F33253400B47E37 /* MSCheckInHeaderView.m */; };
 		EC848DE51F334CD300B47E37 /* MSCheckInFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DE41F334CD300B47E37 /* MSCheckInFooterView.m */; };
+		EC8EA6151F481F56009802C6 /* MSRollView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC8EA6141F481F56009802C6 /* MSRollView.m */; };
+		EC8EA6191F483528009802C6 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC8EA6181F483528009802C6 /* FXBlurView.m */; };
 		EC96E4611F42CC4600452C75 /* QBCustomPushAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = EC96E4601F42CC4600452C75 /* QBCustomPushAnimation.m */; };
 		ECA8A9431F37FC8200BABFF9 /* MSShakeUserView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA8A9421F37FC8200BABFF9 /* MSShakeUserView.m */; };
 		ECA8A9461F38449500BABFF9 /* MSDiscoverModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA8A9451F38449500BABFF9 /* MSDiscoverModel.m */; };
@@ -578,6 +580,10 @@
 		EC848DDB1F33253400B47E37 /* MSCheckInHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCheckInHeaderView.m; sourceTree = "<group>"; };
 		EC848DE31F334CD300B47E37 /* MSCheckInFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCheckInFooterView.h; sourceTree = "<group>"; };
 		EC848DE41F334CD300B47E37 /* MSCheckInFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCheckInFooterView.m; sourceTree = "<group>"; };
+		EC8EA6131F481F56009802C6 /* MSRollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSRollView.h; sourceTree = "<group>"; };
+		EC8EA6141F481F56009802C6 /* MSRollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSRollView.m; sourceTree = "<group>"; };
+		EC8EA6171F483528009802C6 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
+		EC8EA6181F483528009802C6 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 		EC96E45F1F42CC4600452C75 /* QBCustomPushAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBCustomPushAnimation.h; sourceTree = "<group>"; };
 		EC96E4601F42CC4600452C75 /* QBCustomPushAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBCustomPushAnimation.m; sourceTree = "<group>"; };
 		ECA8A9411F37FC8200BABFF9 /* MSShakeUserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSShakeUserView.h; sourceTree = "<group>"; };
@@ -1553,6 +1559,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		EC8EA6161F483528009802C6 /* FXBlurView */ = {
+			isa = PBXGroup;
+			children = (
+				EC8EA6171F483528009802C6 /* FXBlurView.h */,
+				EC8EA6181F483528009802C6 /* FXBlurView.m */,
+			);
+			path = FXBlurView;
+			sourceTree = "<group>";
+		};
 		EC96E45E1F42CC1000452C75 /* QBTransitionAnimation */ = {
 			isa = PBXGroup;
 			children = (
@@ -1726,6 +1741,8 @@
 				EC1BFE1D1F39B033003613D6 /* QBVideoPlayer.m */,
 				EC6C04201F46F901001E7BC3 /* MSScrollLabel.h */,
 				EC6C04211F46F901001E7BC3 /* MSScrollLabel.m */,
+				EC8EA6131F481F56009802C6 /* MSRollView.h */,
+				EC8EA6141F481F56009802C6 /* MSRollView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1775,6 +1792,7 @@
 		ECC119311F26DA870093E3EE /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				EC8EA6161F483528009802C6 /* FXBlurView */,
 				EC1BFE1F1F39BD1D003613D6 /* QiniuUpload */,
 				EC1BFCD81F39A786003613D6 /* MessageDisplayKit */,
 				ECC119321F26DA870093E3EE /* ActionSheetPicker-3.0 */,
@@ -2520,6 +2538,7 @@
 				EC1BFDBF1F39A787003613D6 /* XHDisplayMediaViewController.m in Sources */,
 				EC3CB36A1F2F09FE0086F373 /* MSMomentsVC.m in Sources */,
 				EC1BFDB51F39A787003613D6 /* XHAudioPlayerHelper.m in Sources */,
+				EC8EA6191F483528009802C6 /* FXBlurView.m in Sources */,
 				ECC11B2E1F2724450093E3EE /* UIImage+Blur.m in Sources */,
 				EC1BFDC91F39A787003613D6 /* XHMessageVoiceFactory.m in Sources */,
 				ECC11A4D1F26DA870093E3EE /* ActionSheetCustomPicker.m in Sources */,
@@ -2531,6 +2550,7 @@
 				EC1BFDBB1F39A787003613D6 /* XHVoiceCommonHelper.m in Sources */,
 				EC1BFDC31F39A787003613D6 /* XHFileAttribute.m in Sources */,
 				ECB58CC51F2B259C0074E6D8 /* MSDetailHeaderView.m in Sources */,
+				EC8EA6151F481F56009802C6 /* MSRollView.m in Sources */,
 				EC1BFDDE1F39A787003613D6 /* SETextMagnifierRanged.m in Sources */,
 				ECFCAB931F2A0E0A00DC2948 /* MSGreetView.m in Sources */,
 				EC1BFDB81F39A787003613D6 /* XHLocationHelper.m in Sources */,
@@ -2651,6 +2671,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = S954G7B2DA;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

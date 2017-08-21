@@ -73,9 +73,8 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     dispatch_async(self.addQueue, ^{
         [self.dataSource enumerateObjectsUsingBlock:^(MSContactModel *  _Nonnull contactModel, NSUInteger idx, BOOL * _Nonnull stop) {
             if (onlineInfo.userId == contactModel.userId) {
-                MSContactCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    cell.isOneline = onlineInfo.online;
+                    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                 });
             }
         }];

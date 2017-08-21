@@ -8,16 +8,27 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger,MSCircleType) {
+    MSCircleTypeNone = 1,
+    MSCircleTypeBlur,
+    MSCircleTypeCover,
+    MSCircleTypeScroll
+};
+
 @interface MSHomeCategoryCell : UICollectionViewCell
 
-@property (nonatomic) MSAction joinAction;
+@property (nonatomic) MSCircleType circleType;
 
-@property (nonatomic) NSString *imgUrl;
+@property (nonatomic) MSLevel vipLevel;
 
 @property (nonatomic) NSString *title;
 
-@property (nonatomic) NSString *subTitle;
+@property (nonatomic) NSArray *titles;
 
-@property (nonatomic) MSLevel vipLevel;
+@property (nonatomic) NSString *backUrl;
+
+@property (nonatomic) NSString *coverImgUrl;
+
+@property (nonatomic) NSArray *imgsUrl;
 
 @end

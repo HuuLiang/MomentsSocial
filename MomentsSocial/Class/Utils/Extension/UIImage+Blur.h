@@ -12,5 +12,9 @@
 
 - (UIImage*)blurImage;
 
+- (UIImage*)otherBlurImage;
+
 - (UIImage *)boxBlurImage;
+
+- (UIImage *)smallBlurImage;
 @end

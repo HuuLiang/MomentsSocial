@@ -24,6 +24,14 @@
 
 @property (nonatomic) NSTimeInterval time;
 
+@property (nonatomic) NSInteger coverType;
+
+@property (nonatomic) NSString *coverImg;
+
+@property (nonatomic) NSArray *titles;
+
+@property (nonatomic) NSArray *covers;
+
 - (NSInteger)numberWithCircleId:(NSInteger)circleId;
 
 @end

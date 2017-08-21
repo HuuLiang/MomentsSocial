@@ -176,6 +176,9 @@ NSString *const kSAShareLogicErrorCodeKeyName = @"com.momentsSocial.errordomain.
 }
 
 - (id)decryptedWithObject:(id)responseObject {
+    if (!responseObject) {
+        return nil;
+    }
     if ([self.delegate respondsToSelector:@selector(decryptedWithResponseObject:)]) {
         return [self.delegate decryptedWithResponseObject:responseObject];
     }
