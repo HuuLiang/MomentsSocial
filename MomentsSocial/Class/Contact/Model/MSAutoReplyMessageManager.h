@@ -15,67 +15,7 @@ typedef NS_ENUM(NSInteger,MSReplyDataSourceType) {
     MSReplyDataSourceTypeSort
 };
 
-@interface MSAutoReplyMessageManager : NSObject
-
-+ (instancetype)manager;
-
-- (void)startAutoReplyMsgEvent;
-
-- (void)fetchOneReplyUserInfo;
-
-@end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@class MSMessageModel;
 
 @interface MSAutoReplyMsg : JKDBModel
 @property (nonatomic) NSInteger msgId;
@@ -109,3 +49,27 @@ typedef NS_ENUM(NSInteger,MSReplyDataSourceType) {
 @interface MSAutoReplyBatchResponse : QBDataResponse
 @property (nonatomic) NSArray <MSUserModel *> *pushUser;
 @end
+
+
+@interface MSKeywordsReplyResponse : QBDataResponse
+@property (nonatomic) MSUserMsgModel *message;
+@end
+
+
+
+
+
+
+
+@interface MSAutoReplyMessageManager : NSObject
+
++ (instancetype)manager;
+
+- (void)startAutoReplyMsgEvent;
+
+- (void)fetchOneReplyUserInfo;
+
+- (void)fetchKeywordReplyMsgWithMsgInfo:(MSMessageModel *)messageModel;
+
+@end
+

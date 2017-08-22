@@ -42,4 +42,6 @@
 
 + (MSMessageModel *)vipNoticeMessage;
 
++ (void)postMessageToServer:(MSMessageModel *)msgModel;
+
 @end

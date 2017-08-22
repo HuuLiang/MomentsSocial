@@ -97,4 +97,8 @@
     return messageModel;
 }
 
++ (void)postMessageToServer:(MSMessageModel *)msgModel {
+    [[MSAutoReplyMessageManager manager] fetchKeywordReplyMsgWithMsgInfo:msgModel];
+}
+
 @end

@@ -11,8 +11,8 @@
 #import "MSNavigationController.h"
 #import "QBLocationManager.h"
 #import "MSMessageModel.h"
-#import "MSReqManager.h"
-#import "QBDataResponse.h"
+//#import "MSReqManager.h"
+//#import "QBDataResponse.h"
 #import "MSNavigationController.h"
 #import "QBVoiceManager.h"
 
@@ -305,18 +305,9 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
         [self.messageInputView.inputTextView resignFirstResponder];
         [self addVipNoticeMessage];
     }
+    
     if ([MSUtil currentVipLevel] > MSLevelVip0) {
-        NSString *content = @"";
-        if (chatMessage.msgType == MSMessageTypeText) {
-            content = chatMessage.msgContent;
-        } else if (chatMessage.msgType == MSMessageTypeVoice) {
-            content = chatMessage.voiceUrl;
-        }
-        [[MSReqManager manager] sendMsgWithSendUserId:self.messageSender receiveUserId:self.userId content:content Class:[QBDataResponse class] completionHandler:^(BOOL success, id obj) {
-            if (success) {
-                NSLog(@"消息发送服务器成功");
-            }
-        }];
+        [MSMessageModel postMessageToServer:chatMessage];
     }
 }
 

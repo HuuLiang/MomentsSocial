@@ -133,6 +133,41 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     }];
 }
 
+- (void)fetchKeywordReplyMsgWithMsgInfo:(MSMessageModel *)messageModel{
+    NSString *content = @"";
+    if (messageModel.msgType == MSMessageTypeText) {
+        content = messageModel.msgContent;
+    } else if (messageModel.msgType == MSMessageTypeVoice) {
+        content = messageModel.voiceUrl;
+    }
+    [[MSReqManager manager] sendMsgWithSendUserId:messageModel.sendUserId receiveUserId:messageModel.receiveUserId content:content Class:[MSKeywordsReplyResponse class] completionHandler:^(BOOL success, MSKeywordsReplyResponse * userMsg) {
+        if (success) {
+            MSAutoReplyMsg *replyMsg = [[MSAutoReplyMsg alloc] init];
+            replyMsg.userId = [messageModel.receiveUserId integerValue];
+            replyMsg.portraitUrl = messageModel.portraitUrl;
+            replyMsg.nickName = messageModel.nickName;
+            replyMsg.msgId = userMsg.message.msgId;
+            replyMsg.msgType = userMsg.message.msgType;
+            if (replyMsg.msgType == MSMessageTypePhoto) {
+                replyMsg.imgUrl = userMsg.message.photoUrl;
+            } else if (replyMsg.msgType == MSMessageTypeVoice) {
+                replyMsg.voiceUrl = userMsg.message.voiceUrl;
+                replyMsg.voiceDuration = [NSString stringWithFormat:@"%.1f",[MSUtil getVideoLengthWithVideoUrl:userMsg.message.voiceUrl]];
+            } else if (replyMsg.msgType == MSMessageTypeVideo) {
+                replyMsg.videoImgUrl = userMsg.message.videoImg;
+                replyMsg.videoUrl = userMsg.message.videoUrl;
+            } else {
+                replyMsg.msgContent = userMsg.message.content;
+            }
+            
+            replyMsg.msgTime = [[NSDate date] timeIntervalSince1970]  + arc4random() % 10;
+            if ([replyMsg saveOrUpdate]) {
+                [[MSAutoReplyMessageManager manager] operateReplySource:@[replyMsg] type:MSReplyDataSourceTypeSort];
+            }
+        }
+    }];
+}
+
 - (void)insertUserMsgIntoReplyCache:(NSArray <MSUserModel *> *)users sort:(BOOL)sort {
     __block NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970]; //初始化回复时间
 
@@ -341,6 +376,15 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 
 - (Class)pushUserElementClass {
     return [MSUserModel class];
+}
+
+@end
+
+
+@implementation MSKeywordsReplyResponse
+
+- (Class)messageClass {
+    return [MSUserMsgModel class];
 }
 
 @end
