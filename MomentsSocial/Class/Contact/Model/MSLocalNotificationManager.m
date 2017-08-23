@@ -54,8 +54,8 @@
     NSDate *instanceDate = [calendar dateFromComponents:comps];
     
     for (NSInteger dayCount = 0; dayCount < 3 ; dayCount++) {
-        NSDate *newDate = [instanceDate dateByAddingDays:dayCount];
         for (NSInteger i = 0; i < 3; i++) {
+            NSDate *newDate = [instanceDate dateByAddingDays:dayCount];
             if (i == 0) {
                 [dateArr addObject:newDate];
             } else if (i == 1) {
