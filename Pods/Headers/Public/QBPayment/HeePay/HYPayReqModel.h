@@ -1,1 +1,0 @@
-../../../../QBPayment/QBPayment/Plugins/DXTXPay/SDK/HeePay.framework/Headers/HYPayReqModel.h

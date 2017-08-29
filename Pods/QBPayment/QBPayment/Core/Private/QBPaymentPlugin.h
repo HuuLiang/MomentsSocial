@@ -28,7 +28,7 @@
 
 + (void)commitPayment:(QBPaymentInfo *)paymentInfo withResult:(QBPayResult)result;
 - (void)queryPaymentResultForPaymentInfo:(QBPaymentInfo *)paymentInfo withRetryTimes:(NSUInteger)retryTimes completionHandler:(QBPaymentCompletionHandler)completionHandler;
-
+- (void)endPaymentWithPayResult:(QBPayResult)payResult;
 
 @end
 

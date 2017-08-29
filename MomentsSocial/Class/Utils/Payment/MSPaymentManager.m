@@ -11,6 +11,7 @@
 #import <WXApiObject.h>
 #import <QBPaymentManager.h>
 #import <QBPaymentConfiguration.h>
+#import "MSSystemConfigModel.h"
 
 @interface MSPaymentManager () <WXApiDelegate>
 @property (nonatomic) MSLevel targetLevel;
@@ -31,7 +32,7 @@
 - (void)setup {
 //    [WXApi registerApp:YFB_WEXIN_APP_ID];
     [[QBPaymentManager sharedManager] registerPaymentWithSettings:@{kQBPaymentSettingAppId:MS_REST_APPID,
-                                                                    kQBPaymentSettingPv:@(MS_REST_PV.integerValue),
+                                                                    kQBPaymentSettingPv:@(MS_PAYMENT_PV.integerValue),
                                                                     kQBPaymentSettingChannelNo:MS_CHANNEL_NO,
                                                                     kQBPaymentSettingUrlScheme:MS_AliPay_SchemeUrl,
                                                                     kQBPaymentSettingDefaultConfig:[self defaultConfiguration]}];
@@ -39,13 +40,10 @@
 
 - (QBPaymentConfiguration *)defaultConfiguration {
     QBPaymentConfigurationDetail *alipay = [[QBPaymentConfigurationDetail alloc] init];
-    alipay.type = @(1001);
-    alipay.config = @{@"appId":@"2015121000955429",
-                      @"privateKey":@"MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAKxJu4mHp7puorftVMcIhUU4qdQRalHFyp7/yXOKYJ2dv6+9xtZWJVAedQfoWwfjBfGb7r9sOVjG8otwi/1+pwu4u9BpdQxfV5VkFclf/wjSLbe4191udy9UuFO2gXNGmN2GC7/28MeY8LGH9kcIEsTJI5iB1yz42grnnk+rYysvAgMBAAECgYBzgHrZmLg5pDIyXEmZpXyzC2nPYl2EtLVCIvlLHFnpUPhROUk0KEybic+rnXppryks8Pz+F+/aNIYmNS2kpGQXuZa9yLDyTzy38iqqHGtOUVBMDuHyvNM4qBepn065uhQqhA3O5IndSBUXNRMMovab7qdJdqLLMuPWAFBTAk6vAQJBAPrRQhC2+BsSbaZe1Tqv6PQK7uN4hK23zPVhy5xQ6YaeTtIIIkGK4j/1vnObiVqCE1HPryEUlhljaG6TJ2q9h/sCQQCv2RRo4Mne8Eb6e67uLj8GavUHEuQ6GAK/01oZ3H0FEmWK2kyuWuJyOxfwH3BbsYPw4FtQGCkcuAciHp9Jlj9dAkEApW8+7z1wGpMmJdVpOYNr2QQZG4qToO2Zz8RIg3tO/M8QWDKrPaX4o41YqHJPv5YKXizpa51jf6105XJEToBi3wJAM+KARCW3SqFov/WIetyIWhNq8shfMMju3ry0xBariLiR33Nj1roYQI4xFPehxlxNSuBX8Pz//GpMKIQSibrcPQJAaTHHXGWr5Qh5dgOjs9CspivZYeSlLDbHePFsRLzXeRbsQD/Xsh4a9n0n0tOnIUSn71HjYlX9bEF+3RwvDZlcPw==",
-                      @"productInfo":@"atlas",
-                      @"seller":@"wuyp@iqu8.cn",
-                      @"notifyUrl":@"http://phas.rdgongcheng.cn/pd-has/notifyByAlipayNew.json",
-                      @"partner":@""};
+    alipay.type = @(1047);
+    alipay.config = @{@"mchId":@"403818923879",
+                      @"key":@"049ff749f2a6d3f48fb7a83a2587288b",
+                      @"notifyUrl":@"http://phas.rdgongcheng.cn/pd-has/notifyBonuo.json"};
     
 //    QBPaymentConfigurationDetail *weixin = [[QBPaymentConfigurationDetail alloc] init];
 //    weixin.type = @(1008);
@@ -68,12 +66,12 @@
     price = 1;
 #endif
     
-    NSString *appName = [NSBundle mainBundle].infoDictionary[@"CFBundleDisplayName"];
+//    NSString *appName = [NSBundle mainBundle].infoDictionary[@"CFBundleDisplayName"];
     
     QBOrderInfo *orderInfo = [[QBOrderInfo alloc] init];
     orderInfo.orderId = MS_PAYMENT_ORDERID;
     orderInfo.orderPrice = price;
-    orderInfo.orderDescription = [NSString stringWithFormat:@"%@增值服务", appName];
+    orderInfo.orderDescription = [NSString stringWithFormat:@"QQ:%@",[MSSystemConfigModel defaultConfig].config.CONTACT_NAME];
     orderInfo.payType = (long)payType;
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

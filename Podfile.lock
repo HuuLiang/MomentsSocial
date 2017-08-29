@@ -42,34 +42,54 @@ PODS:
     - FBRetainCycleDetector
   - OpenSSL (1.0.208)
   - pop (1.0.10)
-  - QBExtensions/Core (0.0.17)
-  - QBPayment/AlipayPlugin (218):
+  - QBExtensions/Core (0.0.19):
+    - Aspects (~> 1.4.1)
+  - QBPayment/AlipayPlugin (222):
     - QBPayment/Core
     - QBPayment/CoreUI
     - QBTPL/AlipaySDK
-  - QBPayment/Core (218):
+  - QBPayment/BNPay (222):
+    - QBPayment/Core
+    - QBPayment/CoreUI
+    - QBTPL/WeChatSDK
+  - QBPayment/Core (222):
     - AFNetworking (~> 3.1.0)
     - MBProgressHUD (~> 0.9.2)
     - QBExtensions/Core (~> 0.0.6)
-  - QBPayment/CoreUI (218):
+  - QBPayment/CoreUI (222):
     - MBProgressHUD (~> 0.9.2)
     - QBExtensions/Core (~> 0.0.6)
-  - QBPayment/DXTXPay (218):
+  - QBPayment/DmePay (222):
     - QBPayment/Core
     - QBPayment/CoreUI
-    - QBPayment/WFTPay
     - QBTPL/AlipaySDK
     - QBTPL/WeChatSDK
-  - QBPayment/WeChatPayPlugin (218):
+  - QBPayment/HuiPay (222):
+    - QBPayment/Core
+    - QBPayment/CoreUI
+    - QBTPL/AlipaySDK
+    - QBTPL/WeChatSDK
+  - QBPayment/WeChatPayPlugin (222):
     - QBPayment/Core
     - QBPayment/CoreUI
     - QBTPL/WeChatSDK
     - XMLDictionary (~> 1.4.1)
-  - QBPayment/WFTPay (218):
+  - QBPayment/WFTPay (222):
     - QBPayment/Core
     - QBPayment/CoreUI
     - QBTPL/WeChatSDK
     - XMLReader-Arc (~> 1.1)
+  - QBPayment/XinPay (222):
+    - QBPayment/Core
+    - QBPayment/CoreUI
+    - QBTPL/WeChatSDK
+  - QBPayment/YiPay (222):
+    - QBPayment/WFTPay
+  - QBPayment/ZYPay (222):
+    - QBPayment/Core
+    - QBPayment/CoreUI
+    - QBTPL/AlipaySDK
+    - QBTPL/WeChatSDK
   - QBTPL/AlipaySDK (0.1.2):
     - OpenSSL (~> 1.0.208)
   - QBTPL/WeChatSDK (0.1.2)
@@ -93,8 +113,13 @@ DEPENDENCIES:
   - OpenSSL (~> 1.0.208)
   - pop (~> 1.0.9)
   - QBPayment/AlipayPlugin
-  - QBPayment/DXTXPay
+  - QBPayment/BNPay
+  - QBPayment/DmePay
+  - QBPayment/HuiPay
   - QBPayment/WeChatPayPlugin
+  - QBPayment/XinPay
+  - QBPayment/YiPay
+  - QBPayment/ZYPay
   - SDWebImage (= 3.7.3)
   - SFHFKeychainUtils (~> 0.0.1)
   - UMengAnalytics-NO-IDFA (~> 4.1.1)
@@ -112,8 +137,8 @@ SPEC CHECKSUMS:
   MLeaksFinder: 0850e2f2abc7227adc4d4e2d1992b431264eb4d5
   OpenSSL: b187269d386b07452f56af273764ea0636dd5da8
   pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
-  QBExtensions: aad52fcb11de2450c371a294f3941469b911d4fa
-  QBPayment: 70528ec68513e65c6d2aae3d1e1d33176931d2f1
+  QBExtensions: bbb5914bff519ff96ec7a9bca63a79ee77dca76e
+  QBPayment: ee514813d79ab8b3d937a1170e68fe9730657fc5
   QBTPL: 8ddd3238665714b9b41d99e7e00b4b2104967cbc
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   SFHFKeychainUtils: 9576b411a79a058f4d5381ace6f3242b9a62e664
@@ -121,6 +146,6 @@ SPEC CHECKSUMS:
   XMLDictionary: fa07b6ff422b3a91d47a5de9bc82e3fc04fbd167
   XMLReader-Arc: 7832c527346fc26511fd6c05ebcee18008c34d6d
 
-PODFILE CHECKSUM: 666296d2a24b9f3f1f8a19fa6d9efd7e0d07f412
+PODFILE CHECKSUM: 82e43b654d42d5476ca67f821d204c290479fce0
 
 COCOAPODS: 1.2.1

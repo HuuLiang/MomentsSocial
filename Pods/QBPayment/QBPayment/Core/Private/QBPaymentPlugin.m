@@ -54,28 +54,7 @@
                              completionHandler:^(QBPayResult payResult, QBPaymentInfo *paymentInfo)
          {
              @strongify(self);
-             [self endLoading];
-             
-             if (self.paymentInfo) {
-                 [[self class] commitPayment:paymentInfo withResult:payResult];
-             }
-             
-             if (self.payingViewController) {
-                 [self.payingViewController dismissViewControllerAnimated:YES completion:^{
-                     @strongify(self);
-                     self.payingViewController = nil;
-                     
-                     QBSafelyCallBlock(self.paymentCompletionHandler, payResult, paymentInfo);
-                     
-                     self.paymentInfo = nil;
-                     self.paymentCompletionHandler = nil;
-                 }];
-             } else {
-                 QBSafelyCallBlock(self.paymentCompletionHandler, payResult, paymentInfo);
-                 
-                 self.paymentCompletionHandler = nil;
-                 self.paymentInfo = nil;
-             }
+             [self endPaymentWithPayResult:payResult];
              
          }];
     }
@@ -126,6 +105,31 @@
         }
         
     }];
+}
+
+- (void)endPaymentWithPayResult:(QBPayResult)payResult {
+    [self endLoading];
+    
+    if (self.paymentInfo) {
+        [[self class] commitPayment:self.paymentInfo withResult:payResult];
+    }
+    
+    if (self.payingViewController) {
+        [self.payingViewController dismissViewControllerAnimated:YES completion:^{
+
+            self.payingViewController = nil;
+            
+            QBSafelyCallBlock(self.paymentCompletionHandler, payResult, self.paymentInfo);
+            
+            self.paymentInfo = nil;
+            self.paymentCompletionHandler = nil;
+        }];
+    } else {
+        QBSafelyCallBlock(self.paymentCompletionHandler, payResult, self.paymentInfo);
+        
+        self.paymentCompletionHandler = nil;
+        self.paymentInfo = nil;
+    }
 }
 
 - (UIViewController *)viewControllerForPresentingPayment {
