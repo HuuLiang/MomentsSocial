@@ -44,48 +44,48 @@ PODS:
   - pop (1.0.10)
   - QBExtensions/Core (0.0.19):
     - Aspects (~> 1.4.1)
-  - QBPayment/AlipayPlugin (222):
+  - QBPayment/AlipayPlugin (225):
     - QBPayment/Core
     - QBPayment/CoreUI
     - QBTPL/AlipaySDK
-  - QBPayment/BNPay (222):
+  - QBPayment/BNPay (225):
     - QBPayment/Core
     - QBPayment/CoreUI
     - QBTPL/WeChatSDK
-  - QBPayment/Core (222):
+  - QBPayment/Core (225):
     - AFNetworking (~> 3.1.0)
     - MBProgressHUD (~> 0.9.2)
     - QBExtensions/Core (~> 0.0.6)
-  - QBPayment/CoreUI (222):
+  - QBPayment/CoreUI (225):
     - MBProgressHUD (~> 0.9.2)
     - QBExtensions/Core (~> 0.0.6)
-  - QBPayment/DmePay (222):
+  - QBPayment/DmePay (225):
     - QBPayment/Core
     - QBPayment/CoreUI
     - QBTPL/AlipaySDK
     - QBTPL/WeChatSDK
-  - QBPayment/HuiPay (222):
+  - QBPayment/HuiPay (225):
     - QBPayment/Core
     - QBPayment/CoreUI
     - QBTPL/AlipaySDK
     - QBTPL/WeChatSDK
-  - QBPayment/WeChatPayPlugin (222):
+  - QBPayment/WeChatPayPlugin (225):
     - QBPayment/Core
     - QBPayment/CoreUI
     - QBTPL/WeChatSDK
     - XMLDictionary (~> 1.4.1)
-  - QBPayment/WFTPay (222):
+  - QBPayment/WFTPay (225):
     - QBPayment/Core
     - QBPayment/CoreUI
     - QBTPL/WeChatSDK
     - XMLReader-Arc (~> 1.1)
-  - QBPayment/XinPay (222):
+  - QBPayment/XinPay (225):
     - QBPayment/Core
     - QBPayment/CoreUI
     - QBTPL/WeChatSDK
-  - QBPayment/YiPay (222):
+  - QBPayment/YiPay (225):
     - QBPayment/WFTPay
-  - QBPayment/ZYPay (222):
+  - QBPayment/ZYPay (225):
     - QBPayment/Core
     - QBPayment/CoreUI
     - QBTPL/AlipaySDK
@@ -138,7 +138,7 @@ SPEC CHECKSUMS:
   OpenSSL: b187269d386b07452f56af273764ea0636dd5da8
   pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
   QBExtensions: bbb5914bff519ff96ec7a9bca63a79ee77dca76e
-  QBPayment: ee514813d79ab8b3d937a1170e68fe9730657fc5
+  QBPayment: 196e376cbaff3c2e88e05e400a5d399b70af27b7
   QBTPL: 8ddd3238665714b9b41d99e7e00b4b2104967cbc
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   SFHFKeychainUtils: 9576b411a79a058f4d5381ace6f3242b9a62e664

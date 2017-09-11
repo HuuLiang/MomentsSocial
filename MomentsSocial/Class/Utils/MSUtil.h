@@ -35,6 +35,7 @@
 + (BOOL)isToday;
 
 + (NSString *)compareCurrentTime:(NSTimeInterval)compareTimeInterval;
++ (NSString *)currentTimeStringWithFormat:(NSString *)timeFormat;
 
 + (UIViewController *)rootViewControlelr;
 + (UIViewController *)currentViewController;

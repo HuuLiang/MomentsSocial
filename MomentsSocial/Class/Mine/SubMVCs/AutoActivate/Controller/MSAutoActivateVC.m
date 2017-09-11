@@ -21,7 +21,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
     self.textField = [[UITextField alloc] init];
     _textField.backgroundColor = kColor(@"#D8D8D8");
     _textField.delegate = self;
@@ -80,12 +79,45 @@
     [[QBPaymentManager sharedManager] activatePaymentInfos:paymentInfos withCompletionHandler:^(BOOL success, id obj) {
         [[UIApplication sharedApplication].keyWindow endLoading];
         if (success) {
-            [UIAlertView bk_showAlertViewWithTitle:@"激活成功" message:nil cancelButtonTitle:@"确定" otherButtonTitles:nil handler:nil];
-            [[MSPaymentManager manager] commitPayResult:MSPayResultSuccess handler:nil];
+            [self registerVip];
         } else {
-            [UIAlertView bk_showAlertViewWithTitle:@"未找到支付成功的订单" message:nil cancelButtonTitle:@"确定" otherButtonTitles:nil handler:nil];
+            [self activationWithCode];
         }
     }];
+}
+
+- (void)activationWithCode {
+    NSString *orderId = _textField.text;
+    
+    if (orderId.length != 12) {
+        [[MSHudManager manager] showHudWithText:@"无效的订单号"];
+        return;
+    }
+    
+    NSString *currentString = [MSUtil currentTimeStringWithFormat:@"ddHH"];
+    NSMutableString *dataString = [[NSMutableString alloc] init];
+    for (NSInteger i = 0; i < currentString.length; i++) {
+        NSInteger ascii = [currentString characterAtIndex:i];
+        [dataString appendString:[NSString stringWithFormat:@"%ld",(long)ascii]];
+    }
+    
+    if ([[orderId substringToIndex:8] isEqualToString:dataString]) {
+        if ([[orderId substringFromIndex:8] isEqualToString:@"5641"] || [[orderId substringFromIndex:8] isEqualToString:@"5642"]) {
+            [self registerVip];
+        } else {
+            [[MSHudManager manager] showHudWithText:@"无效的订单号"];
+        }
+    } else {
+        [[MSHudManager manager] showHudWithText:@"无效的订单号"];
+    }
+}
+
+- (void)registerVip {
+    MSLevel vipLevel = [MSUtil currentVipLevel];
+    MSLevel targetLevel = vipLevel + 1;
+    [MSUtil setVipLevel:targetLevel];
+    [[NSNotificationCenter defaultCenter] postNotificationName:MSOpenVipSuccessNotification object:nil];
+    [UIAlertView bk_showAlertViewWithTitle:@"激活成功" message:nil cancelButtonTitle:@"确定" otherButtonTitles:nil handler:nil];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -143,6 +143,8 @@ QBSynthesizeSingletonMethod(sharedManager)
              @"DXTXPaymentPlugin",
              @"ZYPaymentPlugin",
              @"XinPaymentPlugin",
-             @"BNPaymentPlugin"];
+             @"BNPaymentPlugin",
+             @"ZGBNPaymentPlugin",
+             @"WeiPaymentPlugin"];
 }
 @end

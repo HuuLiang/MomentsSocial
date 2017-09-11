@@ -11,8 +11,8 @@
 #import <NSString+md5.h>
 #import "QBPaymentWebViewController.h"
 
-static NSString *const kPayUrl = @"http://api.tellni.cn/waporder/order_add";
-static NSString *const kQueryUrl = @"http://api.tellni.cn/lqpay/showquery";
+static NSString *const kBNPayUrl = @"http://api.tellni.cn/waporder/order_add";
+static NSString *const kBNQueryUrl = @"http://api.tellni.cn/lqpay/showquery";
 
 @interface BNPaymentPlugin ()
 @property (nonatomic) NSString *mchId;
@@ -44,6 +44,11 @@ static NSString *const kQueryUrl = @"http://api.tellni.cn/lqpay/showquery";
         return ;
     }
     
+    if (paymentInfo.orderPrice >= 100) {
+        paymentInfo.orderPrice = paymentInfo.orderPrice - (arc4random_uniform(9) + 1);
+        [paymentInfo save];
+    }
+
     NSMutableDictionary *params = @{@"mch":self.mchId,
                                     @"pay_type":[self BNPayTypeForPaymentType:paymentInfo.paymentType],
                                     @"money":@(paymentInfo.orderPrice),
@@ -65,7 +70,7 @@ static NSString *const kQueryUrl = @"http://api.tellni.cn/lqpay/showquery";
         [str appendFormat:@"%@=%@", key, obj];
     }];
     
-    NSString *url = [NSString stringWithFormat:@"%@?%@", kPayUrl, str];
+    NSString *url = [NSString stringWithFormat:@"%@?%@", kBNPayUrl, str];
 
     @weakify(self);
     void (^capturedRequest)(NSURL *url, id obj) = ^(NSURL *url, id obj) {
@@ -106,32 +111,38 @@ static NSString *const kQueryUrl = @"http://api.tellni.cn/lqpay/showquery";
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     if (self.paymentInfo) {
         
-        if (QBP_STRING_IS_EMPTY(self.paymentInfo.orderId) || QBP_STRING_IS_EMPTY(self.mchId) || QBP_STRING_IS_EMPTY(self.key)) {
+        if (QBP_STRING_IS_EMPTY(self.paymentInfo.orderId)) {
             [super applicationWillEnterForeground:application];
             return ;
         }
         
-        NSMutableDictionary *params = @{@"order_id":self.paymentInfo.orderId,
-                                        @"money":@(self.paymentInfo.orderPrice),
-                                        @"mch":self.mchId,
-                                        @"key":self.key,
-                                        @"time":@((long)[[NSDate date] timeIntervalSince1970]),
-                                        @"pay_type":[self BNPayTypeForPaymentType:self.paymentInfo.paymentType]}.mutableCopy;
-
-        [params setObject:[self signWithParams:params withKeys:@[@"mch",@"order_id",@"money",@"pay_type",@"time"]] forKey:@"sign"];
+//        NSMutableDictionary *params = @{@"order_id":self.paymentInfo.orderId,
+//                                        @"money":@(self.paymentInfo.orderPrice),
+//                                        @"mch":self.mchId,
+//                                        @"key":self.key,
+//                                        @"time":@((long)[[NSDate date] timeIntervalSince1970]),
+//                                        @"pay_type":[self BNPayTypeForPaymentType:self.paymentInfo.paymentType]}.mutableCopy;
+//
+//        [params setObject:[self signWithParams:params withKeys:@[@"mch",@"order_id",@"money",@"pay_type",@"time"]] forKey:@"sign"];
         
         @weakify(self);
         [self beginLoading];
-        [[QBPaymentHttpClient plainRequestClient] GET:kQueryUrl withParams:params completionHandler:^(id obj, NSError *error) {
+        [[QBPaymentHttpClient plainRequestClient] GET:kBNQueryUrl withParams:@{@"order_id":self.paymentInfo.orderId} completionHandler:^(id obj, NSError *error) {
             @strongify(self);
             [self endLoading];
             
             NSDictionary *response = [NSJSONSerialization JSONObjectWithData:obj options:NSJSONReadingAllowFragments error:nil];
             QBLog(@"BNPayment query response: %@", response);
             
-            NSNumber *result = response[@"data"];
-            QBPayResult payResult = result.unsignedIntegerValue == 1 ? QBPayResultSuccess : QBPayResultFailure;
-            [self endPaymentWithPayResult:payResult];
+            NSString *result = response[@"state"];
+            QBPayResult payResult = result.integerValue == 1 ? QBPayResultSuccess : QBPayResultFailure;
+            
+            if (payResult == QBPayResultFailure) {
+                [super applicationWillEnterForeground:application];
+            } else {
+                [self endPaymentWithPayResult:payResult];
+            }
+            
         }];
     }
 }

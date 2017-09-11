@@ -109,7 +109,7 @@ QBSynthesizeSingletonMethod(defaultManager)
                              @"channelNo":self.channelNo,
                              @"contentId":paymentInfo.contentId.stringValue ?: @"0",
                              @"contentType":paymentInfo.contentType.stringValue ?: @"0",
-                             @"pluginType":@(paymentInfo.paymentType),
+                             @"pluginType":@(paymentInfo.pluginType),
                              @"payType":paymentSubTypeDic[@(paymentInfo.paymentType)] ?: @"",
                              @"payPointType":@(paymentInfo.currentPayPointType * 10 + paymentInfo.targetPayPointType),
                              @"appId":self.appId,

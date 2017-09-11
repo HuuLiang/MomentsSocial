@@ -228,30 +228,32 @@
 }
 
 - (void)addMessage:(XHMessage *)addedMessage {
-    WEAKSELF
-    [self exChangeMessageDataSourceQueue:^{
-        [weakSelf exMainQueue:^{
-            [weakSelf.messages addObject:addedMessage];
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:weakSelf.messages.count - 1 inSection:0];
-            [weakSelf.messageTableView beginUpdates];
-            [weakSelf.messageTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [weakSelf.messageTableView endUpdates];
-            [weakSelf scrollToBottomAnimated:YES];
+    if (addedMessage) {
+        WEAKSELF
+        [self exChangeMessageDataSourceQueue:^{
+            [weakSelf exMainQueue:^{
+                [weakSelf.messages addObject:addedMessage];
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:weakSelf.messages.count - 1 inSection:0];
+                [weakSelf.messageTableView beginUpdates];
+                [weakSelf.messageTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [weakSelf.messageTableView endUpdates];
+                [weakSelf scrollToBottomAnimated:YES];
+            }];
+            
+            //        NSMutableArray *messages = [NSMutableArray arrayWithArray:weakSelf.messages];
+            //        [messages addObject:addedMessage];
+            //
+            //        __block NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count - 1 inSection:0];
+            //
+            //        [weakSelf exMainQueue:^{
+            //            weakSelf.messages = messages;
+            //            [weakSelf.messageTableView beginUpdates];
+            //            [weakSelf.messageTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            //            [weakSelf.messageTableView endUpdates];
+            //            [weakSelf scrollToBottomAnimated:YES];
+            //        }];
         }];
-        
-//        NSMutableArray *messages = [NSMutableArray arrayWithArray:weakSelf.messages];
-//        [messages addObject:addedMessage];
-//
-//        __block NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count - 1 inSection:0];
-//        
-//        [weakSelf exMainQueue:^{
-//            weakSelf.messages = messages;
-//            [weakSelf.messageTableView beginUpdates];
-//            [weakSelf.messageTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//            [weakSelf.messageTableView endUpdates];
-//            [weakSelf scrollToBottomAnimated:YES];
-//        }];
-    }];
+    }
 }
 
 - (void)removeMessageAtIndexPath:(NSIndexPath *)indexPath {

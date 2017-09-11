@@ -11,8 +11,8 @@
 #import "QBPaymentWebViewController.h"
 #import <NSString+md5.h>
 
-static NSString *const kPayUrl = @"http://pay.api.flypush.com/api/wypay/createOrder";
-static NSString *const kQueryUrl = @"http://pay.api.flypush.com/api/bill/status";
+static NSString *const kXinPayUrl = @"http://pay.api.flypush.com/api/wypay/createOrder";
+static NSString *const kXinQueryUrl = @"http://pay.api.flypush.com/api/bill/status";
 
 @interface XinPaymentPlugin ()
 @property (nonatomic) NSString *mchId;
@@ -74,7 +74,7 @@ static NSString *const kQueryUrl = @"http://pay.api.flypush.com/api/bill/status"
     
     @weakify(self);
     [self beginLoading];
-    [[QBPaymentHttpClient JSONRequestClient] POST:kPayUrl withParams:params completionHandler:^(id obj, NSError *error) {
+    [[QBPaymentHttpClient JSONRequestClient] POST:kXinPayUrl withParams:params completionHandler:^(id obj, NSError *error) {
         @strongify(self);
         [self endLoading];
         
@@ -118,7 +118,7 @@ static NSString *const kQueryUrl = @"http://pay.api.flypush.com/api/bill/status"
     if (self.paymentInfo) {
         @weakify(self);
         
-        [[QBPaymentHttpClient plainRequestClient] GET:kQueryUrl withParams:@{@"billno":self.prePayOrderId ?: @""} completionHandler:^(id obj, NSError *error) {
+        [[QBPaymentHttpClient plainRequestClient] GET:kXinQueryUrl withParams:@{@"billno":self.prePayOrderId ?: @""} completionHandler:^(id obj, NSError *error) {
             @strongify(self);
             
             QBPayResult payResult = QBPayResultFailure;

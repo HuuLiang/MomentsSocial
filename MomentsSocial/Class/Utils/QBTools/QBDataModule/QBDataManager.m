@@ -126,13 +126,12 @@ NSString *const kSAShareLogicErrorCodeKeyName = @"com.momentsSocial.errordomain.
 
 
 - (NSDictionary *)encryptWithParams:(id)params {
+    if (!params) {
+        return nil;
+    }
     
     if ([self.delegate respondsToSelector:@selector(encryptedWithParams:)]) {
         return [self.delegate encryptedWithParams:params];
-    }
-    
-    if (!params) {
-        return nil;
     }
     
     NSMutableArray <NSString *> *values = [[NSMutableArray alloc] init];

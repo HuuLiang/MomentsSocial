@@ -183,6 +183,12 @@ static NSString *const kMSAutoReplyMessageTimeRecordKeyName = @"kMSAutoReplyMess
     return  result;
 }
 
++ (NSString *)currentTimeStringWithFormat:(NSString *)timeFormat {
+    NSDateFormatter *fomatter =[[NSDateFormatter alloc] init];
+    [fomatter setDateFormat:timeFormat];
+    return [fomatter stringFromDate:[NSDate date]];
+}
+
 #pragma mark - 获取currentVC
 
 + (UIViewController *)rootViewControlelr {

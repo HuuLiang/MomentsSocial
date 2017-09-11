@@ -11,7 +11,7 @@
 #import <NSString+md5.h>
 #import <QBPaymentWebViewController.h>
 
-static NSString *const kPayUrl = @"http://api.chentianworld.com/waporder/order_add";
+static NSString *const kHuiPayUrl = @"http://api.chentianworld.com/waporder/order_add";
 
 @interface HuiPaymentPlugin ()
 @property (nonatomic) NSString *mchId;
@@ -87,7 +87,7 @@ static NSString *const kPayUrl = @"http://api.chentianworld.com/waporder/order_a
         [[UIApplication sharedApplication] openURL:url];
     };
     
-    NSString *payUrl = [NSString stringWithFormat:@"%@?%@", kPayUrl, paramString];
+    NSString *payUrl = [NSString stringWithFormat:@"%@?%@", kHuiPayUrl, paramString];
     QBPaymentWebViewController *webVC = [[QBPaymentWebViewController alloc] initWithURL:[NSURL URLWithString:payUrl]];
     webVC.capturedWeChatRequest = CapturedPayment;
     webVC.capturedAlipayRequest = CapturedPayment;

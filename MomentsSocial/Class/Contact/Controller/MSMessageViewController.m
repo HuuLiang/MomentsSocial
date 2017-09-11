@@ -170,7 +170,9 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
         [self.messages removeAllObjects];
 
         [self.chatMessages enumerateObjectsUsingBlock:^(MSMessageModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [self addChatMessageIntoSelf:obj reload:YES];
+            if (!obj) {
+                [self addChatMessageIntoSelf:obj reload:YES];
+            }
         }];
         
         dispatch_sync(dispatch_get_main_queue(), ^{
