@@ -13,7 +13,7 @@
 @property (nonatomic) UIButton *backButton;
 @property (nonatomic) UIImageView *userImgV;
 @property (nonatomic) UIButton *nickOnlineButton;
-@property (nonatomic) UIButton    *locationButton;
+//@property (nonatomic) UIButton    *locationButton;
 @property (nonatomic) UIImageView *vipImgV;
 @end
 
@@ -44,11 +44,11 @@
         _nickOnlineButton.enabled = NO;
         [self addSubview:_nickOnlineButton];
         
-        self.locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_locationButton setImage:[UIImage imageNamed:@"near_location"] forState:UIControlStateNormal];
-        [_locationButton setTitleColor:kColor(@"#ffffff") forState:UIControlStateNormal];
-        _locationButton.titleLabel.font = kFont(11);
-        [self addSubview:_locationButton];
+//        self.locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_locationButton setImage:[UIImage imageNamed:@"near_location"] forState:UIControlStateNormal];
+//        [_locationButton setTitleColor:kColor(@"#ffffff") forState:UIControlStateNormal];
+//        _locationButton.titleLabel.font = kFont(11);
+//        [self addSubview:_locationButton];
         
         self.vipImgV = [[UIImageView alloc] init];
         [self addSubview:_vipImgV];
@@ -85,15 +85,15 @@
                 make.size.mas_equalTo(CGSizeMake(kWidth(260), kWidth(36)));
             }];
             
-            [_locationButton mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(_nickOnlineButton.mas_bottom).offset(kWidth(18));
-                make.centerX.equalTo(self);
-                make.size.mas_equalTo(CGSizeMake(kWidth(300), kWidth(26)));
-            }];
+//            [_locationButton mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.top.equalTo(_nickOnlineButton.mas_bottom).offset(kWidth(18));
+//                make.centerX.equalTo(self);
+//                make.size.mas_equalTo(CGSizeMake(kWidth(300), kWidth(26)));
+//            }];
             
             [_vipImgV mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerX.equalTo(self);
-                make.top.equalTo(_locationButton.mas_bottom).offset(kWidth(22));
+                make.top.equalTo(_nickOnlineButton.mas_bottom).offset(kWidth(30));
                 make.size.mas_equalTo(CGSizeMake(kWidth(66), kWidth(28)));
             }];
         }
@@ -114,9 +114,9 @@
     [_nickOnlineButton setImage:[UIImage imageNamed:online ? @"moment_online" : @"moment_offline"] forState:UIControlStateNormal];
 }
 
-- (void)setLocation:(NSString *)location {
-    [_locationButton setTitle:location forState:UIControlStateNormal];
-}
+//- (void)setLocation:(NSString *)location {
+//    [_locationButton setTitle:location forState:UIControlStateNormal];
+//}
 
 - (void)setVipLevel:(MSLevel)vipLevel {
     if (vipLevel == MSLevelVip0) {
@@ -135,7 +135,7 @@
     
     [_nickOnlineButton layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleRight imageTitleSpace:kWidth(14)];
     
-    [_locationButton layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleLeft imageTitleSpace:5];
+//    [_locationButton layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleLeft imageTitleSpace:5];
     
     _backImgV.image = [self setGradientWithSize:_backImgV.size Colors:@[kColor(@"#EF6FB0"),kColor(@"#ED465C")] direction:leftToRight];
 }

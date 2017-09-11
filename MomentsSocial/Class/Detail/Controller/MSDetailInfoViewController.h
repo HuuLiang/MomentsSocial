@@ -10,4 +10,6 @@
 
 @interface MSDetailInfoViewController : MSBaseViewController
 
+- (instancetype)initWithUserInfo:(MSUserModel *)userInfo;
+
 @end

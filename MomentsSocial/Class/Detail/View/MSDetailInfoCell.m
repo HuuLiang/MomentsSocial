@@ -60,7 +60,11 @@
 }
 
 - (void)setContent:(NSString *)content {
-    _contentLabel.text = content;
+    if (content.length == 0 || !content) {
+        _contentLabel.text = @"未填写";
+    } else {
+        _contentLabel.text = content;
+    }
 }
 
 @end

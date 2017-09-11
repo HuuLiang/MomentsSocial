@@ -131,12 +131,12 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
     }
     _headerView.imgUrl = self.user.portraitUrl;
     _headerView.nickName = self.user.nickName;
-    @weakify(self);
-    [[QBLocationManager manager] getUserLacationNameWithUserId:self.userId locationName:^(BOOL success, NSString *locationName) {
-        @strongify(self);
-        self.headerView.location = self.user.city;
-
-    }];
+//    @weakify(self);
+//    [[QBLocationManager manager] getUserLacationNameWithUserId:self.userId locationName:^(BOOL success, NSString *locationName) {
+//        @strongify(self);
+//        self.headerView.location = self.user.city;
+//
+//    }];
     _headerView.online = [[MSOnlineManager manager] onlineWithUserId:[self.userId integerValue]];
     _headerView.vipLevel = self.user.vipLv;
 }
@@ -248,7 +248,8 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
             MSDetailPhotosVC *photosVC = [[MSDetailPhotosVC alloc] initWithPhotos:self.user.userPhoto];
             [self.navigationController pushViewController:photosVC animated:YES];
         } else if (section == MSDetailSectionInfo) {
-            MSDetailInfoViewController *infoVC = [[MSDetailInfoViewController alloc] initWithTitle:@"个人资料"];
+            MSDetailInfoViewController *infoVC = [[MSDetailInfoViewController alloc] initWithUserInfo:self.user];
+            
             [self.navigationController pushViewController:infoVC animated:YES];
         }
     };

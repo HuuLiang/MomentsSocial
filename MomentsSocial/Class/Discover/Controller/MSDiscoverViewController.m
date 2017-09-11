@@ -73,7 +73,9 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     @weakify(self);
     [headerImgV bk_whenTapped:^{
         @strongify(self);
-        [MSVipVC showVipViewControllerInCurrentVC:self];
+        if ([MSUtil currentVipLevel] < MSLevelVip2) {
+            [MSVipVC showVipViewControllerInCurrentVC:self];
+        }
     }];
 }
 

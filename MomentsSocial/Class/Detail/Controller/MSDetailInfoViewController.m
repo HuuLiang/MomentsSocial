@@ -48,12 +48,23 @@ static NSString *const kMSDetailInfoCellReusableIdentifier = @"kMSDetailInfoCell
 
 @interface MSDetailInfoViewController () <UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic) UITableView *tableView;
+@property (nonatomic) MSUserModel *userInfo;
 @end
 
 @implementation MSDetailInfoViewController
 
+- (instancetype)initWithUserInfo:(MSUserModel *)userInfo {
+    self = [super init];
+    if (self) {
+        _userInfo = userInfo;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.title = @"个人资料";
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     _tableView.delegate = self;
@@ -95,53 +106,61 @@ static NSString *const kMSDetailInfoCellReusableIdentifier = @"kMSDetailInfoCell
     if (indexPath.section == MSUserInfoSectionBase) {
         if (indexPath.row == MSBaseInfoRowNick) {
             cell.title = @"昵称";
-            cell.content = @"Dior女孩";
+            cell.content = self.userInfo.nickName;
         } else if (indexPath.row == MSBaseInfoRowSex) {
             cell.title = @"性别";
-            cell.content = @"女";
+            cell.content = self.userInfo.sex;
         } else if (indexPath.row == MSBaseInfoRowAge) {
             cell.title = @"年龄";
-            cell.content = @"24岁";
+            cell.content = [NSString stringWithFormat:@"%ld岁",(long)self.userInfo.age];;
         } else if (indexPath.row == MSBaseInfoRowCity) {
             cell.title = @"居住地";
-            cell.content = @"杭州市";
+            cell.content = self.userInfo.city;
         } else if (indexPath.row == MSBaseInfoRowIncome) {
             cell.title = @"月收入";
-            cell.content = @"5000-10000";
+            cell.content = self.userInfo.income;
         } else if (indexPath.row == MSBaseInfoRowMarriage) {
             cell.title = @"婚姻状况";
-            cell.content = @"未婚";
+            cell.content = self.userInfo.marital;
         }
     } else if (indexPath.section == MSUserInfoSectionContact) {
         if (indexPath.row == MSContactInfoRowQQ) {
             cell.title = @"QQ";
-            cell.content = @"67934056";
+            if (self.userInfo.qq == 0) {
+                cell.content = @"未填写";
+            } else {
+                cell.content = [NSString stringWithFormat:@"%ld",(long)self.userInfo.qq];
+            }
         } else if (indexPath.row == MSContactInfoRowPhone) {
             cell.title = @"手机号";
-            cell.content = @"15866667439";
+            if (self.userInfo.qq == 0) {
+                cell.content = @"未填写";
+            } else {
+                cell.content = [NSString stringWithFormat:@"%ld",(long)self.userInfo.phone];
+            }
         } else if (indexPath.row == MSContactInfoRowWX) {
             cell.title = @"微信";
-            cell.content = @"89345601";
+            cell.content = self.userInfo.weixin;
         }
     } else if (indexPath.section == MSUserInfoSectionDetail) {
         if (indexPath.row == MSDetailInfoRowEducation) {
             cell.title = @"学历";
-            cell.content = @"本科";
+            cell.content = self.userInfo.education;
         } else if (indexPath.row == MSDetailInfoRowJob) {
             cell.title = @"职业";
-            cell.content = @"未填写";
+            cell.content = self.userInfo.vocation;
         } else if (indexPath.row == MSDetailInfoRowBirth) {
             cell.title = @"生日";
-            cell.content = @"1992-05-24";
+            cell.content = self.userInfo.birthday;
         } else if (indexPath.row == MSDetailInfoRowWeight) {
             cell.title = @"体重";
-            cell.content = @"50-55kg";
+            cell.content = self.userInfo.weight;
         } else if (indexPath.row == MSDetailInfoRowHeight) {
             cell.title = @"身高";
-            cell.content = @"159cm";
+            cell.content = [NSString stringWithFormat:@"%ldcm",(long)self.userInfo.height];
         } else if (indexPath.row == MSDetailInfoRowConstellation) {
             cell.title = @"星座";
-            cell.content = @"白羊座";
+            cell.content = self.userInfo.constellation;
         }
     }
     return cell;

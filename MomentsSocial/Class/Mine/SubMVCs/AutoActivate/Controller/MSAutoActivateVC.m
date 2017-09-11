@@ -76,10 +76,10 @@
     
     
     [[UIApplication sharedApplication].keyWindow beginLoading];
-    [[QBPaymentManager sharedManager] activatePaymentInfos:paymentInfos withCompletionHandler:^(BOOL success, id obj) {
+    [[QBPaymentManager sharedManager] activatePaymentInfos:paymentInfos withCompletionHandler:^(BOOL success, QBPaymentInfo * obj) {
         [[UIApplication sharedApplication].keyWindow endLoading];
         if (success) {
-            [self registerVip];
+            [self registerVipWithTargetVip:obj.targetPayPointType];
         } else {
             [self activationWithCode];
         }
@@ -102,8 +102,10 @@
     }
     
     if ([[orderId substringToIndex:8] isEqualToString:dataString]) {
-        if ([[orderId substringFromIndex:8] isEqualToString:@"5641"] || [[orderId substringFromIndex:8] isEqualToString:@"5642"]) {
-            [self registerVip];
+        if ([[orderId substringFromIndex:8] isEqualToString:@"5641"]) {
+            [self registerVipWithTargetVip:MSLevelVip1];
+        } else if ([[orderId substringFromIndex:8] isEqualToString:@"5642"]) {
+            [self registerVipWithTargetVip:MSLevelVip2];
         } else {
             [[MSHudManager manager] showHudWithText:@"无效的订单号"];
         }
@@ -112,10 +114,8 @@
     }
 }
 
-- (void)registerVip {
-    MSLevel vipLevel = [MSUtil currentVipLevel];
-    MSLevel targetLevel = vipLevel + 1;
-    [MSUtil setVipLevel:targetLevel];
+- (void)registerVipWithTargetVip:(MSLevel)targetVipLevel {
+    [MSUtil setVipLevel:targetVipLevel];
     [[NSNotificationCenter defaultCenter] postNotificationName:MSOpenVipSuccessNotification object:nil];
     [UIAlertView bk_showAlertViewWithTitle:@"激活成功" message:nil cancelButtonTitle:@"确定" otherButtonTitles:nil handler:nil];
 }
