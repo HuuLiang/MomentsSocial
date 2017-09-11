@@ -142,6 +142,9 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     }
     [[MSReqManager manager] sendMsgWithSendUserId:messageModel.sendUserId receiveUserId:messageModel.receiveUserId content:content Class:[MSKeywordsReplyResponse class] completionHandler:^(BOOL success, MSKeywordsReplyResponse * userMsg) {
         if (success) {
+            if (!userMsg.message) {
+                return ;
+            }
             MSAutoReplyMsg *replyMsg = [[MSAutoReplyMsg alloc] init];
             replyMsg.userId = [messageModel.receiveUserId integerValue];
             replyMsg.portraitUrl = messageModel.portraitUrl;
