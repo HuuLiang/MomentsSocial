@@ -116,7 +116,7 @@
             break;
             
         case MSPopupTypeBookLuoVip2:
-            contentMsg = @"功能升级中，正在招募，预计8月底上线，敬请期待";
+            contentMsg = @"功能升级中，正在招募，预计月底上线，敬请期待";
             enterMsg = @"期待ing";
             break;
             
