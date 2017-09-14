@@ -55,6 +55,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     _tableView.tableFooterView = [[UIView alloc] init];
     [_tableView registerClass:[MSMomentsCell class] forCellReuseIdentifier:kMSMomentsCellReusableIdentifier];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    _tableView.tableFooterView = [UIView new];
     [self.view addSubview:_tableView];
     
     {
@@ -248,7 +249,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         
         cell.loveAction = ^{
             @strongify(self,cell,model);
-            if (model.loved) {
+            if (cell.loved.boolValue) {
                 [[MSHudManager manager] showHudWithText:@"您已经点过赞"];
                 return ;
             }

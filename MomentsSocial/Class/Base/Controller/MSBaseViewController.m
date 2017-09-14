@@ -40,4 +40,8 @@
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 
+- (void)dealloc {
+    NSLog(@"✅✅✅✅ %@  dealloc  🤘🎃✌️",NSStringFromClass(self.class));
+}
+
 @end

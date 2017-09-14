@@ -373,4 +373,9 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     }];
 }
 
+
+- (void)dealloc {
+    NSLog(@"✅✅✅✅ %@  dealloc  🤘🎃✌️",NSStringFromClass(self.class));
+}
+
 @end

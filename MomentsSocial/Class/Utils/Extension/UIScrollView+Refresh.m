@@ -12,34 +12,34 @@
 @implementation UIScrollView (Refresh)
 
 - (void)QB_addPullToRefreshWithHandler:(void (^)(void))handler {
-    if (!self.header) {
+    if (!self.mj_header) {
         MJRefreshNormalHeader *refreshHeader = [MJRefreshNormalHeader headerWithRefreshingBlock:handler];
         refreshHeader.lastUpdatedTimeLabel.hidden = YES;
-        self.header = refreshHeader;
+        self.mj_header = refreshHeader;
     }
 }
 
 - (void)QB_triggerPullToRefresh {
-    [self.header beginRefreshing];
+    [self.mj_header beginRefreshing];
 }
 
 - (void)QB_endPullToRefresh {
-    [self.header endRefreshing];
-    [self.footer resetNoMoreData];
+    [self.mj_header endRefreshing];
+    [self.mj_footer resetNoMoreData];
 }
 
 - (void)QB_addPagingRefreshWithHandler:(void (^)(void))handler {
-    if (!self.footer) {
+    if (!self.mj_footer) {
         MJRefreshAutoNormalFooter *refreshFooter = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:handler];
-        self.footer = refreshFooter;
+        self.mj_footer = refreshFooter;
     }
 }
 
 - (void)QB_addPagingRefreshWithNotice:(NSString *)notiStr Handler:(void (^)(void))handler {
-    if (!self.footer) {
+    if (!self.mj_footer) {
         MJRefreshAutoNormalFooter *refreshFooter = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:handler];
         [refreshFooter setTitle:notiStr forState:MJRefreshStateIdle];
-        self.footer = refreshFooter;
+        self.mj_footer = refreshFooter;
     }
 }
 
@@ -50,15 +50,15 @@
     } else {
         notiStr = @"------  我是有底线的  ------";
     }
-    if (!self.footer) {
+    if (!self.mj_footer) {
         MJRefreshAutoNormalFooter *refreshFooter = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:handler];
         [refreshFooter setTitle:notiStr forState:MJRefreshStateIdle];
-        self.footer = refreshFooter;
+        self.mj_footer = refreshFooter;
     }
 }
 
 - (void)QB_pagingRefreshNoMoreData {
-    [self.footer endRefreshingWithNoMoreData];
+    [self.mj_footer endRefreshingWithNoMoreData];
 }
 
 

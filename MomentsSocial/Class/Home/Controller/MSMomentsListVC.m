@@ -83,7 +83,6 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
     }];
 }
 
-
 #pragma mark - UITableViewDelegate,UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
