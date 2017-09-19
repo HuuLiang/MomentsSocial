@@ -10,7 +10,7 @@
 
 @interface MSVipVC : MSBaseViewController
 
-+ (void)showVipViewControllerInCurrentVC:(UIViewController *)currentViewController;
++ (void)showVipViewControllerInCurrentVC:(UIViewController *)currentViewController contentType:(MSPopupType)contentType;
 
 
 @end

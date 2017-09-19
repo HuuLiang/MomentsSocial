@@ -147,7 +147,7 @@ NSString *const kSAShareLogicErrorCodeKeyName = @"com.momentsSocial.errordomain.
     [values sortUsingComparator:^NSComparisonResult(NSString * _Nonnull obj1, NSString * _Nonnull obj2) {
         NSRange range = NSMakeRange(0, obj1.length);
         return [obj1 compare:obj2 options:
-                NSWidthInsensitiveSearch range:range];
+                NSLiteralSearch range:range];
     }];
     
     NSMutableString *valueStr = [[NSMutableString alloc] init];

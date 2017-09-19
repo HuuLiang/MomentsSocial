@@ -34,6 +34,10 @@
     self.signKey = paymentConfiguration[@"privateKey"];
     self.notifyUrl = paymentConfiguration[@"notifyUrl"];
     self.seller = paymentConfiguration[@"seller"];
+    
+//    self.appId = @"2017071707785977";
+//    self.signKey = @"MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCj5HBVgIWjDsaS1kVj7WELvX++DlV0yj+7hdfBc8dM6mz2UrX/3jMqThSRrnvFp0aKHeMlR1ODvNbX9i6zAsj1+3rlZzFEomn5yx0aTfmd6mYwEUq+Hy8LoP9s2I1ab+CGaGA8awN+VzIaNqiZmQoU9eyzh2TBGjCsaR9wMhpMh+ABUR56D7Ths3LKuoTFprIkY5wSv3WcNfNVvbuVUvM8794buQobaXdKlVC6vvpOQmocSdrcsNoWk0MtQ/1nXBo4zORhZ3sZ9NtRiZIOH0Shx8mzeRpfLIDSyB1oZ9YxkHCm05P3P4fsqF3+AQAAOrnhpnR8ykA4p8wI2tS6q/WNAgMBAAECggEAfdF5i6pG7Y8CUue8DaLGxcSMtNM8N5SsqMFviUvgzOOLEu8cWXmzvd6DW/OfgXWRaabYIl5HdvMZ3GFaKIMS1ARjrIk0AYTN5r5PcUo7P0gbevtLbflynHLUpDL7EVqh+41VlAxzeiJmjEk51fDvFHhXZtuiNbxtcW6ie/d6yRSqqOoJ2K9INFDn36Qka5tzsUklIviNOZEzplAQd29SpOiKr/sYuZOkbpdef1hrJXCtqC8DTtK00jlV+zkGNDWbCxBzR8qDYvU3T6C81hLHNavkYjEFlAwvBqj8MC/8U0aIbM6yWhIvfparvjjakhSdCXV0B+W8hfgfbyL/6K8d4QKBgQDhceU/hbCMv+s4rt1oxvrtHB402AiD89Mcl6cS/iI1mVFP1YnUS912Tm1vOUn2Zm9ljtJE7oHugyRfbHvTdJfspvJKUYMzJxVutaGAP4HPlSrBpXoMjqddCF8OUuKBbxDeTNaNZ4kTLwOkzG0022cvoZwNDRcJVD5OUX+WeMvbGwKBgQC6GuWbxpzH91H0atqGMrGih7zXuEOAMwnpEA0uJkXltogMImpFYJnQNTTMq7cmWo4WNvFxD9EInWpeyLmAoB0f2TGZVAELRNn/siG6LFJ9mGHLNX6L2u6NfVqYA1g/INcciAgFQT/KQpk7gmVieUugkR1DgaR00/F2WisC7hEUdwKBgEi6S3BgmoHtb96LWtXwSwau6Xe2sZiP0e0JZ1aTMUoFOdv9UUdxafI+fsNAwgGBLjKfDmo6XyQonlVCU/f1RwWLHeKnxSF9XEaoxX7v/dqPjomF7oeahZdXmgKu7m8++zwboaNgYTIVGqHRaPGCThlpk0QKkwHpcWgmlnheY7U9AoGAASw8ODAXOtdfJ9goimH1Zp3OXdmmaz9nF5XnT1wkYp802ka5PriuH3bGX2fRnqdBb/hmqxy7Z39+dRx0ts/LfzDiNCIoY4bKjOb1eXPgDTSRoTM0GfOGP1QD5yNWQgeV83MUAdx4Z3DmAE8BDo7PIDLp6Uv+2lGfmuxUiw8vAl8CgYEAy34AxPojFDjRVeOSsy18Z6i8IGSPfuvQNz3cSi+bO7HH6fPQU71V2vyfCeFNkIFlSmYjTU2qOSuFn0FDAG5paphWyA8mdymjOHHVhB7pST85hxiBjVMbbhWcWqAhPBykUkQ33uZQ1UEX9IafZKNMv28sXqp18B91ceUPQ51psds=";
+//    self.seller = @"zhijutechnology@163.com";
 }
 
 - (void)payWithPaymentInfo:(QBPaymentInfo *)paymentInfo completionHandler:(QBPaymentCompletionHandler)completionHandler {
@@ -61,7 +65,7 @@
     order.version = @"1.0";
     
     // NOTE: sign_type 根据商户设置的私钥来决定
-    order.sign_type = @"RSA";
+    order.sign_type = @"RSA2";
     
     order.notify_url = self.notifyUrl;
     order.passback_params = paymentInfo.reservedData;
@@ -83,7 +87,7 @@
     //       需要遵循RSA签名规范，并将签名字符串base64编码和UrlEncode
     
     RSADataSigner* signer = [[RSADataSigner alloc] initWithPrivateKey:self.signKey];
-    NSString *signedString = [signer signString:orderInfo withRSA2:NO];
+    NSString *signedString = [signer signString:orderInfo withRSA2:YES];
     
 //    if ((rsa2PrivateKey.length > 1)) {
 //        signedString = [signer signString:orderInfo withRSA2:YES];

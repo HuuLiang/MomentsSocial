@@ -249,6 +249,12 @@ NSString *const kQBPaymentSettingDefaultConfig = @"com.qbpayment.settings.defaul
     return pluginType.unsignedIntegerValue;
 }
 
+- (NSUInteger)minialPriceForPaymentType:(QBPaymentType)paymentType {
+    QBPluginType pluginType = [self pluginTypeForPaymentType:paymentType];
+    
+    QBPaymentPlugin *plugin = [[QBPaymentPluginManager sharedManager] pluginWithType:pluginType];
+    return plugin.minimalPrice;
+}
 @end
 
 @implementation QBPaymentManager (PayPoints)

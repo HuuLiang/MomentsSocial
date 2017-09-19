@@ -52,7 +52,7 @@
             [self cancelFaceTimeView];
         } confirmAction:^{
             [self cancelFaceTimeView];
-            [MSVipVC showVipViewControllerInCurrentVC:[MSUtil rootViewControlelr]];
+            [MSVipVC showVipViewControllerInCurrentVC:[MSUtil rootViewControlelr] contentType:MSPopupTypeFaceTime];
         }];
     } else {
         [self cancelFaceTimeView];

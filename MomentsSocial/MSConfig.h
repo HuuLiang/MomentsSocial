@@ -13,7 +13,7 @@
 #define MS_CHANNEL_NO               [MSConfiguration sharedConfig].channelNo
 #define MS_REST_APPID               @"QUBA_2029"
 #define MS_REST_PV                  @"100"
-#define MS_PAYMENT_PV               @"101"
+#define MS_PAYMENT_PV               @"102"
 #define MS_CONTENT_VERSION          @"1.0"
 #define MS_PACKAGE_CERTIFICATE      @"iPhone Distribution: Neijiang Fenghuang Enterprise (Group) Co., Ltd."
 
@@ -31,7 +31,7 @@
 #define MS_HOME_URL                    @"/cfc/queryCircle.htm"                        //圈子
 #define MS_MOMENTS_URL                 @"/cfc/queryMood.htm"                          //动态
 #define MS_PUSHUSER_URL                @"/cfc/pushUser.htm"                           //批量推送用户
-#define MS_PUSHUSERONE_URL             @"/cfc/pushUserOne"                            //单个推送用户
+#define MS_PUSHUSERONE_URL             @"/cfc/pushUserOne.htm"                            //单个推送用户
 #define MS_DAYHOUSE_URL                @"/cfc/dayHouse.htm"                           //今日开房
 #define MS_NEARSHAKE_URL               @"/cfc/nearbyShake.htm"                        //附近的人  摇一摇
 #define MS_DISCOVER_URL                @"/cfc/find.htm"                               //发现
@@ -47,6 +47,9 @@
 #define MS_AliPay_SchemeUrl            @"commomentssocialschemeurl"
 
 #define MS_UMENG_APP_ID                @"59899d25bbea834cb6000af9"
+
+#define MS_TURING_URL                  @"http://www.tuling123.com/openapi/api"
+#define MS_TULING_KEY                  @"65d7eee8b5c240dea353533271a3b9eb"
 
 
 #define MS_WEXIN_APP_ID                @"wx2b2846687e296e95"

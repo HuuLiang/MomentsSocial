@@ -16,8 +16,8 @@
 
 static NSString *const kMSNearCellReusableIdentifier = @"kMSNearCellReusableIdentifier";
 
-@interface MSNearViewController () <UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
-@property (nonatomic) UICollectionView *collectionView;
+@interface MSNearViewController () <UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic) NSMutableArray <MSUserModel *> *dataSource;
 @end
 
@@ -27,33 +27,28 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.sectionInset = UIEdgeInsetsMake(kWidth(20), kWidth(20), kWidth(20), kWidth(20));
-    layout.minimumLineSpacing = kWidth(20);
-    layout.minimumInteritemSpacing = kWidth(20);
-    CGFloat itemWidth = floor(kScreenWidth - kWidth(60))/2;
-    CGFloat itemHeight = itemWidth + kWidth(88);
-    layout.itemSize = CGSizeMake(itemWidth, itemHeight);
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-    [_collectionView registerClass:[MSNearCell class] forCellWithReuseIdentifier:kMSNearCellReusableIdentifier];
-    _collectionView.backgroundColor = kColor(@"#f0f0f0");
-    _collectionView.delegate = self;
-    _collectionView.dataSource = self;
-    [self.view addSubview:_collectionView];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    _tableView.backgroundColor = kColor(@"#f0f0f0");
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    [_tableView registerClass:[MSNearCell class] forCellReuseIdentifier:kMSNearCellReusableIdentifier];
+    _tableView.tableFooterView = [UIView new];
+    [_tableView setSeparatorInset:UIEdgeInsetsMake(0, kWidth(30), 0, 0)];
+    [self.view addSubview:_tableView];
     
     {
-        [_collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.view);
         }];
     }
     
     @weakify(self);
-    [_collectionView QB_addPullToRefreshWithHandler:^{
+    [_tableView QB_addPullToRefreshWithHandler:^{
         @strongify(self);
         [self fetchNearInfo];
     }];
     
-    [_collectionView QB_triggerPullToRefresh];
+    [_tableView QB_triggerPullToRefresh];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,35 +59,34 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     @weakify(self);
     [[MSReqManager manager] fetchNearShakeInfoWithNumber:30 Class:[MSDisFuctionModel class] completionHandler:^(BOOL success, MSDisFuctionModel * obj) {
         @strongify(self);
-        [self.collectionView QB_endPullToRefresh];
+        [self.tableView QB_endPullToRefresh];
         if (success) {
             [self.dataSource removeAllObjects];
             [self.dataSource addObjectsFromArray:obj.users];
-            [self.collectionView reloadData];
+            [self.tableView reloadData];
         }
     }];
 }
 
-#pragma mark - UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout
+#pragma mark - UITableViewDelegate,UITableViewDataSource
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView  {
     return 1;
 }
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.dataSource.count;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    MSNearCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kMSNearCellReusableIdentifier forIndexPath:indexPath];
-    if (indexPath.item < self.dataSource.count) {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    MSNearCell *cell = [tableView dequeueReusableCellWithIdentifier:kMSNearCellReusableIdentifier forIndexPath:indexPath];
+    if (indexPath.row < self.dataSource.count) {
         MSUserModel *user = self.dataSource[indexPath.item];
         
         cell.isGreeted = [MSUserModel isGreetedWithUserId:user.userId];
         cell.imgUrl = user.portraitUrl;
         cell.nickName = user.nickName;
         cell.age = user.age;
-        cell.sex = user.sex;
         
         @weakify(self,cell);
         
@@ -120,39 +114,16 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     return cell;
 }
 
-//- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-//    MSNearCell *nearCell = (MSNearCell *)cell;
-//    if (indexPath.item < self.dataSource.count) {
-//        MSUserModel *user = self.dataSource[indexPath.item];
-//        nearCell.isGreeted = [user greeted];
-//        if (!nearCell.imgUrl) {
-//            nearCell.imgUrl = user.portraitUrl;
-//        }
-//        if (!nearCell.nickName) {
-//            nearCell.nickName = user.nickName;
-//        }
-//        if (!nearCell.age) {
-//            nearCell.age = user.age;
-//        }
-//        if (!nearCell.sex) {
-//            nearCell.sex = user.sex;
-//        }
-//
-//        if (!nearCell.location) {
-//            @weakify(nearCell);
-//            [[QBLocationManager manager] getUserLacationNameWithUserId:[NSString stringWithFormat:@"%ld",(long)user.userId] locationName:^(BOOL success, NSString *locationName) {
-//                @strongify(nearCell);
-//                nearCell.location = locationName;
-//            }];
-//        }
-//    }
-//}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return kWidth(180);
+}
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.item < self.dataSource.count) {
-        MSUserModel *user = self.dataSource[indexPath.item];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row < self.dataSource.count) {
+        MSUserModel *user = self.dataSource[indexPath.row];
         [self pushIntoDetailVCWithUserId:[NSString stringWithFormat:@"%ld",(long)user.userId]];
     }
+
 }
 
 @end

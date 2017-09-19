@@ -15,6 +15,7 @@ static NSString *const kRegisterKeyName           = @"MS_register_keyname";
 
 static NSString *const KMSUserVipLevelKeyName     = @"KMSUserVipLevelKeyName";
 
+static NSString *const kMSCurrentUserKeyName      = @"kMSCurrentUserKeyName";
 static NSString *const kMSUserIdKeyName           = @"kMSUserIdKeyName";
 static NSString *const kMSUserNickKeyName         = @"kMSUserNickKeyName";
 static NSString *const kMSUserPortraitUrlKeyName  = @"kMSUserPortraitUrlKeyName";
@@ -41,30 +42,49 @@ static NSString *const kMSAutoReplyMessageTimeRecordKeyName = @"kMSAutoReplyMess
 
 #pragma mark - user
 + (void)registerUserId:(NSInteger)userId {
-    [[NSUserDefaults standardUserDefaults] setObject:@(userId) forKey:kMSUserIdKeyName];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    MSUserModel *userModel = [self currentUser];
+    userModel.userId = userId;
+    [self saveCurrentUserInfo:userModel];
 }
 
 + (NSInteger)currentUserId {
-    return [[[NSUserDefaults standardUserDefaults] objectForKey:kMSUserIdKeyName] integerValue];
+    return [self currentUser].userId;
 }
 
 + (void)registerNickName:(NSString *)nickName {
-    [[NSUserDefaults standardUserDefaults] setObject:nickName forKey:kMSUserNickKeyName];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    MSUserModel *userModel = [self currentUser];
+    userModel.nickName = nickName;
+    [self saveCurrentUserInfo:userModel];
 }
 + (NSString *)currentNickName {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:kMSUserNickKeyName];
+    return [self currentUser].nickName;
 }
 
 + (void)registerPortraitUrl:(NSString *)portraitUrl {
-    [[NSUserDefaults standardUserDefaults] setObject:portraitUrl forKey:kMSUserPortraitUrlKeyName];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-+ (NSString *)currentProtraitUrl {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:kMSUserPortraitUrlKeyName];
+    MSUserModel *userModel = [self currentUser];
+    userModel.portraitUrl = portraitUrl;
+    [self saveCurrentUserInfo:userModel];
 }
 
++ (NSString *)currentProtraitUrl {
+    return [self currentUser].portraitUrl;
+}
+
++ (MSUserModel *)currentUser {
+    NSData *userData = [[NSUserDefaults standardUserDefaults] objectForKey:kMSCurrentUserKeyName];
+    if (!userData) {
+        MSUserModel *userModel = [[MSUserModel alloc] init];
+        [self saveCurrentUserInfo:userModel];
+        return userModel;
+    }
+    return [NSKeyedUnarchiver unarchiveObjectWithData:userData];
+}
+
++ (void)saveCurrentUserInfo:(MSUserModel *)userModel {
+    NSData *userData = [NSKeyedArchiver archivedDataWithRootObject:userModel];
+    [[NSUserDefaults standardUserDefaults] setObject:userData forKey:kMSCurrentUserKeyName];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 #pragma mark - 设备类型
 

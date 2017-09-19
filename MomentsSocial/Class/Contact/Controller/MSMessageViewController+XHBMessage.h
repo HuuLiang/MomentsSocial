@@ -12,4 +12,6 @@
 
 - (void)registerCustomVipNoticeCell;
 
+- (void)setXHShareMenu;
+
 @end

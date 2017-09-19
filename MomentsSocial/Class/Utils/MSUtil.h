@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+@class MSUserModel;
 @interface MSUtil : NSObject
 
 //+ (NSString *)accessId;
@@ -24,6 +24,11 @@
 
 + (void)registerPortraitUrl:(NSString *)portraitUrl;
 + (NSString *)currentProtraitUrl;
+
++ (MSUserModel *)currentUser;
+
++ (void)saveCurrentUserInfo:(MSUserModel *)userModel;
+
 
 + (BOOL)isIpad;
 + (NSString *)appVersion;

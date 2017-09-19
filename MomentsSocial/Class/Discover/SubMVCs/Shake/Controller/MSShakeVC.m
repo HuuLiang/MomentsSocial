@@ -161,7 +161,7 @@ static NSString *const kMSShakeTimeKeyName = @"kMSShakeTimeKeyName";
         }
     } else {
         [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeShakeTime disCount:NO cancleAction:nil confirmAction:^{
-            [MSVipVC showVipViewControllerInCurrentVC:self];
+            [MSVipVC showVipViewControllerInCurrentVC:self contentType:MSPopupTypeShakeTime];
         }];
         [self motionCancelled:UIEventSubtypeRemoteControlStop withEvent:event];
     }

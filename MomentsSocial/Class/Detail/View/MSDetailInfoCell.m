@@ -56,6 +56,7 @@
 }
 
 - (void)setTitle:(NSString *)title {
+    _title = title;
     _titleLabel.text = title;
 }
 

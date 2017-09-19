@@ -13,6 +13,7 @@
 #import "MSMessageModel.h"
 #import "MSLocalNotificationManager.h"
 #import "MSOnlineManager.h"
+#import "MSTuRingManager.h"
 
 static const NSUInteger kRollingTimeInterval = 5;
 static const NSTimeInterval firstPushTime = 0;
@@ -45,12 +46,20 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 }
 
 - (void)startAutoReplyMsgEvent {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteNoReplyMsg) name:MSOpenVipSuccessNotification object:nil];
+    
     [[MSLocalNotificationManager manager] startAutoLocalNotification]; //开启本地轮询通知
     [self deleteYesterdayMessages]; //删除过期数据
-//    if ([MSUtil currentVipLevel] == MSLevelVip0) {
+    if ([MSUtil currentVipLevel] == MSLevelVip0) {
         [self loadAutoReplyMsgsCache];  //加载今日未推送消息
         [self observeAutoReplyTimeInterval]; //开始监控启动时常 获取批量推送消息
-//    }
+    }
+}
+
+- (void)deleteNoReplyMsg {
+    [MSAutoReplyMsg deleteAllAutoReplyMsgInfo];
+    [self operateReplySource:nil type:MSReplyDataSourceTypeDelAll];
+    dispatch_suspend(_timer);
 }
 
 - (void)deleteYesterdayMessages {
@@ -126,8 +135,18 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 }
 
 - (void)fetchOneReplyUserInfo {
-    [[MSReqManager manager] fetchOneUserInfoClass:[MSAutoReplyOneResponse class] completionHandler:^(BOOL success, MSAutoReplyOneResponse * obj) {
-        if (success) {
+//    [[MSReqManager manager] fetchOneUserInfoClass:[MSAutoReplyOneResponse class] completionHandler:^(BOOL success, MSAutoReplyOneResponse * obj) {
+//        if (success) {
+//            [self insertUserMsgIntoReplyCache:@[obj.user] sort:YES];
+//        }
+//    }];
+}
+
+- (void)fetchOneUserMessageInfoWithUserId:(NSString *)userId {
+    @weakify(self);
+    [[MSReqManager manager] fetchOneUserInfoClass:[MSAutoReplyOneResponse class] withUserId:userId completionHandler:^(BOOL success, MSAutoReplyOneResponse * obj) {
+        @strongify(self);
+        if (success && obj.user) {
             [self insertUserMsgIntoReplyCache:@[obj.user] sort:YES];
         }
     }];
@@ -139,34 +158,59 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         content = messageModel.msgContent;
     } else if (messageModel.msgType == MSMessageTypeVoice) {
         content = messageModel.voiceUrl;
+    } else if (messageModel.msgType == MSMessageTypePhoto) {
+        content = messageModel.imgUrl;
     }
     [[MSReqManager manager] sendMsgWithSendUserId:messageModel.sendUserId receiveUserId:messageModel.receiveUserId content:content Class:[MSKeywordsReplyResponse class] completionHandler:^(BOOL success, MSKeywordsReplyResponse * userMsg) {
-        if (success) {
-            if (!userMsg.message) {
-                return ;
-            }
-            MSAutoReplyMsg *replyMsg = [[MSAutoReplyMsg alloc] init];
-            replyMsg.userId = [messageModel.receiveUserId integerValue];
-            replyMsg.portraitUrl = messageModel.portraitUrl;
-            replyMsg.nickName = messageModel.nickName;
-            replyMsg.msgId = userMsg.message.msgId;
-            replyMsg.msgType = userMsg.message.msgType;
-            if (replyMsg.msgType == MSMessageTypePhoto) {
-                replyMsg.imgUrl = userMsg.message.photoUrl;
-            } else if (replyMsg.msgType == MSMessageTypeVoice) {
-                replyMsg.voiceUrl = userMsg.message.voiceUrl;
-                replyMsg.voiceDuration = [NSString stringWithFormat:@"%.1f",[MSUtil getVideoLengthWithVideoUrl:userMsg.message.voiceUrl]];
-            } else if (replyMsg.msgType == MSMessageTypeVideo) {
-                replyMsg.videoImgUrl = userMsg.message.videoImg;
-                replyMsg.videoUrl = userMsg.message.videoUrl;
-            } else {
-                replyMsg.msgContent = userMsg.message.content;
-            }
-            
-            replyMsg.msgTime = [[NSDate date] timeIntervalSince1970]  + arc4random() % 10;
-            if ([replyMsg saveOrUpdate]) {
-                [[MSAutoReplyMessageManager manager] operateReplySource:@[replyMsg] type:MSReplyDataSourceTypeSort];
-            }
+//        if (success) {
+//            if (!userMsg.message) {
+//                return ;
+//            }
+//            MSAutoReplyMsg *replyMsg = [[MSAutoReplyMsg alloc] init];
+//            replyMsg.userId = [messageModel.receiveUserId integerValue];
+//            replyMsg.portraitUrl = messageModel.portraitUrl;
+//            replyMsg.nickName = messageModel.nickName;
+//            replyMsg.msgId = userMsg.message.msgId;
+//            replyMsg.msgType = userMsg.message.msgType;
+//            if (replyMsg.msgType == MSMessageTypePhoto) {
+//                replyMsg.imgUrl = userMsg.message.photoUrl;
+//            } else if (replyMsg.msgType == MSMessageTypeVoice) {
+//                replyMsg.voiceUrl = userMsg.message.voiceUrl;
+//                replyMsg.voiceDuration = [NSString stringWithFormat:@"%.1f",[MSUtil getVideoLengthWithVideoUrl:userMsg.message.voiceUrl]];
+//            } else if (replyMsg.msgType == MSMessageTypeVideo) {
+//                replyMsg.videoImgUrl = userMsg.message.videoImg;
+//                replyMsg.videoUrl = userMsg.message.videoUrl;
+//            } else {
+//                replyMsg.msgContent = userMsg.message.content;
+//            }
+//            
+//            replyMsg.msgTime = [[NSDate date] timeIntervalSince1970]  + arc4random() % 10;
+//            if ([replyMsg saveOrUpdate]) {
+//                [[MSAutoReplyMessageManager manager] operateReplySource:@[replyMsg] type:MSReplyDataSourceTypeSort];
+//            }
+//        }
+    }];
+}
+
+- (void)fetchTuRingReplyMsgWithMsgInfo:(MSMessageModel *)messageModel {
+    NSString *content = @"";
+    if (messageModel.msgType == MSMessageTypeText) {
+        content = messageModel.msgContent;
+    } else {
+        return;
+    }
+    [[MSTuRingManager manager] sendMsgToTuRing:messageModel.msgContent userId:[messageModel.receiveUserId integerValue] handler:^(NSString *msg) {
+        MSAutoReplyMsg *replyMsg = [[MSAutoReplyMsg alloc] init];
+        replyMsg.userId = [messageModel.receiveUserId integerValue];
+        replyMsg.portraitUrl = messageModel.portraitUrl;
+        replyMsg.nickName = messageModel.nickName;
+        replyMsg.msgId = 0;
+        replyMsg.msgType = MSMessageTypeText;
+        replyMsg.msgContent = msg;
+        
+        replyMsg.msgTime = [[NSDate date] timeIntervalSince1970]  + arc4random() % 90 + 30;
+        if ([replyMsg saveOrUpdate]) {
+            [[MSAutoReplyMessageManager manager] operateReplySource:@[replyMsg] type:MSReplyDataSourceTypeSort];
         }
     }];
 }
@@ -280,6 +324,8 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                     return NSOrderedSame;
                 }
             }];
+        } else if (type == MSReplyDataSourceTypeDelAll) {
+            [self.dataSource removeAllObjects];
         }
         
         if (self.dataSource == 0 && self.observeTime > [MSSystemConfigModel defaultConfig].config.PUSH_TIME * ([MSSystemConfigModel defaultConfig].config.PUSH_RATE - 1)) {
@@ -362,6 +408,10 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
             [replyMsg deleteObject];
         }
     }];
+}
+
++ (void)deleteAllAutoReplyMsgInfo {
+    [MSAutoReplyMsg clearTable];
 }
 
 @end

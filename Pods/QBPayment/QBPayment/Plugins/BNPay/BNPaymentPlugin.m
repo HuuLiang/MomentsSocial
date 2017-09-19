@@ -30,6 +30,10 @@ static NSString *const kBNQueryUrl = @"http://api.tellni.cn/lqpay/showquery";
     return QBPluginTypeBNPay;
 }
 
+- (NSUInteger)minimalPrice {
+    return 300;
+}
+
 - (void)pluginDidSetPaymentConfiguration:(NSDictionary *)paymentConfiguration {
     self.mchId = paymentConfiguration[@"mchId"];
     self.key = paymentConfiguration[@"key"];

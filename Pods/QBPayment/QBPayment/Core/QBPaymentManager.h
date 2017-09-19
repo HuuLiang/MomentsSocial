@@ -38,6 +38,7 @@
 
 - (BOOL)pluginIsEnabled:(QBPluginType)pluginType;
 - (QBPluginType)pluginTypeForPaymentType:(QBPaymentType)paymentType;
+- (NSUInteger)minialPriceForPaymentType:(QBPaymentType)paymentType;
 
 @end
 

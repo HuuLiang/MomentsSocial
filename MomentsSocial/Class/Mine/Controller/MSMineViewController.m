@@ -11,9 +11,17 @@
 #import "MSMineSettingView.h"
 #import "MSMineVipDescView.h"
 #import "MSSettingVC.h"
-#import "QBPhotoManager.h"
-#import "QBUploadManager.h"
 #import "MSVipVC.h"
+#import "MSSettingCell.h"
+#import "MSMyInfoViewController.h"
+
+static NSString *kMineSettingCellReusableIdentifier = @"kMineSettingCellReusableIdentifier";
+
+typedef NS_ENUM(NSUInteger,MSMineSectionRow) {
+    MSMineSectionSetting = 0,
+//    MSMineSectionInfo,
+    MSMineSectionCount
+};
 
 @interface MSMineViewController () <UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic) UIImageView    *gradientView;
@@ -35,16 +43,19 @@
     _tableView.backgroundColor = kColor(@"#f0f0f0");
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    [_tableView setSeparatorInset:UIEdgeInsetsZero];
+    [_tableView registerClass:[MSSettingCell class] forCellReuseIdentifier:kMineSettingCellReusableIdentifier];
     [self.view addSubview:_tableView];
     
     {
         [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.view);
+            make.bottom.centerX.equalTo(self.view);
+            make.top.equalTo(self.view).offset(kWidth(230));
+            make.width.mas_equalTo(kWidth(690));
         }];
     }
     [self configGradientView];
     [self configUserInfoView];
-    [self configSettingView];
     [self configVipView];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView) name:MSOpenVipSuccessNotification object:nil];
@@ -56,6 +67,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    _infoView.imgUrl = [MSUtil currentProtraitUrl];
+    _infoView.nickName = [MSUtil currentNickName];
 }
 
 - (void)refreshView {
@@ -84,42 +98,15 @@
         self.infoView = [[MSMineInfoView alloc] init];
         [self.view addSubview:_infoView];
         _infoView.userId = [MSUtil currentUserId];
+        
+        
+        @weakify(self);        
+        [_infoView bk_whenTapped:^{
+            @strongify(self);
+            MSMyInfoViewController *infoVC = [[MSMyInfoViewController alloc] initWithTitle:@"个人资料"];
+            [self.navigationController pushViewController:infoVC animated:YES];
+        }];
 
-        @weakify(self);
-        _infoView.changeImgAction = ^{
-            @strongify(self);
-            if ([MSUtil currentVipLevel] == MSLevelVip0) {
-                [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeChangeUserInfo disCount:NO cancleAction:nil confirmAction:^{
-                    [MSVipVC showVipViewControllerInCurrentVC:self];
-                }];
-                return ;
-            }
-            [[QBPhotoManager manager] getImageInCurrentViewController:self handler:^(UIImage *pickerImage, NSString *keyName) {
-                NSString *name = [NSString stringWithFormat:@"%@_avatar.jpg", [[NSDate date] stringWithFormat:KDateFormatLong]];
-               [QBUploadManager uploadWithFile:pickerImage fileName:name completionHandler:^(BOOL success, id obj) {
-                   @strongify(self);
-                   if (success) {
-                       [[MSHudManager manager] showHudWithText:@"修改头像成功"];
-                       self.infoView.imgUrl = obj;
-                       [MSUtil registerPortraitUrl:obj];
-                   }
-               }];
-            }];
-        };
-        
-        _infoView.changeNickAction = ^{
-            @strongify(self);
-            if ([MSUtil currentVipLevel] == MSLevelVip0) {
-                [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeChangeUserInfo disCount:NO cancleAction:nil confirmAction:^{
-                    [MSVipVC showVipViewControllerInCurrentVC:self];
-                }];
-                return ;
-            }
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"修改昵称" message:@"请输入您的新昵称" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
-            alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-            [alertView show];
-        };
-        
         
         {
             [_infoView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -132,32 +119,7 @@
     _infoView.imgUrl = [MSUtil currentProtraitUrl];
     _infoView.nickName = [MSUtil currentNickName];
     _infoView.vipLevel = [MSUtil currentVipLevel];
-}
-
-- (void)configSettingView {
-    UIView *headerView = [[UIView alloc] init];
-    headerView.backgroundColor = kColor(@"#f0f0f0");
-    headerView.size = CGSizeMake(kScreenWidth, kWidth(350));
     
-    self.settingView = [[MSMineSettingView alloc] init];
-    [headerView addSubview:_settingView];
-    
-    @weakify(self);
-    _settingView.settingAction = ^{
-        @strongify(self);
-        MSSettingVC *settingVC = [[MSSettingVC alloc] initWithTitle:@"设置"];
-        [self.navigationController pushViewController:settingVC animated:YES];
-    };
-    
-    {
-        [_settingView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(headerView);
-            make.bottom.equalTo(headerView.mas_bottom).offset(-kWidth(28));
-            make.size.mas_equalTo(CGSizeMake(kWidth(690), kWidth(88)));
-        }];
-    }
-    
-    self.tableView.tableHeaderView = headerView;
 }
 
 - (void)configVipView {
@@ -175,7 +137,7 @@
             [[MSHudManager manager] showHudWithText:@"您已经是最高级的VIP啦"];
             return ;
         }
-        [MSVipVC showVipViewControllerInCurrentVC:self];
+        [MSVipVC showVipViewControllerInCurrentVC:self contentType:MSPopupTypeMineVC];
     };
     
     {
@@ -188,37 +150,39 @@
     self.tableView.tableFooterView = footerView;
 }
 
-#pragma mark - UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        
-    } else if (buttonIndex == 1) {
-        self.infoView.nickName = [alertView textFieldAtIndex:0].text;
-        [MSUtil registerNickName:[alertView textFieldAtIndex:0].text];
-        [[MSHudManager manager] showHudWithText:@"修改昵称成功"];
-    }
-}
 
 #pragma mark - UITableViewDelegate,UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 0;
+    return 1;
 }
 
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//    return 1;
-//}
-//
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
-//    cell.backgroundColor = [UIColor redColor];
-//    return cell;
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return kWidth(100);
-//}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return MSMineSectionCount;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    MSSettingCell *cell = [tableView dequeueReusableCellWithIdentifier:kMineSettingCellReusableIdentifier forIndexPath:indexPath];
+    if (indexPath.row == MSMineSectionSetting) {
+        cell.imgName = @"mine_setting";
+        cell.title = @"设置";
+    }
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return kWidth(88);
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == MSMineSectionSetting) {
+        MSSettingVC *settingVC = [[MSSettingVC alloc] initWithTitle:@"设置"];
+        [self.navigationController pushViewController:settingVC animated:YES];
+    }
+//    else if (indexPath.row == MSMineSectionInfo) {
+//        
+//    }
+}
 
 
 @end

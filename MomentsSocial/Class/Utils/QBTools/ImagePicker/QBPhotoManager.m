@@ -27,8 +27,10 @@ typedef void(^DidFinishTakeMediaCompledBlock)(UIImage *image, NSDictionary *edit
 }
 
 - (void)getImageInCurrentViewController:(UIViewController *)viewController handler:(ImagePicker)picker {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"请选择图片获取方式" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"选择相册",@"选择相机", nil];
-    [actionSheet showInView:viewController.view];
+    [self getImageInCurrentViewController:viewController withType:NSNotFound handler:picker];
+}
+
+- (void)getImageInCurrentViewController:(UIViewController *)viewController withType:(UIImagePickerControllerSourceType)sourceType handler:(ImagePicker)picker {
     
     @weakify(self);
     void (^PickerMediaBlock)(UIImage *image, NSDictionary *editingInfo) = ^(UIImage *image, NSDictionary *editingInfo) {
@@ -37,22 +39,30 @@ typedef void(^DidFinishTakeMediaCompledBlock)(UIImage *image, NSDictionary *edit
         if (originalImage) {
             picker(originalImage,[self getMd5ImageKeyNameWithImage:originalImage]);
         } else {
-//            [[SAHudManager manager] showHudWithText:@"图片获取失败"];
             NSLog(@"图片获取失败");
         }
     };
+
     
-    [actionSheet bk_setHandler:^{
-        @strongify(self);
-        //相册
-        [self showOnPickerViewControllerSourceType:UIImagePickerControllerSourceTypePhotoLibrary onViewController:viewController compled:PickerMediaBlock];
-    } forButtonAtIndex:0];
-    
-    [actionSheet bk_setHandler:^{
-        @strongify(self);
-        //相机
-        [self showOnPickerViewControllerSourceType:UIImagePickerControllerSourceTypeCamera onViewController:viewController compled:PickerMediaBlock];
-    } forButtonAtIndex:1];
+    if (sourceType == NSNotFound) {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"请选择图片获取方式" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"选择相册",@"选择相机", nil];
+        [actionSheet showInView:viewController.view];
+        
+        
+        [actionSheet bk_setHandler:^{
+            @strongify(self);
+            //相册
+            [self showOnPickerViewControllerSourceType:UIImagePickerControllerSourceTypePhotoLibrary onViewController:viewController compled:PickerMediaBlock];
+        } forButtonAtIndex:0];
+        
+        [actionSheet bk_setHandler:^{
+            @strongify(self);
+            //相机
+            [self showOnPickerViewControllerSourceType:UIImagePickerControllerSourceTypeCamera onViewController:viewController compled:PickerMediaBlock];
+        } forButtonAtIndex:1];
+    } else {
+        [self showOnPickerViewControllerSourceType:sourceType onViewController:viewController compled:PickerMediaBlock];
+    }
 }
 
 - (NSString *)getMd5ImageKeyNameWithImage:(UIImage *)image {

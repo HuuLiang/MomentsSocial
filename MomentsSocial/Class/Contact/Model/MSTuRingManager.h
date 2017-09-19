@@ -1,0 +1,16 @@
+//
+//  MSTuRingManager.h
+//  MomentsSocial
+//
+//  Created by Liang on 2017/9/15.
+//  Copyright © 2017年 Liang. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface MSTuRingManager : NSObject
+
++ (instancetype)manager;
+
+- (void)sendMsgToTuRing:(NSString *)msgContent userId:(NSInteger)userId handler:(void(^)(NSString *msg))handler;
+@end

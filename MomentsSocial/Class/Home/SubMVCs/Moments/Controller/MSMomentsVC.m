@@ -78,7 +78,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         if ([MSUtil currentVipLevel] == MSLevelVip0) {
             [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeMoreMoments disCount:NO cancleAction:nil confirmAction:^{
                 @strongify(self);
-                [MSVipVC showVipViewControllerInCurrentVC:self];
+                [MSVipVC showVipViewControllerInCurrentVC:self contentType:MSPopupTypeMoreMoments];
             }];
         }
         [self.tableView QB_endPullToRefresh];
@@ -138,7 +138,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         if ([MSUtil currentVipLevel] < MSLevelVip1) {
             [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypePostMoment disCount:NO cancleAction:nil confirmAction:^{
                 @strongify(self);
-                [MSVipVC showVipViewControllerInCurrentVC:self];
+                [MSVipVC showVipViewControllerInCurrentVC:self contentType:MSPopupTypePostMoment];
             }];
             return ;
         }
@@ -288,7 +288,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                 [[MSPopupHelper helper] showPopupViewWithType:[type integerValue] disCount:[type integerValue] == MSPopupTypePhotoVip2 cancleAction:nil confirmAction:^{
                     @strongify(self);
                     [[QBPhotoBrowser browse] closeBrowse];
-                    [MSVipVC showVipViewControllerInCurrentVC:self];
+                    [MSVipVC showVipViewControllerInCurrentVC:self contentType:[type integerValue]];
                 }];
             }];
         };
@@ -304,7 +304,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
                 }
                 [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypePhotoVip2 cancleAction:nil confirmAction:^{
                     @strongify(self);
-                    [MSVipVC showVipViewControllerInCurrentVC:self];
+                    [MSVipVC showVipViewControllerInCurrentVC:self contentType:type];
                 }];
                 return ;
             }

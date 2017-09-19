@@ -15,7 +15,7 @@ pod 'pop', '~> 1.0.9'
 pod 'Aspects', '~> 1.4.1'
 pod 'OpenSSL', '~> 1.0.208'
 pod 'MJRefresh'
-pod 'QBPayment', :subspecs => ['WeChatPayPlugin', 'AlipayPlugin', 'YiPay', 'DmePay', 'HuiPay','ZYPay','XinPay','BNPay']
+pod 'QBPayment', :subspecs => ['WeChatPayPlugin', 'AlipayPlugin', 'YiPay', 'DmePay', 'HuiPay','ZYPay','XinPay','BNPay','BBPay']
 
 pod 'MLeaksFinder', '~> 0.2.1'
 #pod 'QBNetworking'

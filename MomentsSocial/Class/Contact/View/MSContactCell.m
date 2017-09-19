@@ -109,6 +109,7 @@
     return self;
 }
 
+
 - (void)setUserImgUrl:(NSString *)userImgUrl {
     [_userImageView sd_setImageWithURL:[NSURL URLWithString:userImgUrl]];
 }
@@ -146,11 +147,11 @@
     if (msgType == MSMessageTypeText || msgType == MSMessageTypeFaceTime) {
         _messageLabel.text = _msgContent;
     } else if (msgType == MSMessageTypePhoto) {
-        _messageLabel.text = [NSString stringWithFormat:@"%@向您发送了一张图片",_nickName];;
+        _messageLabel.text = @"【图片】";//[NSString stringWithFormat:@"%@向您发送了一张图片",_nickName];
     } else if (msgType == MSMessageTypeVoice) {
-        _messageLabel.text = [NSString stringWithFormat:@"%@向您发送了一段语音",_nickName];;
+        _messageLabel.text = @"【语音】";//[NSString stringWithFormat:@"%@向您发送了一段语音",_nickName];
     } else if (msgType == MSMessageTypeVideo) {
-        _messageLabel.text = [NSString stringWithFormat:@"%@向您发送了一段视频",_nickName];;
+        _messageLabel.text = @"【视频】";//[NSString stringWithFormat:@"%@向您发送了一段视频",_nickName];
     }
 }
 

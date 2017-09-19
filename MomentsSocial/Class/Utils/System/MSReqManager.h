@@ -31,7 +31,7 @@
 - (void)fetchPushUserInfoWithPage:(NSInteger)page size:(NSInteger)pageSize Class:(Class)classModel completionHandler:(MSCompletionHandler)handler;
 
 /** 单个推送用户 */
-- (void)fetchOneUserInfoClass:(Class)classModel completionHandler:(MSCompletionHandler)handler;
+- (void)fetchOneUserInfoClass:(Class)classModel withUserId:(NSString *)userId completionHandler:(MSCompletionHandler)handler;
 
 /** 摇一摇 附近的人 */
 - (void)fetchNearShakeInfoWithNumber:(NSInteger)userCount Class:(Class)classModel completionHandler:(MSCompletionHandler)handler;

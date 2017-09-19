@@ -35,6 +35,10 @@
     [self pluginDidSetPaymentConfiguration:paymentConfiguration];
 }
 
+- (NSUInteger)minimalPrice {
+    return 1;
+}
+
 - (void)pluginDidLoad {}
 - (void)pluginDidSetPaymentConfiguration:(NSDictionary *)paymentConfiguration {}
 
@@ -97,7 +101,7 @@
         } else if (retryTimes == 1) {
             QBSafelyCallBlock(completionHandler, QBPayResultFailure, paymentInfo);
         } else {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                 [self queryPaymentResultForPaymentInfo:paymentInfo
                                         withRetryTimes:retryTimes-1
                                      completionHandler:completionHandler];

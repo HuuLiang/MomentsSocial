@@ -164,6 +164,9 @@
 		EC5383A71F3B0A4500D2EB0F /* UIView+PopAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5383A61F3B0A4500D2EB0F /* UIView+PopAnimation.m */; };
 		EC58C0021F419731002925B5 /* MSVipVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EC58C0011F419731002925B5 /* MSVipVC.m */; };
 		EC58C0051F4199C0002925B5 /* MSVipPayPointCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC58C0041F4199C0002925B5 /* MSVipPayPointCell.m */; };
+		EC5D84DA1F6BE36800A1A944 /* MSTuRingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5D84D91F6BE36800A1A944 /* MSTuRingManager.m */; };
+		EC5D84E11F6CB69E00A1A944 /* MSMyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5D84E01F6CB69E00A1A944 /* MSMyInfoViewController.m */; };
+		EC5D84E41F6CBC3700A1A944 /* MSMyPortraitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5D84E31F6CBC3700A1A944 /* MSMyPortraitCell.m */; };
 		EC6C040E1F46C133001E7BC3 /* MSActivityVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EC6C040D1F46C133001E7BC3 /* MSActivityVC.m */; };
 		EC6C04191F46C310001E7BC3 /* MSBookStoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC6C04181F46C310001E7BC3 /* MSBookStoreViewController.m */; };
 		EC6C041C1F46C324001E7BC3 /* MSLuoChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC6C041B1F46C324001E7BC3 /* MSLuoChatViewController.m */; };
@@ -263,7 +266,6 @@
 		ECFCAB851F29E7D700DC2948 /* MSDiscoverCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFCAB841F29E7D700DC2948 /* MSDiscoverCell.m */; };
 		ECFCAB8D1F29F2A200DC2948 /* MSNearViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFCAB8C1F29F2A200DC2948 /* MSNearViewController.m */; };
 		ECFCAB901F29F34400DC2948 /* MSNearCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFCAB8F1F29F34400DC2948 /* MSNearCell.m */; };
-		ECFCAB931F2A0E0A00DC2948 /* MSGreetView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFCAB921F2A0E0A00DC2948 /* MSGreetView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -550,6 +552,12 @@
 		EC58C0011F419731002925B5 /* MSVipVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSVipVC.m; sourceTree = "<group>"; };
 		EC58C0031F4199C0002925B5 /* MSVipPayPointCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSVipPayPointCell.h; sourceTree = "<group>"; };
 		EC58C0041F4199C0002925B5 /* MSVipPayPointCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSVipPayPointCell.m; sourceTree = "<group>"; };
+		EC5D84D81F6BE36800A1A944 /* MSTuRingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSTuRingManager.h; sourceTree = "<group>"; };
+		EC5D84D91F6BE36800A1A944 /* MSTuRingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSTuRingManager.m; sourceTree = "<group>"; };
+		EC5D84DF1F6CB69E00A1A944 /* MSMyInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMyInfoViewController.h; sourceTree = "<group>"; };
+		EC5D84E01F6CB69E00A1A944 /* MSMyInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSMyInfoViewController.m; sourceTree = "<group>"; };
+		EC5D84E21F6CBC3700A1A944 /* MSMyPortraitCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMyPortraitCell.h; sourceTree = "<group>"; };
+		EC5D84E31F6CBC3700A1A944 /* MSMyPortraitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSMyPortraitCell.m; sourceTree = "<group>"; };
 		EC6C040C1F46C133001E7BC3 /* MSActivityVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSActivityVC.h; sourceTree = "<group>"; };
 		EC6C040D1F46C133001E7BC3 /* MSActivityVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSActivityVC.m; sourceTree = "<group>"; };
 		EC6C04171F46C310001E7BC3 /* MSBookStoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSBookStoreViewController.h; sourceTree = "<group>"; };
@@ -751,8 +759,6 @@
 		ECFCAB8C1F29F2A200DC2948 /* MSNearViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSNearViewController.m; sourceTree = "<group>"; };
 		ECFCAB8E1F29F34400DC2948 /* MSNearCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSNearCell.h; sourceTree = "<group>"; };
 		ECFCAB8F1F29F34400DC2948 /* MSNearCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSNearCell.m; sourceTree = "<group>"; };
-		ECFCAB911F2A0E0A00DC2948 /* MSGreetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGreetView.h; sourceTree = "<group>"; };
-		ECFCAB921F2A0E0A00DC2948 /* MSGreetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGreetView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1384,6 +1390,17 @@
 			path = VoiceManager;
 			sourceTree = "<group>";
 		};
+		EC5D84DE1F6CB69000A1A944 /* MyInfo */ = {
+			isa = PBXGroup;
+			children = (
+				EC5D84DF1F6CB69E00A1A944 /* MSMyInfoViewController.h */,
+				EC5D84E01F6CB69E00A1A944 /* MSMyInfoViewController.m */,
+				EC5D84E21F6CBC3700A1A944 /* MSMyPortraitCell.h */,
+				EC5D84E31F6CBC3700A1A944 /* MSMyPortraitCell.m */,
+			);
+			path = MyInfo;
+			sourceTree = "<group>";
+		};
 		EC6C040B1F46C100001E7BC3 /* Activity */ = {
 			isa = PBXGroup;
 			children = (
@@ -1471,6 +1488,7 @@
 		EC848DC11F330B2800B47E37 /* SubMVCs */ = {
 			isa = PBXGroup;
 			children = (
+				EC5D84DE1F6CB69000A1A944 /* MyInfo */,
 				EC6C040B1F46C100001E7BC3 /* Activity */,
 				EC848DC21F330B2800B47E37 /* AboutUs */,
 				EC848DC31F330B2800B47E37 /* AutoActivate */,
@@ -1903,6 +1921,8 @@
 				EC5383961F3AABFE00D2EB0F /* MSLocalNotificationManager.m */,
 				EC5383981F3AAE4000D2EB0F /* MSAutoReplyMessageManager.h */,
 				EC5383991F3AAE4000D2EB0F /* MSAutoReplyMessageManager.m */,
+				EC5D84D81F6BE36800A1A944 /* MSTuRingManager.h */,
+				EC5D84D91F6BE36800A1A944 /* MSTuRingManager.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2044,12 +2064,12 @@
 			children = (
 				ECB58CB31F2AD85E0074E6D8 /* MSMineInfoView.h */,
 				ECB58CB41F2AD85E0074E6D8 /* MSMineInfoView.m */,
+				EC848DCA1F330BD100B47E37 /* MSSettingCell.h */,
+				EC848DCB1F330BD100B47E37 /* MSSettingCell.m */,
 				ECB58CB61F2AE4170074E6D8 /* MSMineSettingView.h */,
 				ECB58CB71F2AE4170074E6D8 /* MSMineSettingView.m */,
 				ECB58CB91F2B141D0074E6D8 /* MSMineVipDescView.h */,
 				ECB58CBA1F2B141D0074E6D8 /* MSMineVipDescView.m */,
-				EC848DCA1F330BD100B47E37 /* MSSettingCell.h */,
-				EC848DCB1F330BD100B47E37 /* MSSettingCell.m */,
 				EC58C0031F4199C0002925B5 /* MSVipPayPointCell.h */,
 				EC58C0041F4199C0002925B5 /* MSVipPayPointCell.m */,
 			);
@@ -2170,8 +2190,6 @@
 		ECFCAB8A1F29F02B00DC2948 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				ECFCAB911F2A0E0A00DC2948 /* MSGreetView.h */,
-				ECFCAB921F2A0E0A00DC2948 /* MSGreetView.m */,
 				ECFCAB8E1F29F34400DC2948 /* MSNearCell.h */,
 				ECFCAB8F1F29F34400DC2948 /* MSNearCell.m */,
 			);
@@ -2390,6 +2408,7 @@
 				EC1BFE4A1F39BD1D003613D6 /* POSBlobInputStream.m in Sources */,
 				EC848DD91F33242900B47E37 /* MSCheckInVC.m in Sources */,
 				EC1BFDAE1F39A787003613D6 /* UIImage+Alpha.m in Sources */,
+				EC5D84DA1F6BE36800A1A944 /* MSTuRingManager.m in Sources */,
 				ECC11AC91F26DA870093E3EE /* SDCycleScrollView.m in Sources */,
 				ECB419A41F35CDB400FE87F1 /* MSDisFuctionModel.m in Sources */,
 				EC1BFDAD1F39A787003613D6 /* NSString+XHMD5.m in Sources */,
@@ -2433,6 +2452,7 @@
 				EC1BFDDA1F39A787003613D6 /* SETextGeometry.m in Sources */,
 				EC1BFDC51F39A787003613D6 /* XHOperationNetworkKit.m in Sources */,
 				EC1BFE551F39BD1D003613D6 /* YFBImageUploadManager.m in Sources */,
+				EC5D84E41F6CBC3700A1A944 /* MSMyPortraitCell.m in Sources */,
 				ECC11A541F26DA870093E3EE /* SWActionSheet.m in Sources */,
 				ECC11B071F26EFFB0093E3EE /* MSUtil.m in Sources */,
 				EC1BFCCD1F395FE1003613D6 /* MSContactModel.m in Sources */,
@@ -2535,6 +2555,7 @@
 				EC1BFCC71F395475003613D6 /* QBPhotoBrowser.m in Sources */,
 				ECB58CC21F2B24520074E6D8 /* MSDetailViewController.m in Sources */,
 				EC1BFDD21F39A787003613D6 /* LKBadgeView.m in Sources */,
+				EC5D84E11F6CB69E00A1A944 /* MSMyInfoViewController.m in Sources */,
 				EC1BFDBF1F39A787003613D6 /* XHDisplayMediaViewController.m in Sources */,
 				EC3CB36A1F2F09FE0086F373 /* MSMomentsVC.m in Sources */,
 				EC1BFDB51F39A787003613D6 /* XHAudioPlayerHelper.m in Sources */,
@@ -2552,7 +2573,6 @@
 				ECB58CC51F2B259C0074E6D8 /* MSDetailHeaderView.m in Sources */,
 				EC8EA6151F481F56009802C6 /* MSRollView.m in Sources */,
 				EC1BFDDE1F39A787003613D6 /* SETextMagnifierRanged.m in Sources */,
-				ECFCAB931F2A0E0A00DC2948 /* MSGreetView.m in Sources */,
 				EC1BFDB81F39A787003613D6 /* XHLocationHelper.m in Sources */,
 				ECD9535E1F3055F0006F5737 /* MSDetailPhotosVC.m in Sources */,
 			);

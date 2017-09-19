@@ -12,7 +12,8 @@
 typedef NS_ENUM(NSInteger,MSReplyDataSourceType) {
     MSReplyDataSourceTypeAdd,
     MSReplyDataSourceTypeDel,
-    MSReplyDataSourceTypeSort
+    MSReplyDataSourceTypeSort,
+    MSReplyDataSourceTypeDelAll
 };
 
 @class MSMessageModel;
@@ -39,6 +40,7 @@ typedef NS_ENUM(NSInteger,MSReplyDataSourceType) {
 @property (nonatomic) BOOL replyed;
 
 + (void)deletePastAutoReplyMsgInfo;
++ (void)deleteAllAutoReplyMsgInfo;
 @end
 
 
@@ -67,9 +69,13 @@ typedef NS_ENUM(NSInteger,MSReplyDataSourceType) {
 
 - (void)startAutoReplyMsgEvent;
 
-- (void)fetchOneReplyUserInfo;
+//- (void)fetchOneReplyUserInfo;
+
+- (void)fetchOneUserMessageInfoWithUserId:(NSString *)userId;
 
 - (void)fetchKeywordReplyMsgWithMsgInfo:(MSMessageModel *)messageModel;
+
+- (void)fetchTuRingReplyMsgWithMsgInfo:(MSMessageModel *)messageModel;
 
 @end
 

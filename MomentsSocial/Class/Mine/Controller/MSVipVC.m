@@ -15,12 +15,14 @@ static NSString *const kMSVipPayPointCellReusableIdentifier = @"kMSVipPayPointCe
 @interface MSVipVC () <UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic) UITableView *tableView;
 @property (nonatomic) NSInteger price;
+@property (nonatomic) MSPopupType contentType;
 @end
 
 @implementation MSVipVC
 
-+ (void)showVipViewControllerInCurrentVC:(UIViewController *)currentViewController {
++ (void)showVipViewControllerInCurrentVC:(UIViewController *)currentViewController contentType:(MSPopupType)contentType {
     MSVipVC *vipVC = [[MSVipVC alloc] init];
+    vipVC.contentType = contentType;
     [vipVC showVipVCInCurrentVC:currentViewController];
 }
 
@@ -77,7 +79,7 @@ static NSString *const kMSVipPayPointCellReusableIdentifier = @"kMSVipPayPointCe
     _tableView.dataSource = self;
     [_tableView registerClass:[MSVipPayPointCell class] forCellReuseIdentifier:kMSVipPayPointCellReusableIdentifier];
     [self.view addSubview:_tableView];
-    
+        
     {
         [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.equalTo(self.view);
@@ -195,11 +197,14 @@ static NSString *const kMSVipPayPointCellReusableIdentifier = @"kMSVipPayPointCe
 }
 
 - (void)payWithType:(MSPayType)type {
-    [[MSPaymentManager manager] startPayForVipLevel:[MSUtil currentVipLevel] + 1 type:type price:self.price handler:^(BOOL success) {
+    @weakify(self);
+    [[MSPaymentManager manager] startPayForVipLevel:[MSUtil currentVipLevel] + 1 type:type price:self.price contentType:self.contentType handler:^(BOOL success) {
+        @strongify(self);
         [self hide];
         if (success) {
             [[NSNotificationCenter defaultCenter] postNotificationName:MSOpenVipSuccessNotification object:nil];
         }
+
     }];
 }
 

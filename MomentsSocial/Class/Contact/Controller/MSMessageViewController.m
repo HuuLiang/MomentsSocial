@@ -45,7 +45,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
                      inViewController:(UIViewController *)viewController {
     MSMessageViewController *messageVC = [[self alloc] initWithUserId:userId nickName:nickName portraitUrl:portraitUrl];
     messageVC.allowsSendFace = NO;
-    messageVC.allowsSendMultiMedia = NO;
+    messageVC.allowsSendMultiMedia = YES;
     [viewController.navigationController pushViewController:messageVC animated:YES];
     return messageVC;
 }
@@ -57,7 +57,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     MSMessageViewController *messageVC = [[self alloc] initWithUserId:userId nickName:nickName portraitUrl:portraitUrl];
     messageVC.needReturn = YES;
     messageVC.allowsSendFace = NO;
-    messageVC.allowsSendMultiMedia = NO;
+//    messageVC.allowsSendMultiMedia = NO;
     MSNavigationController *messageNav = [[MSNavigationController alloc] initWithRootViewController:messageVC];
     [viewController presentViewController:messageNav animated:YES completion:nil];
     return messageVC;
@@ -75,6 +75,8 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
             [self dismissViewControllerAnimated:YES completion:nil];
         }];
     }
+    
+    [self setXHShareMenu];                //设置功能菜单
     [self registerCustomVipNoticeCell]; //注册提示的cell样式
     [self configLocationUI];             //设置定位UI
 }
@@ -150,6 +152,11 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         
         NSArray *reverseMsgs = [[[MSMessageModel allMessagesWithUserId:self.userId] reverseObjectEnumerator] allObjects];
+        if (reverseMsgs.count == self.chatMessages.count) {
+            [self.messageTableView reloadData];
+            [self scrollToBottomAnimated:NO];
+            return ;
+        }
         
         NSMutableArray *allChatMsgs = [[NSMutableArray alloc] init];
         __block BOOL readDone = NO;
@@ -257,7 +264,8 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     chatMessage.msgType = MSMessageTypeText;
     chatMessage.msgContent = message;
     chatMessage.readDone = NO;
-    chatMessage.nickName = [MSUtil currentNickName];
+    chatMessage.nickName = self.nickName;
+    chatMessage.portraitUrl = self.portraitUrl;
     [self addChatMessage:chatMessage];
 }
 
@@ -283,7 +291,32 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     chatMessage.voiceUrl = voicePath;
     chatMessage.voiceDuration = voiceDuration;
     chatMessage.msgType = MSMessageTypeVoice;
-    chatMessage.nickName = [MSUtil currentNickName];
+    chatMessage.nickName = self.nickName;
+    chatMessage.portraitUrl = self.portraitUrl;
+    [self addChatMessage:chatMessage];
+}
+
+
+/**
+ 加入一条图片消息
+
+ @param imgUrl 图片链接
+ @param sender 发送者
+ @param receiver 接收者
+ @param dateTime 发送日期
+ */
+- (void)addPhotoMessage:(NSString *)imgUrl
+             withSender:(NSString *)sender
+               receiver:(NSString *)receiver
+               dateTime:(NSInteger)dateTime {
+    MSMessageModel *chatMessage = [[MSMessageModel alloc] init];
+    chatMessage.sendUserId = sender;
+    chatMessage.receiveUserId = receiver;
+    chatMessage.msgTime = dateTime;
+    chatMessage.imgUrl = imgUrl;
+    chatMessage.msgType = MSMessageTypePhoto;
+    chatMessage.nickName = self.nickName;
+    chatMessage.portraitUrl = self.portraitUrl;
     [self addChatMessage:chatMessage];
 }
 
@@ -307,9 +340,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
         [self addVipNoticeMessage];
     }
     
-    if ([MSUtil currentVipLevel] > MSLevelVip0) {
-        [MSMessageModel postMessageToServer:chatMessage];
-    }
+    [MSMessageModel postMessageToServer:chatMessage];
 }
 
 

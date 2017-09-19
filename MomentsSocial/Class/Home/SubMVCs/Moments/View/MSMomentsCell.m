@@ -312,9 +312,13 @@
 - (void)setGreeted:(NSNumber *)greeted {
     _greeted = greeted;
     if ([_greeted boolValue]) {
-        [_greetButton setTitle:@"已打招呼" forState:UIControlStateNormal];
+        [_greetButton setTitle:@"已招呼" forState:UIControlStateNormal];
         [_greetButton setTitleColor:kColor(@"#666666") forState:UIControlStateNormal];
         _greetButton.layer.borderColor = kColor(@"#999999").CGColor;
+    } else {
+        [_greetButton setTitle:@"打招呼" forState:UIControlStateNormal];
+        [_greetButton setTitleColor:kColor(@"#ED465C") forState:UIControlStateNormal];
+        _greetButton.layer.borderColor = kColor(@"#ED465C").CGColor;
     }
 }
 

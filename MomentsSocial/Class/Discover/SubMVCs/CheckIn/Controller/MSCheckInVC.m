@@ -145,12 +145,12 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
             if ([MSUtil currentVipLevel] == MSLevelVip0) {
                 [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeRegisterVip0 disCount:NO cancleAction:nil confirmAction:^{
                     @strongify(self);
-                    [MSVipVC showVipViewControllerInCurrentVC:self];
+                    [MSVipVC showVipViewControllerInCurrentVC:self contentType:MSPopupTypeRegisterVip0];
                 }];
             } else if ([MSUtil currentVipLevel] == MSLevelVip1) {
                 [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeRegisterVip1 disCount:YES cancleAction:nil confirmAction:^{
                     @strongify(self);
-                    [MSVipVC showVipViewControllerInCurrentVC:self];
+                    [MSVipVC showVipViewControllerInCurrentVC:self contentType:MSPopupTypeRegisterVip1];
                 }];
             } else {
                 if (![self canCheckIn]) {

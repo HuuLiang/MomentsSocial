@@ -13,6 +13,7 @@
 @property (nonatomic) UILabel     *nickLabel;
 @property (nonatomic) UIImageView *vipImgV;
 @property (nonatomic) UILabel     *idLabel;
+@property (nonatomic) UIImageView *intoImgV;
 @end
 
 @implementation MSMineInfoView
@@ -64,6 +65,9 @@
         _idLabel.font = kFont(15);
         [self addSubview:_idLabel];
         
+        self.intoImgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mine_into"]];
+        [self addSubview:_intoImgV];
+        
         {
             [_userImgV mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(self);
@@ -87,6 +91,12 @@
                 make.top.equalTo(self.mas_centerY).offset(kWidth(10));
                 make.left.equalTo(_nickLabel);
                 make.height.mas_equalTo(_idLabel.font.lineHeight);
+            }];
+            
+            [_intoImgV mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(self);
+                make.right.equalTo(self.mas_right).offset(-kWidth(30));
+                make.size.mas_equalTo(CGSizeMake(kWidth(14), kWidth(26)));
             }];
         }
     }

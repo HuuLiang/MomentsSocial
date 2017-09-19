@@ -121,8 +121,11 @@
     }];
 }
 
-- (void)fetchOneUserInfoClass:(Class)classModel completionHandler:(MSCompletionHandler)handler {
-    [[QBDataManager manager] requestUrl:MS_PUSHUSERONE_URL withParams:[self params] class:classModel handler:^(id obj, NSError *error) {
+//随机获取单个用户的信息
+- (void)fetchOneUserInfoClass:(Class)classModel withUserId:(NSString *)userId completionHandler:(MSCompletionHandler)handler {
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[self params]];
+    [params addEntriesFromDictionary:@{@"userId":userId}];
+    [[QBDataManager manager] requestUrl:MS_PUSHUSERONE_URL withParams:params class:classModel handler:^(id obj, NSError *error) {
         handler([self checkResponseCodeObject:obj error:error],obj);
     }];
 }

@@ -42,6 +42,7 @@
 - (void)handleOpenURL:(NSURL *)url;
 - (void)applicationWillEnterForeground:(UIApplication *)application;
 
+- (NSUInteger)minimalPrice;
 - (BOOL)shouldRequirePhotoLibraryAuthorization;
 
 @end

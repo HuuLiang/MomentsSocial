@@ -112,8 +112,9 @@ QBDefineLazyPropertyInitialization(MSCircleModel, response)
             } else {
                 type = MSPopupTypeCircleVip2;
             }
+            
             [[MSPopupHelper helper] showPopupViewWithType:type disCount:type == MSPopupTypeCircleVip2 cancleAction:nil confirmAction:^{
-                [MSVipVC showVipViewControllerInCurrentVC:self];
+                [MSVipVC showVipViewControllerInCurrentVC:self contentType:type];
             }];
             return;
         }

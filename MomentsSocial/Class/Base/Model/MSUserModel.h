@@ -18,7 +18,7 @@
 @property (nonatomic) NSString *videoUrl;
 @end
 
-@interface MSUserModel : JKDBModel
+@interface MSUserModel : JKDBModel <NSCoding>
 @property (nonatomic) NSString *phone;
 @property (nonatomic) NSString *sex;
 @property (nonatomic) NSInteger age;
@@ -45,5 +45,24 @@
 - (BOOL)isGreeted;
 
 + (BOOL)isGreetedWithUserId:(NSInteger)userId;
+
+
++ (NSArray *)allUserSex;
++ (NSArray *)allUserAge;
++ (NSArray *)allUserWeight;
++ (NSArray *)allUserStars;
+
+//职业
++ (NSArray *)allUserJob;
+//学历
++ (NSArray *)allUserEdu;
+//收入
++ (NSArray *)allUserIncome;
+//身高
++ (NSArray *)allUserHeight;
+//婚姻状况
++ (NSArray *)allUserMarr;
+
+
 
 @end

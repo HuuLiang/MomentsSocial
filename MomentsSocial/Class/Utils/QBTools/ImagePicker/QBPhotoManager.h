@@ -16,4 +16,6 @@ typedef void(^ImagePicker)(UIImage *pickerImage,NSString *keyName);
 
 - (void)getImageInCurrentViewController:(UIViewController *)viewController handler:(ImagePicker)picker;
 
+- (void)getImageInCurrentViewController:(UIViewController *)viewController withType:(UIImagePickerControllerSourceType)sourceType handler:(ImagePicker)picker;
+
 @end

@@ -179,20 +179,20 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-    if ([[notification.userInfo.allKeys firstObject] isEqualToString:kMSAutoNotificationTypeKeyName]) {
-        [[MSAutoReplyMessageManager manager] fetchOneReplyUserInfo];
-    }
+//    if ([[notification.userInfo.allKeys firstObject] isEqualToString:kMSAutoNotificationTypeKeyName]) {
+//        [[MSAutoReplyMessageManager manager] fetchOneReplyUserInfo];
+//    }
 //    [application setApplicationIconBadgeNumber:[[YFBContactManager manager] allUnReadMessageCount]];
 }
 
 - (void)checkLocalNotificationWithLaunchOptionsOptions:(NSDictionary *)launchOptions {
-    UILocalNotification *localNotification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
-    if (!localNotification) {
-        return;
-    }
-    if ([[localNotification.userInfo.allKeys firstObject] isEqualToString:kMSAutoNotificationTypeKeyName]) {
-        [[MSAutoReplyMessageManager manager] fetchOneReplyUserInfo];
-    }
+//    UILocalNotification *localNotification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
+//    if (!localNotification) {
+//        return;
+//    }
+//    if ([[localNotification.userInfo.allKeys firstObject] isEqualToString:kMSAutoNotificationTypeKeyName]) {
+//        [[MSAutoReplyMessageManager manager] fetchOneReplyUserInfo];
+//    }
 }
 
 

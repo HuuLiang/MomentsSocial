@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MSNearCell : UICollectionViewCell
+@interface MSNearCell : UITableViewCell
 
 @property (nonatomic) NSString *imgUrl;
 
@@ -16,7 +16,7 @@
 
 @property (nonatomic) NSInteger age;
 
-@property (nonatomic) NSString *sex;
+//@property (nonatomic) NSString *sex;
 
 @property (nonatomic) NSString *location;
 
@@ -27,5 +27,5 @@
 @end
 
 
-FOUNDATION_EXPORT NSString *const kMSRobotSexMaleKeyName;
-FOUNDATION_EXPORT NSString *const kMSRobotSexFemaleKeyName;
+//FOUNDATION_EXPORT NSString *const kMSRobotSexMaleKeyName;
+//FOUNDATION_EXPORT NSString *const kMSRobotSexFemaleKeyName;

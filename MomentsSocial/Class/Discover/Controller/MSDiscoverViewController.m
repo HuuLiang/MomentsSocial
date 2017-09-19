@@ -74,7 +74,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     [headerImgV bk_whenTapped:^{
         @strongify(self);
         if ([MSUtil currentVipLevel] < MSLevelVip2) {
-            [MSVipVC showVipViewControllerInCurrentVC:self];
+            [MSVipVC showVipViewControllerInCurrentVC:self contentType:MSPopupTypeDiscoverHeaderVip];
         }
     }];
 }
@@ -107,7 +107,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         if ([MSUtil currentVipLevel] == MSLevelVip0) {
             [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeBookLuoVip1 disCount:NO cancleAction:nil confirmAction:^{
                 @strongify(self);
-                [MSVipVC showVipViewControllerInCurrentVC:self];
+                [MSVipVC showVipViewControllerInCurrentVC:self contentType:MSPopupTypeBookLuoVip1];
             }];
             return;
         } else {
@@ -119,7 +119,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         if ([MSUtil currentVipLevel] == MSLevelVip0) {
             [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeBookLuoVip1 disCount:NO cancleAction:nil confirmAction:^{
                 @strongify(self);
-                [MSVipVC showVipViewControllerInCurrentVC:self];
+                [MSVipVC showVipViewControllerInCurrentVC:self contentType:MSPopupTypeBookLuoVip1];
             }];
             return;
         } else {

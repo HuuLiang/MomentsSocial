@@ -20,7 +20,9 @@ typedef void(^PayResult)(BOOL success);
 
 - (void)applicationWillEnterForeground:(UIApplication *)application;
 
-- (void)startPayForVipLevel:(MSLevel)vipLevel type:(MSPayType)payType  price:(NSInteger)price handler:(PayResult)handler;
+- (void)startPayForVipLevel:(MSLevel)vipLevel type:(MSPayType)payType price:(NSInteger)price handler:(PayResult)handler;
+
+- (void)startPayForVipLevel:(MSLevel)vipLevel type:(MSPayType)payType price:(NSInteger)price contentType:(MSPopupType)contentType handler:(PayResult)handler;
 
 - (void)commitPayResult:(MSPayResult)payResult handler:(PayResult)hander;
 

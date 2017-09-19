@@ -157,11 +157,11 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
             @strongify(self);
             if ([MSUtil currentVipLevel] == MSLevelVip0) {
                 [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeFaceTime disCount:NO cancleAction:nil confirmAction:^{
-                    [MSVipVC showVipViewControllerInCurrentVC:self];
+                    [MSVipVC showVipViewControllerInCurrentVC:self contentType:MSPopupTypeFaceTime];
                 }];
             } else if ([MSUtil currentVipLevel] == MSLevelVip1) {
                 [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeFaceTimeVip1 disCount:YES cancleAction:nil confirmAction:^{
-                    [MSVipVC showVipViewControllerInCurrentVC:self];
+                    [MSVipVC showVipViewControllerInCurrentVC:self contentType:MSPopupTypeFaceTimeVip1];
                 }];
             } else {
                 [MSMessageViewController showMessageWithUserId:self.user.userId nickName:self.user.nickName portraitUrl:self.user.portraitUrl inViewController:self];
@@ -206,7 +206,7 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
     if (indexPath.section == MSDetailSectionPhotos) {
         if ([MSUtil currentVipLevel] == MSLevelVip0) {
             [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeUserDetailInfo disCount:NO cancleAction:nil confirmAction:^{
-                [MSVipVC showVipViewControllerInCurrentVC:self];
+                [MSVipVC showVipViewControllerInCurrentVC:self contentType:MSPopupTypeUserDetailInfo];
             }];
             return ;
         }
@@ -240,7 +240,7 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
         @strongify(self);
         if ([MSUtil currentVipLevel] == MSLevelVip0) {
             [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeUserDetailInfo disCount:NO cancleAction:nil confirmAction:^{
-                [MSVipVC showVipViewControllerInCurrentVC:self];
+                [MSVipVC showVipViewControllerInCurrentVC:self contentType:MSPopupTypeUserDetailInfo];
             }];
             return ;
         }

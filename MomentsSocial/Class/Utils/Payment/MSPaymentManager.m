@@ -59,6 +59,14 @@
 }
 
 - (void)startPayForVipLevel:(MSLevel)vipLevel type:(MSPayType)payType price:(NSInteger)price handler:(PayResult)handler {
+    [self startPayForVipLevel:vipLevel type:payType price:price contentType:NSNotFound handler:handler];
+}
+
+- (void)startPayForVipLevel:(MSLevel)vipLevel
+                       type:(MSPayType)payType
+                      price:(NSInteger)price
+                contentType:(MSPopupType)contentType
+                    handler:(PayResult)handler {
     _payResult = handler;
     _targetLevel = vipLevel;
     
@@ -66,7 +74,7 @@
     price = 1;
 #endif
     
-//    NSString *appName = [NSBundle mainBundle].infoDictionary[@"CFBundleDisplayName"];
+    //    NSString *appName = [NSBundle mainBundle].infoDictionary[@"CFBundleDisplayName"];
     
     QBOrderInfo *orderInfo = [[QBOrderInfo alloc] init];
     orderInfo.orderId = MS_PAYMENT_ORDERID;
@@ -82,16 +90,20 @@
     orderInfo.targetPayPointType = vipLevel;
     orderInfo.reservedData = MS_PAYMENT_RESERVE_DATA;
     
+    QBContentInfo *contentInfo = [[QBContentInfo alloc] init];
+    if (contentType != NSNotFound) {
+        contentInfo.contentType = @(contentType);
+    }
     
-    [[QBPaymentManager sharedManager] payWithOrderInfo:orderInfo contentInfo:nil completionHandler:^(QBPayResult payResult, QBPaymentInfo *paymentInfo) {
+    [[QBPaymentManager sharedManager] payWithOrderInfo:orderInfo contentInfo:contentInfo completionHandler:^(QBPayResult payResult, QBPaymentInfo *paymentInfo) {
         NSDictionary *payResults = @{@(QBPayResultSuccess):@(MSPayResultSuccess),
                                      @(QBPayResultFailure):@(MSPayResultFailed),
                                      @(QBPayResultCancelled):@(MSPayResultCancle),
                                      @(QBPayResultUnknown):@(MSPayResultUnknow)};
         
-        
         [self commitPayResult:[payResults[@(payResult)] integerValue] handler:handler];
     }];
+
 }
 
 - (void)commitPayResult:(MSPayResult)payResult handler:(PayResult)hander {

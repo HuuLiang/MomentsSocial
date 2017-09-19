@@ -7,106 +7,104 @@
 //
 
 #import "MSNearCell.h"
-#import "MSGreetView.h"
 
-NSString *const kMSRobotSexMaleKeyName    = @"男";
-NSString *const kMSRobotSexFemaleKeyName  = @"女";
+//NSString *const kMSRobotSexMaleKeyName    = @"男";
+//NSString *const kMSRobotSexFemaleKeyName  = @"女";
 
 @interface MSNearCell ()
 @property (nonatomic) UIImageView *mainImgV;
 @property (nonatomic) UILabel     *nickLabel;
 @property (nonatomic) UILabel     *ageLabel;
-@property (nonatomic) UIImageView *sexImgV;
 @property (nonatomic) UIImageView *locationImgV;
 @property (nonatomic) UILabel     *locationLabel;
-@property (nonatomic) MSGreetView *greetView;
+@property (nonatomic) UIButton    *greetButton;
 @end
 
 @implementation MSNearCell
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.accessoryType = UITableViewCellAccessoryNone;
         
         self.backgroundColor = kColor(@"#ffffff");
         self.contentView.backgroundColor = kColor(@"#ffffff");
         
         self.mainImgV = [[UIImageView alloc] init];
+        _mainImgV.layer.cornerRadius = 5.0;
+        _mainImgV.layer.masksToBounds = YES;
         [self.contentView addSubview:_mainImgV];
         
         self.nickLabel = [[UILabel alloc] init];
         _nickLabel.textColor = kColor(@"#333333");
-        _nickLabel.font = kFont(13);
+        _nickLabel.font = kFont(16);
         [self.contentView addSubview:_nickLabel];
         
         self.ageLabel = [[UILabel alloc] init];
         _ageLabel.textColor = kColor(@"#999999");
-        _ageLabel.font = kFont(13);
+        _ageLabel.font = kFont(14);
         [self.contentView addSubview:_ageLabel];
-        
-        self.sexImgV = [[UIImageView alloc] init];
-        [self.contentView addSubview:_sexImgV];
         
         self.locationImgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"near_location"]];
         [self.contentView addSubview:_locationImgV];
         
         self.locationLabel = [[UILabel alloc] init];
         _locationLabel.textColor = kColor(@"#999999");
-        _locationLabel.font = kFont(11);
+        _locationLabel.font = kFont(14);
         [self.contentView addSubview:_locationLabel];
         
-        self.greetView = [[MSGreetView alloc] init];
-        [self.contentView addSubview:_greetView];
+        self.greetButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _greetButton.layer.cornerRadius = kWidth(30);
+        _greetButton.layer.masksToBounds = YES;
+        _greetButton.titleLabel.font = kFont(13);
+        [self.contentView addSubview:_greetButton];
         
         @weakify(self);
-        [_greetView bk_whenTapped:^{
+        [_greetButton bk_addEventHandler:^(id sender) {
             @strongify(self);
             if (self.greetAction) {
                 self.greetAction();
             }
-        }];
+        } forControlEvents:UIControlEventTouchUpInside];
         
         {
             [_mainImgV mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.right.top.equalTo(self.contentView);
-                make.height.mas_equalTo(frame.size.width);
+                make.centerY.equalTo(self.contentView);
+                make.left.equalTo(self.contentView).offset(kWidth(30));
+                make.size.mas_equalTo(CGSizeMake(kWidth(140), kWidth(140)));
             }];
             
             [_nickLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.contentView).offset(kWidth(20));
-                make.top.equalTo(_mainImgV.mas_bottom).offset(kWidth(8));
+                make.left.equalTo(_mainImgV.mas_right).offset(kWidth(20));
+                make.top.equalTo(_mainImgV.mas_top).offset(kWidth(20));
                 make.height.mas_equalTo(_nickLabel.font.lineHeight);
             }];
             
             [_ageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.bottom.equalTo(_nickLabel.mas_bottom);
-                make.left.equalTo(_nickLabel.mas_right).offset(kWidth(18));
+                make.centerY.equalTo(_nickLabel.mas_centerY);
+                make.left.equalTo(_nickLabel.mas_right).offset(kWidth(14));
                 make.height.mas_equalTo(_ageLabel.font.lineHeight);
             }];
             
-            [_sexImgV mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.equalTo(_nickLabel);
-                make.left.equalTo(_ageLabel.mas_right).offset(kWidth(6));
-                make.size.mas_equalTo(CGSizeMake(kWidth(24), kWidth(24)));
-            }];
-            
             [_locationImgV mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.bottom.equalTo(self.contentView.mas_bottom).offset(-kWidth(12));
-                make.left.equalTo(self.contentView).offset(kWidth(28));
-                make.size.mas_equalTo(CGSizeMake(kWidth(18), kWidth(24)));
+                make.bottom.equalTo(_mainImgV.mas_bottom).offset(-kWidth(20));
+                make.left.equalTo(_mainImgV.mas_right).offset(kWidth(20));
+                make.size.mas_equalTo(CGSizeMake(kWidth(22), kWidth(28)));
             }];
             
             [_locationLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(_locationImgV);
-                make.left.equalTo(_locationImgV.mas_right).offset(kWidth(18));
+                make.left.equalTo(_locationImgV.mas_right).offset(kWidth(6));
                 make.height.mas_equalTo(_locationLabel.font.lineHeight);
             }];
             
-            [_greetView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.bottom.equalTo(self.contentView.mas_bottom).offset(-kWidth(14));
-                make.right.equalTo(self.contentView.mas_right).offset(-kWidth(6));
-                make.size.mas_equalTo(CGSizeMake(kWidth(90), kWidth(60)));
+            [_greetButton mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(self.contentView);
+                make.right.equalTo(self.contentView.mas_right).offset(-kWidth(26));
+                make.size.mas_equalTo(CGSizeMake(kWidth(144), kWidth(60)));
             }];
         }
         
@@ -129,22 +127,16 @@ NSString *const kMSRobotSexFemaleKeyName  = @"女";
     _ageLabel.text = [NSString stringWithFormat:@"%ld岁",(long)age];
 }
 
-- (void)setSex:(NSString *)sex {
-    _sex = sex;
-    if (sex == kMSRobotSexMaleKeyName) {
-        _sexImgV.image = [UIImage imageNamed:@"near_male"];
-    } else if (sex == kMSRobotSexFemaleKeyName) {
-        _sexImgV.image = [UIImage imageNamed:@"near_female"];
-    }
-}
-
 - (void)setLocation:(NSString *)location {
     _location = location;
     _locationLabel.text = location;
 }
 
 - (void)setIsGreeted:(BOOL)isGreeted {
-    _greetView.isGreeted = isGreeted;
+    [_greetButton setTitle:isGreeted ? @"已打招呼" : @"打招呼" forState:UIControlStateNormal];
+    [_greetButton setTitleColor:isGreeted ? kColor(@"#666666") : kColor(@"#ffffff") forState:UIControlStateNormal];
+    UIImage *image = [_greetButton setGradientWithSize:CGSizeMake(kWidth(144), kWidth(60)) Colors:isGreeted ? @[kColor(@"#EAEAEA"),kColor(@"#DCDCDC")] : @[kColor(@"#EF6FB0"),kColor(@"#ED465C")] direction:leftToRight];
+    [_greetButton setBackgroundImage:image forState:UIControlStateNormal];
 }
 
 @end

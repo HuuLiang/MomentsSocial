@@ -32,6 +32,10 @@
 
 + (BOOL)addContactInfoWithReplyMsg:(MSAutoReplyMsg *)replyMsg {
     
+    if ([replyMsg.nickName isEqualToString:[MSUtil currentNickName]] ) {
+        
+    }
+    
     if ([[NSDate date] timeIntervalSince1970] - replyMsg.msgTime < 10) {
         if (replyMsg.msgType == MSMessageTypeFaceTime) {
             [MSFaceTimeView showWithReplyMsgInfo:replyMsg];

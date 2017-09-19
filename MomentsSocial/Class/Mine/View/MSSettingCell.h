@@ -10,4 +10,7 @@
 
 @interface MSSettingCell : UITableViewCell
 
+@property (nonatomic) NSString *imgName;
+@property (nonatomic) NSString *title;
+
 @end

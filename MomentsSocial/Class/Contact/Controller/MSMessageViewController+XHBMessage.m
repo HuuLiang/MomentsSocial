@@ -14,6 +14,8 @@
 #import "QBVideoPlayer.h"
 #import "MSMsgVipNoticeCell.h"
 #import "MSVipVC.h"
+#import "QBPhotoManager.h"
+#import "QBUploadManager.h"
 
 static NSString *const kMSMessageVipNoticeCellReusableIdentifier = @"kMSMessageVipNoticeCellReusableIdentifier";
 
@@ -33,6 +35,11 @@ static NSString *const kMSMessageVipNoticeCellReusableIdentifier = @"kMSMessageV
     [self addVoiceMessage:voicePath voiceDuration:voiceDuration withSender:sender receiver:self.userId dateTime:[date timeIntervalSince1970]];
     [self finishSendMessageWithBubbleMessageType:XHBubbleMessageMediaTypeVoice];
     [self scrollToBottomAnimated:YES];
+}
+
+//发送图片
+- (void)didSendPhoto:(UIImage *)photo fromSender:(NSString *)sender onDate:(NSDate *)date {
+    
 }
 
 //是否显示时间轴
@@ -75,15 +82,26 @@ static NSString *const kMSMessageVipNoticeCellReusableIdentifier = @"kMSMessageV
         cell.noticeAction = ^{
             [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeSendMessage disCount:NO cancleAction:nil confirmAction:^{
                 @strongify(self);
-                [MSVipVC showVipViewControllerInCurrentVC:self];
+                [MSVipVC showVipViewControllerInCurrentVC:self contentType:MSPopupTypeSendMessage];
             }];
         };
     }
     return cell;
 }
 
+#pragma mark -
+
 - (void)registerCustomVipNoticeCell {
     [self.messageTableView registerClass:[MSMsgVipNoticeCell class] forCellReuseIdentifier:kMSMessageVipNoticeCellReusableIdentifier];
+}
+
+- (void)setXHShareMenu {
+    XHShareMenuItem *pictureItem = [[XHShareMenuItem alloc] initWithNormalIconImage:[UIImage imageNamed:@"message_photo"] title:@"图片" titleColor:kColor(@"#666666") titleFont:[UIFont systemFontOfSize:kWidth(24)]];
+    
+    XHShareMenuItem *photographItem = [[XHShareMenuItem alloc] initWithNormalIconImage:[UIImage imageNamed:@"message_camera"] title:@"拍照" titleColor:kColor(@"#666666") titleFont:[UIFont systemFontOfSize:kWidth(24)]];
+//    XHShareMenuItem *videoChatItem = [[XHShareMenuItem alloc] initWithNormalIconImage:[UIImage imageNamed:@"message_video_chat"] title:@"视频聊天" titleColor:[UIColor redColor] titleFont:[UIFont systemFontOfSize:kWidth(30)]];
+//    self.shareMenuItems = @[pictureItem,photographItem,videoChatItem];
+    self.shareMenuItems = @[pictureItem,photographItem];
 }
 
 #pragma mark - XHMessageTableViewCellDelegate
@@ -176,4 +194,38 @@ static NSString *const kMSMessageVipNoticeCellReusableIdentifier = @"kMSMessageV
         [self.navigationController pushViewController:detailVC animated:YES];
     }
 }
+
+#pragma mark - XHShareMenuViewDelegate
+/**
+ *  点击第三方功能回调方法
+ *
+ *  @param shareMenuItem 被点击的第三方Model对象，可以在这里做一些特殊的定制
+ *  @param index         被点击的位置
+ */
+- (void)didSelecteShareMenuItem:(XHShareMenuItem *)shareMenuItem atIndex:(NSInteger)index {
+    if (index == 0 || index == 1) {
+        UIImagePickerControllerSourceType sourceType =  NSNotFound;
+        if (index == 0) {
+            sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        } else if (index == 1) {
+            sourceType = UIImagePickerControllerSourceTypeCamera;
+        }
+        @weakify(self);
+        [[QBPhotoManager manager] getImageInCurrentViewController:self withType:sourceType handler:^(UIImage *pickerImage, NSString *keyName) {
+            NSString *name = [NSString stringWithFormat:@"%@_message_image.jpg", [[NSDate date] stringWithFormat:KDateFormatLong]];
+            [QBUploadManager uploadWithFile:pickerImage fileName:name completionHandler:^(BOOL success, id obj) {
+                @strongify(self);
+                if (success) {
+                    [self addPhotoMessage:obj withSender:self.messageSender receiver:self.userId dateTime:[[NSDate date] timeIntervalSince1970]];
+                    [self finishSendMessageWithBubbleMessageType:XHBubbleMessageMediaTypePhoto];
+                }
+            }];
+
+        }];
+    } else if (index == 2) {
+        
+    }
+}
+
+
 @end

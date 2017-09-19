@@ -65,12 +65,13 @@
     messageModel.readDone = NO;
     
     [self postMessageInfoToContact:messageModel];
+    [[MSAutoReplyMessageManager manager] fetchOneUserMessageInfoWithUserId:messageModel.receiveUserId];
     return [messageModel save];
 }
 
 + (void)postMessageInfoToContact:(MSMessageModel *)msgModel {
     NSInteger userId = [msgModel.sendUserId integerValue] == [MSUtil currentUserId] ? [msgModel.receiveUserId integerValue] : [msgModel.sendUserId integerValue];
-    MSContactModel *contactInfo = [MSContactModel findFirstByCriteria:[NSString stringWithFormat:@"where userId=%ld",userId]];
+    MSContactModel *contactInfo = [MSContactModel findFirstByCriteria:[NSString stringWithFormat:@"where userId=%ld",(long)userId]];
     if (!contactInfo) {
         contactInfo = [[MSContactModel alloc] init];
     } else {
@@ -99,6 +100,7 @@
 
 + (void)postMessageToServer:(MSMessageModel *)msgModel {
     [[MSAutoReplyMessageManager manager] fetchKeywordReplyMsgWithMsgInfo:msgModel];
+    [[MSAutoReplyMessageManager manager] fetchTuRingReplyMsgWithMsgInfo:msgModel];
 }
 
 @end

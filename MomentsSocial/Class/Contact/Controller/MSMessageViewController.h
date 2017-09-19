@@ -41,6 +41,11 @@
                receiver:(NSString *)receiver
                dateTime:(NSInteger)dateTime;
 
+- (void)addPhotoMessage:(NSString *)imgUrl
+             withSender:(NSString *)sender
+               receiver:(NSString *)receiver
+               dateTime:(NSInteger)dateTime;
+
 - (void)addChatMessage:(MSMessageModel *)chatMessage;
 
 
