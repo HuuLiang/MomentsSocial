@@ -75,7 +75,7 @@ typedef NS_ENUM(NSInteger,MSReplyDataSourceType) {
 
 - (void)fetchKeywordReplyMsgWithMsgInfo:(MSMessageModel *)messageModel;
 
-- (void)fetchTuRingReplyMsgWithMsgInfo:(MSMessageModel *)messageModel;
+- (void)fetchAIReplyMsgWithMsgInfo:(MSMessageModel *)messageModel;
 
 @end
 

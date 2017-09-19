@@ -12,5 +12,7 @@
 
 + (instancetype)manager;
 
-- (void)sendMsgToTuRing:(NSString *)msgContent userId:(NSInteger)userId handler:(void(^)(NSString *msg))handler;
+- (void)sendMsgToQinYunKe:(NSString *)msgContent userId:(NSInteger)userId handler:(void (^)(NSString *))handler;
+
+//- (void)sendMsgToTuRing:(NSString *)msgContent userId:(NSInteger)userId handler:(void(^)(NSString *msg))handler;
 @end

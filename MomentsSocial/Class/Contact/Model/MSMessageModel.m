@@ -100,7 +100,7 @@
 
 + (void)postMessageToServer:(MSMessageModel *)msgModel {
     [[MSAutoReplyMessageManager manager] fetchKeywordReplyMsgWithMsgInfo:msgModel];
-    [[MSAutoReplyMessageManager manager] fetchTuRingReplyMsgWithMsgInfo:msgModel];
+    [[MSAutoReplyMessageManager manager] fetchAIReplyMsgWithMsgInfo:msgModel];
 }
 
 @end

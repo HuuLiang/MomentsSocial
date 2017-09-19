@@ -59,7 +59,6 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 - (void)deleteNoReplyMsg {
     [MSAutoReplyMsg deleteAllAutoReplyMsgInfo];
     [self operateReplySource:nil type:MSReplyDataSourceTypeDelAll];
-    dispatch_suspend(_timer);
 }
 
 - (void)deleteYesterdayMessages {
@@ -192,14 +191,29 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     }];
 }
 
-- (void)fetchTuRingReplyMsgWithMsgInfo:(MSMessageModel *)messageModel {
+- (void)fetchAIReplyMsgWithMsgInfo:(MSMessageModel *)messageModel {
     NSString *content = @"";
     if (messageModel.msgType == MSMessageTypeText) {
         content = messageModel.msgContent;
     } else {
         return;
     }
-    [[MSTuRingManager manager] sendMsgToTuRing:messageModel.msgContent userId:[messageModel.receiveUserId integerValue] handler:^(NSString *msg) {
+//    [[MSTuRingManager manager] sendMsgToTuRing:messageModel.msgContent userId:[messageModel.receiveUserId integerValue] handler:^(NSString *msg) {
+//        MSAutoReplyMsg *replyMsg = [[MSAutoReplyMsg alloc] init];
+//        replyMsg.userId = [messageModel.receiveUserId integerValue];
+//        replyMsg.portraitUrl = messageModel.portraitUrl;
+//        replyMsg.nickName = messageModel.nickName;
+//        replyMsg.msgId = 0;
+//        replyMsg.msgType = MSMessageTypeText;
+//        replyMsg.msgContent = msg;
+//        
+//        replyMsg.msgTime = [[NSDate date] timeIntervalSince1970]  + arc4random() % 90 + 30;
+//        if ([replyMsg saveOrUpdate]) {
+//            [[MSAutoReplyMessageManager manager] operateReplySource:@[replyMsg] type:MSReplyDataSourceTypeSort];
+//        }
+//    }];
+    
+    [[MSTuRingManager manager] sendMsgToQinYunKe:messageModel.msgContent userId:[messageModel.receiveUserId integerValue] handler:^(NSString * msg) {
         MSAutoReplyMsg *replyMsg = [[MSAutoReplyMsg alloc] init];
         replyMsg.userId = [messageModel.receiveUserId integerValue];
         replyMsg.portraitUrl = messageModel.portraitUrl;

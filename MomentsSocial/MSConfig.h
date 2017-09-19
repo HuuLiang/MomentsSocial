@@ -51,6 +51,7 @@
 #define MS_TURING_URL                  @"http://www.tuling123.com/openapi/api"
 #define MS_TULING_KEY                  @"65d7eee8b5c240dea353533271a3b9eb"
 
+#define MS_QINGYUNKE_URL               @"http://api.qingyunke.com/api.php?key=free&appid=0&msg="
 
 #define MS_WEXIN_APP_ID                @"wx2b2846687e296e95"
 #define MS_WECHAT_TOKEN                @"https://api.weixin.qq.com/sns/oauth2/access_token?"
