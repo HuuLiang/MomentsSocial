@@ -83,9 +83,9 @@
         if (![tabBarVC isKindOfClass:[MSTabBarController class]]) {
             return ;
         }
-        [UIApplication sharedApplication].applicationIconBadgeNumber = allUnReadCount;
         MSNavigationController *contactNav = [tabBarVC.viewControllers objectAtIndex:2];
         dispatch_async(dispatch_get_main_queue(), ^{
+            [UIApplication sharedApplication].applicationIconBadgeNumber = allUnReadCount;
             if (allUnReadCount > 0) {
                 if (allUnReadCount < 100) {
                     contactNav.tabBarItem.badgeValue = [NSString stringWithFormat:@"%ld", (unsigned long)allUnReadCount];

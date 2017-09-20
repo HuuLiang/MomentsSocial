@@ -67,9 +67,10 @@
 - (void)timerRepeat {
     NSInteger bottomIndex = _currentIndex + 1;
     
-    if (bottomIndex == self.titlesArr.count) {
+    if (bottomIndex >= self.titlesArr.count) {
         bottomIndex = 0;
     }
+    
 //    QBLog(@" bottomIndex =  %ld,title = %@",bottomIndex,_titlesArr[bottomIndex]);
     _bottomLabel.text = self.titlesArr[bottomIndex];
     

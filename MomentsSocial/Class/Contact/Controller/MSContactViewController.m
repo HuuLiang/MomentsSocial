@@ -156,6 +156,19 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     });
 }
 
+- (void)deleteContactInfo:(MSContactModel *)contactInfo atIndexPath:(NSIndexPath *)indexPath {
+    dispatch_async(self.addQueue, ^{
+        //dataSource 中删除
+        [self.dataSource removeObject:contactInfo];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //删除 动画
+            [self.tableView beginUpdates];
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+            [self.tableView endUpdates];
+        });
+    });
+}
+
 #pragma mark - UITableViewDelegate,UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -220,16 +233,13 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
     
     if (contact) {
         //删除标签
+        @weakify(self,contact,indexPath);
         MGSwipeButton *deleteButton = [MGSwipeButton buttonWithTitle:@" 删除 "
                                                      backgroundColor:kColor(@"#ED465C")
                                                             callback:^BOOL(MGSwipeTableCell * _Nonnull cell)
                                        {
-                                           //dataSource 中删除
-                                           [self.dataSource removeObject:contact];
-                                           //删除 动画
-                                           [self.tableView beginUpdates];
-                                           [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-                                           [self.tableView endUpdates];
+                                           @strongify(self,contact,indexPath);
+                                           [self deleteContactInfo:contact atIndexPath:indexPath];
                                            //数据库中删除
                                            [MSContactModel deleteObjects:@[contact]];
                                            

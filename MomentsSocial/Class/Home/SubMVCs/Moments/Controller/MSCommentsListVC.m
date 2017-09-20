@@ -94,6 +94,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, heights)
         @strongify(self);
         if ([MSUtil currentVipLevel] == MSLevelVip0) {
             [[MSPopupHelper helper] showPopupViewWithType:MSPopupTypeSendComment disCount:NO cancleAction:nil confirmAction:^{
+                @strongify(self);
                 [MSVipVC showVipViewControllerInCurrentVC:self contentType:MSPopupTypeSendComment];
             }];
             return ;

@@ -67,6 +67,7 @@
                       price:(NSInteger)price
                 contentType:(MSPopupType)contentType
                     handler:(PayResult)handler {
+    
     _payResult = handler;
     _targetLevel = vipLevel;
     

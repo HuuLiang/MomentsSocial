@@ -71,7 +71,9 @@ QBDefineLazyPropertyInitialization(NSMutableArray, chatMessages)
     self.messageSender = [NSString stringWithFormat:@"%ld",(long)[MSUtil currentUserId]];
     
     if (_needReturn) {
+        @weakify(self);
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"返回" style:UIBarButtonItemStylePlain handler:^(id sender) {
+            @strongify(self);
             [self dismissViewControllerAnimated:YES completion:nil];
         }];
     }
