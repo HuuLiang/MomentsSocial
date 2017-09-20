@@ -47,6 +47,8 @@
 #define MS_AliPay_SchemeUrl            @"commomentssocialschemeurl"
 
 #define MS_UMENG_APP_ID                @"59899d25bbea834cb6000af9"
+#define MS_UMENG_STARTPAY_EVENT        @"Start_Pay_Event"
+#define MS_UMENG_RESULTPAY_EVENT       @"Result_Pay_Event"
 
 #define MS_TURING_URL                  @"http://www.tuling123.com/openapi/api"
 #define MS_TULING_KEY                  @"65d7eee8b5c240dea353533271a3b9eb"

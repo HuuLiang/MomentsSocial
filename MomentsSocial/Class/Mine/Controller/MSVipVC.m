@@ -9,6 +9,7 @@
 #import "MSVipVC.h"
 #import "MSVipPayPointCell.h"
 #import "MSPaymentManager.h"
+#import <UMMobClick/MobClick.h>
 
 static NSString *const kMSVipPayPointCellReusableIdentifier = @"kMSVipPayPointCellReusableIdentifier";
 
@@ -198,10 +199,13 @@ static NSString *const kMSVipPayPointCellReusableIdentifier = @"kMSVipPayPointCe
 
 - (void)payWithType:(MSPayType)type {
     @weakify(self);
+    [MobClick event:MS_UMENG_STARTPAY_EVENT attributes:@{@"contentType":@(self.contentType)}];
     [[MSPaymentManager manager] startPayForVipLevel:[MSUtil currentVipLevel] + 1 type:type price:self.price contentType:self.contentType handler:^(BOOL success) {
         @strongify(self);
         [self hide];
         if (success) {
+            [MobClick event:MS_UMENG_RESULTPAY_EVENT attributes:@{@"contentType":@(self.contentType),
+                                                                 @"Result":@(success)}];
             [[NSNotificationCenter defaultCenter] postNotificationName:MSOpenVipSuccessNotification object:nil];
         }
 
