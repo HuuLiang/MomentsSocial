@@ -28,6 +28,7 @@
     [super viewDidLoad];
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.automaticallyAdjustsScrollViewInsets = YES;
     self.view.backgroundColor = kColor(@"#ffffff");
 }
 

@@ -102,7 +102,8 @@
         self.commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_commentButton setTitleColor:kColor(@"#999999") forState:UIControlStateNormal];
         _commentButton.titleLabel.font = kFont(12);
-        [_commentButton setImage:[UIImage imageNamed:@"moment_comment"] forState:UIControlStateNormal];
+        [_commentButton setImage:[UIImage imageNamed:@"contact_normal"] forState:UIControlStateNormal];
+        _commentButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
         [_backView addSubview:_commentButton];
         
         self.attentionButton = [UIButton buttonWithType:UIButtonTypeCustom];

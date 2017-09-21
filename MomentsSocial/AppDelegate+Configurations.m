@@ -38,17 +38,19 @@
         
         //网络错误提示
         if ([QBNetworkInfo sharedInfo].networkStatus <= QBNetworkStatusNotReachable && (![MSUtil isRegisteredUUID])) {
-            if ([MSUtil isIpad]) {
-                [UIAlertView bk_showAlertViewWithTitle:@"请检查您的网络连接!" message:nil cancelButtonTitle:@"确认" otherButtonTitles:nil handler:nil];
-            }else{
-                [UIAlertView bk_showAlertViewWithTitle:@"很抱歉!" message:@"您的应用未连接到网络,请检查您的网络设置" cancelButtonTitle:@"稍后" otherButtonTitles:@[@"设置"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                    if (buttonIndex == 1) {
-                        NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-                        if([[UIApplication sharedApplication] canOpenURL:url]) {
-                            [[UIApplication sharedApplication] openURL:url];
+            if (!@available(iOS 11, *)) {
+                if ([MSUtil isIpad]) {
+                    [UIAlertView bk_showAlertViewWithTitle:@"请检查您的网络连接!" message:nil cancelButtonTitle:@"确认" otherButtonTitles:nil handler:nil];
+                }else{
+                    [UIAlertView bk_showAlertViewWithTitle:@"很抱歉!" message:@"您的应用未连接到网络,请检查您的网络设置" cancelButtonTitle:@"稍后" otherButtonTitles:@[@"设置"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                        if (buttonIndex == 1) {
+                            NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                                [[UIApplication sharedApplication] openURL:url];
+                            }
                         }
-                    }
-                }];
+                    }];
+                }
             }
         }
     };

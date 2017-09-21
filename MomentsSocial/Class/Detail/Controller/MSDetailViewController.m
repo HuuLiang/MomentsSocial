@@ -52,6 +52,10 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    if (@available(iOS 11, *)) {
+        _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }
+    
     self.view.backgroundColor = kColor(@"#f0f0f0");
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -61,7 +65,7 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     _tableView.backgroundColor = kColor(@"#f0f0f0");
     [self.view addSubview:_tableView];
-    
+    self.tableView.contentInset = UIEdgeInsetsMake(-20, 0, 0, 0);
     {
         [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.view);

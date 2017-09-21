@@ -58,9 +58,9 @@
     return configuration;
 }
 
-- (void)startPayForVipLevel:(MSLevel)vipLevel type:(MSPayType)payType price:(NSInteger)price handler:(PayResult)handler {
-    [self startPayForVipLevel:vipLevel type:payType price:price contentType:NSNotFound handler:handler];
-}
+//- (void)startPayForVipLevel:(MSLevel)vipLevel type:(MSPayType)payType price:(NSInteger)price handler:(PayResult)handler {
+//    [self startPayForVipLevel:vipLevel type:payType price:price contentType:NSNotFound handler:handler];
+//}
 
 - (void)startPayForVipLevel:(MSLevel)vipLevel
                        type:(MSPayType)payType
