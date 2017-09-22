@@ -233,7 +233,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         
         cell.greetAction = ^{
             @strongify(self,cell,model);
-            if (model.greeted) {
+            if ([cell.greeted boolValue]) {
                 [[MSHudManager manager] showHudWithText:@"您已经打过招呼"];
                 return ;
             }
