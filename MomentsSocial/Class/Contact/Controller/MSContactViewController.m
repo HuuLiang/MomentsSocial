@@ -74,7 +74,7 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
         [self.dataSource enumerateObjectsUsingBlock:^(MSContactModel *  _Nonnull contactModel, NSUInteger idx, BOOL * _Nonnull stop) {
             if (onlineInfo.userId == contactModel.userId) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                    [self.tableView reloadData];
                 });
             }
         }];
@@ -159,12 +159,18 @@ QBDefineLazyPropertyInitialization(NSMutableArray, dataSource)
 - (void)deleteContactInfo:(MSContactModel *)contactInfo atIndexPath:(NSIndexPath *)indexPath {
     dispatch_async(self.addQueue, ^{
         //dataSource 中删除
-        [self.dataSource removeObject:contactInfo];
+        if (indexPath.row < self.dataSource.count) {
+            [self.dataSource removeObject:contactInfo];
+        }
         dispatch_async(dispatch_get_main_queue(), ^{
             //删除 动画
-            [self.tableView beginUpdates];
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-            [self.tableView endUpdates];
+            if ([MSUtil deviceType] < MSDeviceType_iPhone6 || [MSUtil deviceType] == MSDeviceType_iPad) {
+                [self.tableView reloadData];
+            } else {
+                [self.tableView beginUpdates];
+                [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+                [self.tableView endUpdates];
+            }
         });
     });
 }
