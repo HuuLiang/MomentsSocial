@@ -12,6 +12,7 @@
 #import <QBPaymentManager.h>
 #import <QBPaymentConfiguration.h>
 #import "MSSystemConfigModel.h"
+#import <QBPaymentInfo.h>
 
 @interface MSPaymentManager () <WXApiDelegate>
 @property (nonatomic) MSLevel targetLevel;
@@ -58,23 +59,21 @@
     return configuration;
 }
 
-//- (void)startPayForVipLevel:(MSLevel)vipLevel type:(MSPayType)payType price:(NSInteger)price handler:(PayResult)handler {
-//    [self startPayForVipLevel:vipLevel type:payType price:price contentType:NSNotFound handler:handler];
+//- (void)startPayForVipLevel:(MSLevel)vipLevel
+//                       type:(MSPayType)payType
+//                      price:(NSInteger)price
+//                contentType:(MSPopupType)contentType
+//                    handler:(PayResult)handler {
+//    [self startPayForVipLevel:vipLevel type:payType price:price contentType:contentType payPoints:nil handler:handler];
 //}
 
-- (void)startPayForVipLevel:(MSLevel)vipLevel
-                       type:(MSPayType)payType
-                      price:(NSInteger)price
-                contentType:(MSPopupType)contentType
-                    handler:(PayResult)handler {
-    
+- (void)startPayForVipLevel:(MSLevel)vipLevel type:(MSPayType)payType price:(NSInteger)price contentType:(MSPopupType)contentType payPoints:(NSArray <MSPayInfo *> *)payPoints handler:(PayResult)handler {
     _payResult = handler;
     _targetLevel = vipLevel;
     
 #ifdef DEBUG
     price = 1;
 #endif
-    
     //    NSString *appName = [NSBundle mainBundle].infoDictionary[@"CFBundleDisplayName"];
     
     QBOrderInfo *orderInfo = [[QBOrderInfo alloc] init];
@@ -95,6 +94,9 @@
     if (contentType != NSNotFound) {
         contentInfo.contentType = @(contentType);
     }
+    if (payPoints) {
+        contentInfo.contentId = [payPoints firstObject].payPointId;
+    }
     
     [[QBPaymentManager sharedManager] payWithOrderInfo:orderInfo contentInfo:contentInfo completionHandler:^(QBPayResult payResult, QBPaymentInfo *paymentInfo) {
         NSDictionary *payResults = @{@(QBPayResultSuccess):@(MSPayResultSuccess),
@@ -104,6 +106,7 @@
         
         [self commitPayResult:[payResults[@(payResult)] integerValue] handler:handler];
     }];
+    
 
 }
 
@@ -135,6 +138,17 @@
 
 - (BOOL)aliPayEnable {
     return [[QBPaymentManager sharedManager] pluginTypeForPaymentType:QBPaymentTypeAlipay] != QBPluginTypeNone;
+}
+
+- (BOOL)checkIsPaidGoldVip {
+    __block BOOL isPaidGoldVip = NO;
+    [[QBPaymentInfo allPaymentInfos] enumerateObjectsUsingBlock:^(QBPaymentInfo  * _Nonnull  obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ( obj.paymentResult == QBPayResultSuccess && [obj.contentId isEqual: @(1)]) {
+            isPaidGoldVip = YES;
+            *stop = YES;
+        }
+    }];
+    return isPaidGoldVip;
 }
 
 @end

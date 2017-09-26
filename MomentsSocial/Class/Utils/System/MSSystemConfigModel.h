@@ -9,6 +9,7 @@
 #import "QBDataResponse.h"
 
 @interface MSPayInfo : NSObject
+@property (nonatomic) NSNumber * payPointId;
 @property (nonatomic) NSString *title;
 @property (nonatomic) NSInteger price;
 @property (nonatomic) NSInteger days;

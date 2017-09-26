@@ -59,7 +59,7 @@
     
     [self.navigationController.navigationBar bk_whenTouches:1 tapped:5 handler:^{
         NSString *baseURLString = [MS_BASE_URL stringByReplacingCharactersInRange:NSMakeRange(0, MS_BASE_URL.length-6) withString:@"******"];
-        [[MSHudManager manager] showHudWithText:[NSString stringWithFormat:@"Server:%@\nChannelNo:%@\nPackageCertificate:%@\npV:%@\nBundleId:%@\nVersion:%@\nUserID:%ld\nVIPLEVEL:%ld", baseURLString, MS_CHANNEL_NO, MS_PACKAGE_CERTIFICATE, MS_REST_PV,MS_BUNDLE_IDENTIFIER,MS_REST_APP_VERSION, (long)[MSUtil currentUserId],(long)[MSUtil currentVipLevel]]];
+        [[MSHudManager manager] showHudWithText:[NSString stringWithFormat:@"Server:%@\nChannelNo:%@\nPackageCertificate:%@\npV:%@\nBundleId:%@\nVersion:%@\nUserID:%ld\nVIPLEVEL:%ld\n当月成为黄金VIP登录天数:%ld", baseURLString, MS_CHANNEL_NO, MS_PACKAGE_CERTIFICATE, MS_REST_PV,MS_BUNDLE_IDENTIFIER,MS_REST_APP_VERSION, (long)[MSUtil currentUserId],(long)[MSUtil currentVipLevel],[MSUtil loginDays]]];
     }];
 }
 

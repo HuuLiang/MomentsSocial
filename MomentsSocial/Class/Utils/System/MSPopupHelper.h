@@ -30,7 +30,8 @@ typedef NS_ENUM(NSInteger, MSPopupType) {
     MSPopupTypeBookLuoVip1 = 18,
     MSPopupTypeBookLuoVip2 = 19,
     MSPopupTypeDiscoverHeaderVip = 20,
-    MSPopupTypeMineVC = 21
+    MSPopupTypeMineVC = 21,
+    MSPopupTypeActivity = 22
 };
 
 typedef void(^CancleAction)(void);

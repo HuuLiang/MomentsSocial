@@ -29,6 +29,10 @@
 
 + (void)saveCurrentUserInfo:(MSUserModel *)userModel;
 
++ (void)registerBindPhoneNumber:(NSString *)phoneNumber;
++ (NSString *)getbindingPhoneNumber;
+
+
 
 + (BOOL)isIpad;
 + (NSString *)appVersion;
@@ -38,6 +42,9 @@
 + (void)setVipLevel:(MSLevel)vipLevel;
 + (MSLevel)currentVipLevel;
 + (BOOL)isToday;
+
++ (void)addCheckLoginCount;
++ (NSInteger)loginDays;
 
 + (NSString *)compareCurrentTime:(NSTimeInterval)compareTimeInterval;
 + (NSString *)currentTimeStringWithFormat:(NSString *)timeFormat;

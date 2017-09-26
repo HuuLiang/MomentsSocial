@@ -101,6 +101,10 @@
     return self;
 }
 
+- (void)setPayPoint:(MSPayInfo *)payPoint {
+    _payPoint = payPoint;
+}
+
 - (void)setPayPointLevel:(NSInteger)payPointLevel {
     MSPayInfo *info = nil;
     if (payPointLevel == 0) {
@@ -115,6 +119,9 @@
         } else if ([MSUtil currentVipLevel] == MSLevelVip1) {
             info = [MSSystemConfigModel defaultConfig].PAY_VIP_2_2;
         }
+    }
+    if (_payPoint) {
+        info = _payPoint;
     }
     if (info) {
         _price = info.price;

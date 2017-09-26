@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		54904C88179BD4859E2EC538 /* libPods-MomentsSocial.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B83407705A9EFDEC7F13EA /* libPods-MomentsSocial.a */; };
 		EC0CAA881F341D3E00B1C669 /* MSCheckInUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC0CAA871F341D3E00B1C669 /* MSCheckInUserCell.m */; };
+		EC1196F81F7A2AC500BC696E /* MSActDescView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC1196F71F7A2AC500BC696E /* MSActDescView.m */; };
+		EC1196FB1F7A38F700BC696E /* MSActFuncView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC1196FA1F7A38F700BC696E /* MSActFuncView.m */; };
+		EC1196FE1F7A3D7000BC696E /* MSTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = EC1196FD1F7A3D7000BC696E /* MSTextField.m */; };
 		EC1BFCC71F395475003613D6 /* QBPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = EC1BFCC61F395475003613D6 /* QBPhotoBrowser.m */; };
 		EC1BFCCA1F395FC2003613D6 /* MSMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC1BFCC91F395FC2003613D6 /* MSMessageViewController.m */; };
 		EC1BFCCD1F395FE1003613D6 /* MSContactModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EC1BFCCC1F395FE1003613D6 /* MSContactModel.m */; };
@@ -274,6 +277,12 @@
 		E6B83407705A9EFDEC7F13EA /* libPods-MomentsSocial.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MomentsSocial.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC0CAA861F341D3E00B1C669 /* MSCheckInUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCheckInUserCell.h; sourceTree = "<group>"; };
 		EC0CAA871F341D3E00B1C669 /* MSCheckInUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCheckInUserCell.m; sourceTree = "<group>"; };
+		EC1196F61F7A2AC500BC696E /* MSActDescView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MSActDescView.h; sourceTree = "<group>"; };
+		EC1196F71F7A2AC500BC696E /* MSActDescView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MSActDescView.m; sourceTree = "<group>"; };
+		EC1196F91F7A38F700BC696E /* MSActFuncView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MSActFuncView.h; sourceTree = "<group>"; };
+		EC1196FA1F7A38F700BC696E /* MSActFuncView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MSActFuncView.m; sourceTree = "<group>"; };
+		EC1196FC1F7A3D7000BC696E /* MSTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MSTextField.h; sourceTree = "<group>"; };
+		EC1196FD1F7A3D7000BC696E /* MSTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MSTextField.m; sourceTree = "<group>"; };
 		EC1BFCC51F395475003613D6 /* QBPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBPhotoBrowser.h; sourceTree = "<group>"; };
 		EC1BFCC61F395475003613D6 /* QBPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBPhotoBrowser.m; sourceTree = "<group>"; };
 		EC1BFCC81F395FC2003613D6 /* MSMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMessageViewController.h; sourceTree = "<group>"; };
@@ -1406,6 +1415,10 @@
 			children = (
 				EC6C040C1F46C133001E7BC3 /* MSActivityVC.h */,
 				EC6C040D1F46C133001E7BC3 /* MSActivityVC.m */,
+				EC1196F61F7A2AC500BC696E /* MSActDescView.h */,
+				EC1196F71F7A2AC500BC696E /* MSActDescView.m */,
+				EC1196F91F7A38F700BC696E /* MSActFuncView.h */,
+				EC1196FA1F7A38F700BC696E /* MSActFuncView.m */,
 			);
 			path = Activity;
 			sourceTree = "<group>";
@@ -1761,6 +1774,8 @@
 				EC6C04211F46F901001E7BC3 /* MSScrollLabel.m */,
 				EC8EA6131F481F56009802C6 /* MSRollView.h */,
 				EC8EA6141F481F56009802C6 /* MSRollView.m */,
+				EC1196FC1F7A3D7000BC696E /* MSTextField.h */,
+				EC1196FD1F7A3D7000BC696E /* MSTextField.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2505,6 +2520,7 @@
 				ECC11B2A1F2724450093E3EE /* NSObject+PropertyAccessInspecting.m in Sources */,
 				EC6C04221F46F901001E7BC3 /* MSScrollLabel.m in Sources */,
 				EC1BFDCD1F39A787003613D6 /* XHEmotionManager.m in Sources */,
+				EC1196FE1F7A3D7000BC696E /* MSTextField.m in Sources */,
 				ECC118D61F26D0760093E3EE /* main.m in Sources */,
 				EC1BFDD61F39A787003613D6 /* SELinkText.m in Sources */,
 				EC1BFDB01F39A787003613D6 /* UIImage+RoundedCorner.m in Sources */,
@@ -2548,6 +2564,7 @@
 				EC1BFDCC1F39A787003613D6 /* XHEmotion.m in Sources */,
 				ECC11B321F2724450093E3EE /* UIView+Loading.m in Sources */,
 				EC1BFDD91F39A787003613D6 /* SETextEditingCaret.m in Sources */,
+				EC1196F81F7A2AC500BC696E /* MSActDescView.m in Sources */,
 				ECFCAB8D1F29F2A200DC2948 /* MSNearViewController.m in Sources */,
 				EC848DDC1F33253400B47E37 /* MSCheckInHeaderView.m in Sources */,
 				ECFCAB6D1F29865600DC2948 /* MSHomeMomentsCell.m in Sources */,
@@ -2562,6 +2579,7 @@
 				EC8EA6191F483528009802C6 /* FXBlurView.m in Sources */,
 				ECC11B2E1F2724450093E3EE /* UIImage+Blur.m in Sources */,
 				EC1BFDC91F39A787003613D6 /* XHMessageVoiceFactory.m in Sources */,
+				EC1196FB1F7A38F700BC696E /* MSActFuncView.m in Sources */,
 				ECC11A4D1F26DA870093E3EE /* ActionSheetCustomPicker.m in Sources */,
 				ECA8A9461F38449500BABFF9 /* MSDiscoverModel.m in Sources */,
 				ECB58CCE1F2B30DD0074E6D8 /* UIButton+iconSpacing.m in Sources */,

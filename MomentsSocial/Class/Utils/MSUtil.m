@@ -10,6 +10,7 @@
 #import <SFHFKeychainUtils.h>
 #import <sys/sysctl.h>
 #import <AVFoundation/AVFoundation.h>
+#import <QBPaymentInfo.h>
 
 static NSString *const kRegisterKeyName           = @"MS_register_keyname";
 
@@ -19,6 +20,11 @@ static NSString *const kMSCurrentUserKeyName      = @"kMSCurrentUserKeyName";
 static NSString *const kMSUserIdKeyName           = @"kMSUserIdKeyName";
 static NSString *const kMSUserNickKeyName         = @"kMSUserNickKeyName";
 static NSString *const kMSUserPortraitUrlKeyName  = @"kMSUserPortraitUrlKeyName";
+
+static NSString *const kMSUserBindingPhoneKeyName = @"kMSUserBindingPhoneKeyName";
+
+static NSString *const kMSUserBindMonthKeyName    = @"kMSUserBindMonthKeyName";
+static NSString *const kMSUserLoginDaysKeyName    = @"kMSUserLoginDaysKeyName";
 
 static NSString *const kMSAutoReplyMessageTimeRecordKeyName = @"kMSAutoReplyMessageTimeRecordKeyName";
 
@@ -85,6 +91,16 @@ static NSString *const kMSAutoReplyMessageTimeRecordKeyName = @"kMSAutoReplyMess
     [[NSUserDefaults standardUserDefaults] setObject:userData forKey:kMSCurrentUserKeyName];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
+
++ (void)registerBindPhoneNumber:(NSString *)phoneNumber {
+    [[NSUserDefaults standardUserDefaults] setObject:phoneNumber forKey:kMSUserBindingPhoneKeyName];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (NSString *)getbindingPhoneNumber {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:kMSUserBindingPhoneKeyName];
+}
+
 
 #pragma mark - 设备类型
 
@@ -168,6 +184,53 @@ static NSString *const kMSAutoReplyMessageTimeRecordKeyName = @"kMSAutoReplyMess
     }
 }
 
++ (BOOL)thisMonth {
+    NSDate *lastMonth = [[NSUserDefaults standardUserDefaults] objectForKey:kMSUserBindMonthKeyName];
+    if (!lastMonth) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kMSUserBindMonthKeyName];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        return YES;
+    }
+    
+    if ([lastMonth isThisMonth]) {
+        return YES;
+    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kMSUserBindMonthKeyName];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        return NO;
+    }
+}
+
++ (void)addCheckLoginCount {
+    __block QBPaymentInfo *info = nil;
+    [[QBPaymentInfo allPaymentInfos] enumerateObjectsUsingBlock:^(QBPaymentInfo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj.paymentResult == QBPayResultSuccess && [obj.contentId isEqual:@(1)]) {
+            info = obj;
+            *stop = YES;
+        }
+    }];
+    if (info) {
+        NSDate *payGoldDate = [self dateFromString:info.paymentTime WithDateFormat:@"yyyyMMddHHmmss"];
+        NSDate *currentDate = [NSDate date];
+        if (currentDate.year > payGoldDate.year || currentDate.month > payGoldDate.month) {
+            NSInteger loginDays = [self loginDays];
+            if ([self thisMonth]) {
+                loginDays++;
+            } else {
+                loginDays = 0;
+            }
+            [[NSUserDefaults standardUserDefaults] setObject:@(loginDays) forKey:kMSUserLoginDaysKeyName];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    } else {
+        return;
+    }
+}
+
++ (NSInteger)loginDays {
+    return [[[NSUserDefaults standardUserDefaults] objectForKey:kMSUserLoginDaysKeyName] integerValue];
+}
+
 #pragma mark - 时间转换
 + (NSString *)compareCurrentTime:(NSTimeInterval)compareTimeInterval {
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:compareTimeInterval];
@@ -208,6 +271,13 @@ static NSString *const kMSAutoReplyMessageTimeRecordKeyName = @"kMSAutoReplyMess
     [fomatter setDateFormat:timeFormat];
     return [fomatter stringFromDate:[NSDate date]];
 }
+
++ (NSDate *)dateFromString:(NSString *)dateString WithDateFormat:(NSString *)dateFormat {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:dateFormat];
+    return [dateFormatter dateFromString:dateString];
+}
+
 
 #pragma mark - 获取currentVC
 

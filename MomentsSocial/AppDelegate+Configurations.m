@@ -208,6 +208,8 @@
     
     [[QBLocationManager manager] loadLocationManager];
     
+    [MSUtil addCheckLoginCount];  //活动相关
+    
     MSTabBarController *tabBarVC = [[MSTabBarController alloc] init];
     self.window.rootViewController = tabBarVC;
     [self.window makeKeyAndVisible];

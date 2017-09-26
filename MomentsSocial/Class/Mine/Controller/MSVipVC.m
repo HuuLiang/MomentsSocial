@@ -10,6 +10,7 @@
 #import "MSVipPayPointCell.h"
 #import "MSPaymentManager.h"
 #import <UMMobClick/MobClick.h>
+#import "MSSystemConfigModel.h"
 
 static NSString *const kMSVipPayPointCellReusableIdentifier = @"kMSVipPayPointCellReusableIdentifier";
 
@@ -17,13 +18,21 @@ static NSString *const kMSVipPayPointCellReusableIdentifier = @"kMSVipPayPointCe
 @property (nonatomic) UITableView *tableView;
 @property (nonatomic) NSInteger price;
 @property (nonatomic) MSPopupType contentType;
+@property (nonatomic) NSArray <MSPayInfo *> * payPoints;
 @end
 
 @implementation MSVipVC
 
 + (void)showVipViewControllerInCurrentVC:(UIViewController *)currentViewController contentType:(MSPopupType)contentType {
+    [MSVipVC showVipViewControllerInCurrentVC:currentViewController contentType:contentType payPoints:nil];
+}
+
++ (void)showVipViewControllerInCurrentVC:(UIViewController *)currentViewController contentType:(MSPopupType)contentType payPoints:(NSArray<MSPayInfo *> *)payPoints {
     MSVipVC *vipVC = [[MSVipVC alloc] init];
     vipVC.contentType = contentType;
+    if (payPoints) {
+        vipVC.payPoints = payPoints;
+    }
     [vipVC showVipVCInCurrentVC:currentViewController];
 }
 
@@ -200,15 +209,24 @@ static NSString *const kMSVipPayPointCellReusableIdentifier = @"kMSVipPayPointCe
 - (void)payWithType:(MSPayType)type {
     @weakify(self);
     [MobClick event:MS_UMENG_STARTPAY_EVENT attributes:@{@"contentType":@(self.contentType)}];
-    [[MSPaymentManager manager] startPayForVipLevel:[MSUtil currentVipLevel] + 1 type:type price:self.price contentType:self.contentType handler:^(BOOL success) {
+    MSLevel targetLevel = MSLevelVip0;
+    if (!self.payPoints) {
+        targetLevel = [MSUtil currentVipLevel] + 1;
+    } else {
+        if ([MSUtil currentVipLevel] == MSLevelVip0) {
+            targetLevel = [MSUtil currentVipLevel] + 1;
+        } else {
+            targetLevel = MSLevelVip1;
+        }
+    }
+    [[MSPaymentManager manager] startPayForVipLevel:targetLevel type:type price:self.price contentType:self.contentType payPoints:self.payPoints handler:^(BOOL success) {
         @strongify(self);
         [self hide];
         if (success) {
             [MobClick event:MS_UMENG_RESULTPAY_EVENT attributes:@{@"contentType":@(self.contentType),
-                                                                 @"Result":@(success)}];
+                                                                  @"Result":@(success)}];
             [[NSNotificationCenter defaultCenter] postNotificationName:MSOpenVipSuccessNotification object:nil];
         }
-
     }];
 }
 
@@ -219,12 +237,15 @@ static NSString *const kMSVipPayPointCellReusableIdentifier = @"kMSVipPayPointCe
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
+    return self.payPoints ? self.payPoints.count : 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MSVipPayPointCell *cell = [tableView dequeueReusableCellWithIdentifier:kMSVipPayPointCellReusableIdentifier forIndexPath:indexPath];
-    if (indexPath.row < 2) {
+    if (indexPath.row < [self tableView:self.tableView numberOfRowsInSection:0]) {
+        if (self.payPoints.count > indexPath.row) {
+            cell.payPoint = self.payPoints[indexPath.row];
+        }
         cell.payPointLevel = indexPath.row;
     }
     return cell;

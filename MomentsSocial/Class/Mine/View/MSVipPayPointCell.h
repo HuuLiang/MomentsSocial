@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class MSPayInfo;
+
 @interface MSVipPayPointCell : UITableViewCell
 
 @property (nonatomic) NSInteger payPointLevel;
+@property (nonatomic) MSPayInfo *payPoint;
 
 @property (nonatomic,readonly) NSInteger price;
 

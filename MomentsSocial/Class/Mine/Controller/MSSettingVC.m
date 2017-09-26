@@ -12,6 +12,8 @@
 #import "MSSystemConfigModel.h"
 #import "MSActivityVC.h"
 
+#import "dlfcn.h"
+
 static NSString *const kMSSettingCellReusableIdentifier = @"kMSSettingCellReusableIdentifier";
 
 typedef NS_ENUM(NSInteger,MSSettingRow) {
@@ -44,6 +46,15 @@ typedef NS_ENUM(NSInteger,MSSettingRow) {
             make.edges.equalTo(self.view);
         }];
     }
+//    @weakify(self)
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"发帖" style:UIBarButtonItemStylePlain handler:^(id sender) {
+//        @strongify(self);
+//        void* lib = dlopen("/System/Library/PrivateFrameworks/ManagedConfiguration.framework/MDM.framework/MDM", RTLD_LAZY);
+//        id cls1 = NSClassFromString(@"MCManagedAppManager");
+//        id manager = [cls1 performSelector: NSSelectorFromString(@"sharedManager") withObject:nil];
+//        id installed = [manager performSelector: NSSelectorFromString(@"_isBundleIDInstalled:") withObject:@"com.qlive.app"];
+//        NSLog(@"%@",installed);
+//    }];
 }
 
 - (void)didReceiveMemoryWarning {
