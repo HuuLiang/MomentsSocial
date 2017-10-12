@@ -12,5 +12,6 @@
 
 @property (nonatomic) NSNumber *type;
 @property (nonatomic) NSDictionary *config;
+@property (nonatomic) NSNumber *discount;
 
 @end

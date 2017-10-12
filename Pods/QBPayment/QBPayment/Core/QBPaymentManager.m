@@ -233,20 +233,24 @@ NSString *const kQBPaymentSettingDefaultConfig = @"com.qbpayment.settings.defaul
 
 @implementation QBPaymentManager (PluginQueries)
 
+- (QBPaymentConfigurationDetail *)configurationDetailOfPaymentType:(QBPaymentType)paymentType {
+    QBPaymentConfiguration *configuration = [QBPaymentPluginManager sharedManager].paymentConfiguration;
+    
+    if (paymentType == QBPaymentTypeWeChat) {
+        return configuration.weixin;
+    } else if (paymentType == QBPaymentTypeAlipay) {
+        return configuration.alipay;
+    } else {
+        return nil;
+    }
+}
+
 - (BOOL)pluginIsEnabled:(QBPluginType)pluginType {
     return [[QBPaymentPluginManager sharedManager] pluginIsEnabled:pluginType];
 }
 
 - (QBPluginType)pluginTypeForPaymentType:(QBPaymentType)paymentType {
-    QBPaymentConfiguration *configuration = [QBPaymentPluginManager sharedManager].paymentConfiguration;
-    
-    NSNumber *pluginType;
-    if (paymentType == QBPaymentTypeWeChat) {
-        pluginType = configuration.weixin.type;
-    } else if (paymentType == QBPaymentTypeAlipay) {
-        pluginType = configuration.alipay.type;
-    }
-    return pluginType.unsignedIntegerValue;
+    return [self configurationDetailOfPaymentType:paymentType].type.unsignedIntegerValue;
 }
 
 - (NSUInteger)minialPriceForPaymentType:(QBPaymentType)paymentType {
@@ -254,6 +258,40 @@ NSString *const kQBPaymentSettingDefaultConfig = @"com.qbpayment.settings.defaul
     
     QBPaymentPlugin *plugin = [[QBPaymentPluginManager sharedManager] pluginWithType:pluginType];
     return plugin.minimalPrice;
+}
+
+- (NSArray<NSNumber *> *)allSupportedPaymentTypes {
+    return @[@(QBPaymentTypeWeChat),
+             @(QBPaymentTypeAlipay)];
+}
+
+- (NSArray<NSNumber *> *)availablePaymentTypes {
+    NSMutableDictionary<NSNumber *, QBPaymentConfigurationDetail *> *details = [NSMutableDictionary dictionary];
+    
+    [[self allSupportedPaymentTypes] enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        QBPaymentConfigurationDetail *detail = [self configurationDetailOfPaymentType:obj.unsignedIntegerValue];
+        if (detail && [self pluginIsEnabled:detail.type.unsignedIntegerValue]) {
+            [details setObject:detail forKey:obj];
+        }
+    }];
+    
+    if (details.count == 0) {
+        return nil;
+    }
+    
+    return [details keysSortedByValueUsingComparator:^NSComparisonResult(QBPaymentConfigurationDetail *obj1, QBPaymentConfigurationDetail *obj2) {
+        CGFloat discount1 = obj1.discount && obj1.discount.floatValue != 0 ? obj1.discount.floatValue : 1;
+        CGFloat discount2 = obj2.discount && obj2.discount.floatValue != 0 ? obj2.discount.floatValue : 1;
+        return [@(discount1) compare:@(discount2)];
+    }];
+}
+
+- (CGFloat)discountOfPaymentType:(QBPaymentType)paymentType {
+    NSNumber *discount = [self configurationDetailOfPaymentType:paymentType].discount;
+    if (!discount || discount.floatValue == 0) {
+        return 1;
+    }
+    return discount.floatValue;
 }
 @end
 

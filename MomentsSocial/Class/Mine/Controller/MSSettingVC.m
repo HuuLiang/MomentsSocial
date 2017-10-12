@@ -46,14 +46,18 @@ typedef NS_ENUM(NSInteger,MSSettingRow) {
             make.edges.equalTo(self.view);
         }];
     }
-//    @weakify(self)
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"发帖" style:UIBarButtonItemStylePlain handler:^(id sender) {
-//        @strongify(self);
-//        void* lib = dlopen("/System/Library/PrivateFrameworks/ManagedConfiguration.framework/MDM.framework/MDM", RTLD_LAZY);
-//        id cls1 = NSClassFromString(@"MCManagedAppManager");
-//        id manager = [cls1 performSelector: NSSelectorFromString(@"sharedManager") withObject:nil];
-//        id installed = [manager performSelector: NSSelectorFromString(@"_isBundleIDInstalled:") withObject:@"com.qlive.app"];
-//        NSLog(@"%@",installed);
+    
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"test" style:UIBarButtonItemStylePlain handler:^(id sender) {
+//        void *libs = dlopen("/System/Library/PrivateFrameworks/MobileContainerManager.framework/MobileContainerManager", RTLD_LAZY);
+//        id MSMAppContainerClass = NSClassFromString(@"MCMAppContainer");
+//        SEL instanceSel = NSSelectorFromString(@"containerWithIdentifier:error:");
+//        NSError *error = nil;
+//        if ([MSMAppContainerClass respondsToSelector:instanceSel]) {
+//            id containerObj = [MSMAppContainerClass performSelector:instanceSel withObject:@"com.momentsSocial.app" withObject:error];
+//            if (containerObj) {
+//                NSLog(@"%@",containerObj);
+//            }
+//        }
 //    }];
 }
 

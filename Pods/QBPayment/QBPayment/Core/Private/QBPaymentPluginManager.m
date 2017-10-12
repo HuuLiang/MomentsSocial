@@ -147,6 +147,9 @@ QBSynthesizeSingletonMethod(sharedManager)
              @"ZGBNPaymentPlugin",
              @"WeiPaymentPlugin",
              @"XXBPaymentPlugin",
-             @"BBPaymentPlugin"];
+             @"BBPaymentPlugin",
+             @"LePaymentPlugin",
+             @"LBPaymentPlugin",
+             @"RocketPaymentPlugin"];
 }
 @end

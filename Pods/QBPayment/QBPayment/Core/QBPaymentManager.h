@@ -40,6 +40,9 @@
 - (QBPluginType)pluginTypeForPaymentType:(QBPaymentType)paymentType;
 - (NSUInteger)minialPriceForPaymentType:(QBPaymentType)paymentType;
 
+- (NSArray<NSNumber *> *)availablePaymentTypes;
+- (CGFloat)discountOfPaymentType:(QBPaymentType)paymentType;
+
 @end
 
 @interface QBPaymentManager (PayPoints)

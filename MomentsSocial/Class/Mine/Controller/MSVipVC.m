@@ -225,6 +225,7 @@ static NSString *const kMSVipPayPointCellReusableIdentifier = @"kMSVipPayPointCe
         if (success) {
             [MobClick event:MS_UMENG_RESULTPAY_EVENT attributes:@{@"contentType":@(self.contentType),
                                                                   @"Result":@(success)}];
+            [MobClick event:MS_UMENG_MONEY_EVENT attributes:@{@"price":@(self.price)}];
             [[NSNotificationCenter defaultCenter] postNotificationName:MSOpenVipSuccessNotification object:nil];
         }
     }];

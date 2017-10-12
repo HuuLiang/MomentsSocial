@@ -81,12 +81,10 @@ EOM
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "MJRefresh/MJRefresh/MJRefresh.bundle"
-  install_resource "QBPayment/QBPayment/Plugins/WFTPay/SDK/SPaySDKResource.bundle"
   install_resource "QBTPL/QBTPL/AlipaySDK/AlipaySDK.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "MJRefresh/MJRefresh/MJRefresh.bundle"
-  install_resource "QBPayment/QBPayment/Plugins/WFTPay/SDK/SPaySDKResource.bundle"
   install_resource "QBTPL/QBTPL/AlipaySDK/AlipaySDK.bundle"
 fi
 

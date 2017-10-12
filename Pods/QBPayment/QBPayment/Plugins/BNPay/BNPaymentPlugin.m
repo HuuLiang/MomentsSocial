@@ -130,10 +130,8 @@ static NSString *const kBNQueryUrl = @"http://api.tellni.cn/lqpay/showquery";
 //        [params setObject:[self signWithParams:params withKeys:@[@"mch",@"order_id",@"money",@"pay_type",@"time"]] forKey:@"sign"];
         
         @weakify(self);
-        [self beginLoading];
         [[QBPaymentHttpClient plainRequestClient] GET:kBNQueryUrl withParams:@{@"order_id":self.paymentInfo.orderId} completionHandler:^(id obj, NSError *error) {
             @strongify(self);
-            [self endLoading];
             
             NSDictionary *response = [NSJSONSerialization JSONObjectWithData:obj options:NSJSONReadingAllowFragments error:nil];
             QBLog(@"BNPayment query response: %@", response);

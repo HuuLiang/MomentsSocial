@@ -1,1 +1,0 @@
-../../../QBPayment/QBPayment/Plugins/WFTPay/WFTPaymentPlugin.h

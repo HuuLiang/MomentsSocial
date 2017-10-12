@@ -81,7 +81,7 @@ NSString *const kSAShareLogicErrorCodeKeyName = @"com.momentsSocial.errordomain.
 
 }
 
-- (void)onResponseWithObject:(id)object
+- (void)onResponseWithObject:(id _Nullable)object
                        error:(NSError *)error
                   modelClass:(Class)modelClass
            completionHandler:(void(^)(id obj , NSError *error))handler {
@@ -174,7 +174,7 @@ NSString *const kSAShareLogicErrorCodeKeyName = @"com.momentsSocial.errordomain.
     return @{@"data":encryStr};
 }
 
-- (id)decryptedWithObject:(id)responseObject {
+- (id _Nullable)decryptedWithObject:(id _Nullable)responseObject {
     if (!responseObject) {
         return nil;
     }

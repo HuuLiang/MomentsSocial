@@ -114,25 +114,31 @@
 - (void)endPaymentWithPayResult:(QBPayResult)payResult {
     [self endLoading];
     
-    if (self.paymentInfo) {
-        [[self class] commitPayment:self.paymentInfo withResult:payResult];
+    QBPaymentInfo *paymentInfo = self.paymentInfo;
+    if (!paymentInfo) {
+        return ;
     }
     
-    if (self.payingViewController) {
-        [self.payingViewController dismissViewControllerAnimated:YES completion:^{
-
-            self.payingViewController = nil;
+    UIViewController *payingVC = self.payingViewController;
+    
+    self.paymentInfo = nil;
+    self.payingViewController = nil;
+    
+    if (paymentInfo) {
+        [[self class] commitPayment:paymentInfo withResult:payResult];
+    }
+    
+    if (payingVC) {
+        [payingVC dismissViewControllerAnimated:YES completion:^{
             
-            QBSafelyCallBlock(self.paymentCompletionHandler, payResult, self.paymentInfo);
+            QBSafelyCallBlock(self.paymentCompletionHandler, payResult, paymentInfo);
             
-            self.paymentInfo = nil;
             self.paymentCompletionHandler = nil;
         }];
     } else {
-        QBSafelyCallBlock(self.paymentCompletionHandler, payResult, self.paymentInfo);
+        QBSafelyCallBlock(self.paymentCompletionHandler, payResult, paymentInfo);
         
         self.paymentCompletionHandler = nil;
-        self.paymentInfo = nil;
     }
 }
 

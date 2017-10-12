@@ -722,6 +722,8 @@ static CGPoint  delayOffset = {0.0};
     
     _photographyHelper = nil;
     _locationHelper = nil;
+    
+    NSLog(@"✅✅✅✅ %@  dealloc  🤘🎃✌️",NSStringFromClass(self.class));
 }
 
 #pragma mark - View Rotation

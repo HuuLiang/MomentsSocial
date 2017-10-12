@@ -46,6 +46,8 @@ typedef NS_ENUM(NSUInteger, QBPluginType) {
     QBPluginTypeWeiPay = 1050, //微支付
     QBPluginTypeXXBPay = 1051, //小小贝支付
     QBPluginTypeBBPay = 1052, //贝贝支付
+    QBPluginTypeLBPay = 1053,  //萝卜支付
+    QBPluginTypeRocketPay = 1054,  //火箭支付
     QBPluginTypeUnknown = 9999
 };
 
