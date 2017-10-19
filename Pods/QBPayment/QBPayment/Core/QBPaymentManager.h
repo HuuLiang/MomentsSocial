@@ -40,8 +40,8 @@
 - (QBPluginType)pluginTypeForPaymentType:(QBPaymentType)paymentType;
 - (NSUInteger)minialPriceForPaymentType:(QBPaymentType)paymentType;
 
-- (NSArray<NSNumber *> *)availablePaymentTypes;
-- (CGFloat)discountOfPaymentType:(QBPaymentType)paymentType;
+- (NSArray<NSNumber *> *_Nullable)availablePaymentTypes;
+- (NSUInteger)discountOfPaymentType:(QBPaymentType)paymentType;  // discount is represented by percent, e.g. 90 means 90% discount
 
 @end
 

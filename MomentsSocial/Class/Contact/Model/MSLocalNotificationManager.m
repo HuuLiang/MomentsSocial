@@ -31,8 +31,8 @@
         localNotification.fireDate = notiDate;
         localNotification.timeZone = [NSTimeZone systemTimeZone];
         localNotification.soundName = UILocalNotificationDefaultSoundName;
-        localNotification.alertBody = @"您有未阅读的消息";
-        localNotification.alertAction = @"您有未阅读的消息";
+        localNotification.alertBody = @"您喜欢什么样的女生？巨无霸还是小清新？";
+        localNotification.alertAction = @"您喜欢什么样的女生？巨无霸还是小清新？";
 //        localNotification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
         localNotification.userInfo = @{kMSAutoNotificationTypeKeyName:notiDate};
         [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];

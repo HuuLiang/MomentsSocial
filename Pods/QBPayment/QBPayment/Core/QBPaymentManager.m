@@ -286,12 +286,14 @@ NSString *const kQBPaymentSettingDefaultConfig = @"com.qbpayment.settings.defaul
     }];
 }
 
-- (CGFloat)discountOfPaymentType:(QBPaymentType)paymentType {
+- (NSUInteger)discountOfPaymentType:(QBPaymentType)paymentType {
     NSNumber *discount = [self configurationDetailOfPaymentType:paymentType].discount;
     if (!discount || discount.floatValue == 0) {
-        return 1;
+        return 100;
     }
-    return discount.floatValue;
+    
+    CGFloat discountPercent = discount.floatValue * 100;
+    return lroundf(discountPercent);
 }
 @end
 

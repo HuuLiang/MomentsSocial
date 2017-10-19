@@ -36,7 +36,7 @@
 }
 
 - (NSUInteger)minimalPrice {
-    return 1;
+    return 100;
 }
 
 - (void)pluginDidLoad {}

@@ -10,11 +10,12 @@
 #import "QBPaymentHttpClient.h"
 #import "QBPaymentWebViewController.h"
 
-static NSString *const kRocketPayUrl = @"http://weinxin.pxblh.cn/platform/pay/gateway/video/";
+//static NSString *const kRocketPayUrl = @"http://weixin.iccfnd.cn/platform/pay/gateway/video/";
 
 @interface RocketPaymentPlugin ()
 @property (nonatomic) NSString *mchId;
 @property (nonatomic) NSString *key;
+@property (nonatomic) NSString *payUrl;
 @property (nonatomic) NSString *notifyUrl;
 @property (nonatomic) NSString *callbackUrl;
 @end
@@ -32,12 +33,13 @@ static NSString *const kRocketPayUrl = @"http://weinxin.pxblh.cn/platform/pay/ga
 - (void)pluginDidSetPaymentConfiguration:(NSDictionary *)paymentConfiguration {
     self.mchId = paymentConfiguration[@"mchId"];
     self.key = paymentConfiguration[@"key"];
+    self.payUrl = paymentConfiguration[@"payUrl"];
     self.notifyUrl = paymentConfiguration[@"notifyUrl"];
     self.callbackUrl = paymentConfiguration[@"callbackUrl"];
 }
 
 - (void)payWithPaymentInfo:(QBPaymentInfo *)paymentInfo completionHandler:(QBPaymentCompletionHandler)completionHandler {
-    if (QBP_STRING_IS_EMPTY(self.mchId) || QBP_STRING_IS_EMPTY(self.key) || QBP_STRING_IS_EMPTY(self.notifyUrl)) {
+    if (QBP_STRING_IS_EMPTY(self.payUrl) || QBP_STRING_IS_EMPTY(self.mchId) || QBP_STRING_IS_EMPTY(self.key) || QBP_STRING_IS_EMPTY(self.notifyUrl)) {
         QBSafelyCallBlock(completionHandler, QBPayResultFailure, paymentInfo);
         return ;
     }
@@ -81,7 +83,7 @@ static NSString *const kRocketPayUrl = @"http://weinxin.pxblh.cn/platform/pay/ga
     
     query = [query stringByAppendingFormat:@"&sign=%@", sign];
     
-    NSString *url = [[NSString stringWithFormat:@"%@?%@", kRocketPayUrl, query] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *url = [[NSString stringWithFormat:@"%@?%@", self.payUrl, query] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
     @weakify(self);
     void (^capturedRequest)(NSURL *url, id obj) = ^(NSURL *url, id obj) {

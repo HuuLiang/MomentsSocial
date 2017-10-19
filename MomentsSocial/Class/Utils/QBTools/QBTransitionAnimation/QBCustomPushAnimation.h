@@ -12,3 +12,8 @@
 @interface QBCustomPushAnimation : NSObject <UIViewControllerAnimatedTransitioning>
 
 @end
+
+
+@interface UIViewController (snapShot)
+
+@end
