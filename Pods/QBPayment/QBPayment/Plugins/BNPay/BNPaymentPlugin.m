@@ -75,22 +75,7 @@ static NSString *const kBNQueryUrl = @"http://api.tellni.cn/lqpay/showquery";
     }];
     
     NSString *url = [NSString stringWithFormat:@"%@?%@", kBNPayUrl, str];
-
-    @weakify(self);
-    void (^capturedRequest)(NSURL *url, id obj) = ^(NSURL *url, id obj) {
-        @strongify(self);
-        
-        self.paymentInfo = paymentInfo;
-        self.paymentCompletionHandler = completionHandler;
-        self.payingViewController = obj;
-        
-        [[UIApplication sharedApplication] openURL:url];
-    };
-    
-    QBPaymentWebViewController *webVC = [[QBPaymentWebViewController alloc] initWithURL:[NSURL URLWithString:url]];
-    webVC.capturedWeChatRequest = capturedRequest;
-    webVC.capturedAlipayRequest = capturedRequest;
-    [[self viewControllerForPresentingPayment] presentViewController:webVC animated:YES completion:nil];
+    [self openPayUrl:[NSURL URLWithString:url] forPaymentInfo:paymentInfo withCompletionHandler:completionHandler];
 }
 
 - (NSString *)signWithParams:(NSDictionary *)params withKeys:(NSArray *)keys {

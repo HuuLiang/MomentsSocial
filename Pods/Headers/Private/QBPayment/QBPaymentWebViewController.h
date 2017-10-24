@@ -1,1 +1,1 @@
-../../../QBPayment/QBPayment/CoreUI/QBPaymentWebViewController.h
+../../../QBPayment/QBPayment/Core/Private/QBPaymentWebViewController.h

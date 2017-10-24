@@ -1,0 +1,1 @@
+../../../QBPayment/QBPayment/Plugins/WeiPay/WeiPaymentPlugin.h

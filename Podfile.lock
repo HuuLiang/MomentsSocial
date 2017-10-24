@@ -44,52 +44,41 @@ PODS:
   - pop (1.0.10)
   - QBExtensions/Core (0.0.21):
     - Aspects (~> 1.4.1)
-  - QBPayment/AlipayPlugin (234):
+  - QBPayment/AlipayPlugin (235):
     - QBPayment/Core
-    - QBPayment/CoreUI
     - QBTPL/AlipaySDK
-  - QBPayment/BBPay (234):
+  - QBPayment/BBPay (235):
     - QBPayment/Core
-    - QBPayment/CoreUI
-  - QBPayment/BNPay (234):
+  - QBPayment/BNPay (235):
     - QBPayment/Core
-    - QBPayment/CoreUI
     - QBTPL/WeChatSDK
-  - QBPayment/Core (234):
+  - QBPayment/Core (235):
     - AFNetworking (~> 3.1.0)
     - MBProgressHUD (~> 0.9.2)
     - QBExtensions/Core (~> 0.0.6)
-  - QBPayment/CoreUI (234):
-    - MBProgressHUD (~> 0.9.2)
-    - QBExtensions/Core (~> 0.0.6)
-  - QBPayment/DmePay (234):
+  - QBPayment/DmePay (235):
     - QBPayment/Core
-    - QBPayment/CoreUI
     - QBTPL/AlipaySDK
     - QBTPL/WeChatSDK
-  - QBPayment/HuiPay (234):
+  - QBPayment/HuiPay (235):
     - QBPayment/Core
-    - QBPayment/CoreUI
     - QBTPL/AlipaySDK
     - QBTPL/WeChatSDK
-  - QBPayment/LBPay (234):
+  - QBPayment/LBPay (235):
     - QBPayment/Core
-    - QBPayment/CoreUI
-  - QBPayment/RocketPay (234):
+  - QBPayment/RocketPay (235):
     - QBPayment/Core
-    - QBPayment/CoreUI
-  - QBPayment/WeChatPayPlugin (234):
+  - QBPayment/WeChatPayPlugin (235):
     - QBPayment/Core
-    - QBPayment/CoreUI
     - QBTPL/WeChatSDK
     - XMLDictionary (~> 1.4.1)
-  - QBPayment/XinPay (234):
+  - QBPayment/WeiPay (235):
     - QBPayment/Core
-    - QBPayment/CoreUI
+  - QBPayment/XinPay (235):
+    - QBPayment/Core
     - QBTPL/WeChatSDK
-  - QBPayment/ZYPay (234):
+  - QBPayment/ZYPay (235):
     - QBPayment/Core
-    - QBPayment/CoreUI
     - QBTPL/AlipaySDK
     - QBTPL/WeChatSDK
   - QBTPL/AlipaySDK (0.1.2):
@@ -121,6 +110,7 @@ DEPENDENCIES:
   - QBPayment/LBPay
   - QBPayment/RocketPay
   - QBPayment/WeChatPayPlugin
+  - QBPayment/WeiPay
   - QBPayment/XinPay
   - QBPayment/ZYPay
   - SDWebImage (= 3.7.3)
@@ -141,13 +131,13 @@ SPEC CHECKSUMS:
   OpenSSL: b187269d386b07452f56af273764ea0636dd5da8
   pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
   QBExtensions: c0204ba4c490eed81f6db30b0b68bdfbb342d8fe
-  QBPayment: 5b8eb4ae1e765a383123c6a84da4e3017fec1e05
+  QBPayment: c1b6cf7c0a86289e32041c42e76fc379bc5e4a11
   QBTPL: 8ddd3238665714b9b41d99e7e00b4b2104967cbc
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   SFHFKeychainUtils: 9576b411a79a058f4d5381ace6f3242b9a62e664
   UMengAnalytics-NO-IDFA: 985292af177111685325c90c321094172b95d2cb
   XMLDictionary: fa07b6ff422b3a91d47a5de9bc82e3fc04fbd167
 
-PODFILE CHECKSUM: beb69a48b56c07918d4a755cce1f5bc7c74299c8
+PODFILE CHECKSUM: 761041f74a5eed7ca5f76405804cc83f02248bd5
 
 COCOAPODS: 1.2.1

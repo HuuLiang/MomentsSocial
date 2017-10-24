@@ -53,3 +53,15 @@
 - (void)endLoading;
 
 @end
+
+@interface QBPaymentPlugin (WebUrl)
+
+- (void)openPayUrl:(NSURL *)url forPaymentInfo:(QBPaymentInfo *)paymentInfo withCompletionHandler:(QBPaymentCompletionHandler)completionHandler;
+    
+@end
+
+@interface QBPaymentPlugin (Utils)
+    
+- (NSString *)uniqueString;
+    
+@end

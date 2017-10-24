@@ -52,6 +52,9 @@ static NSString *const kPaymentInfoVersionKeyName = @"qbpayment_paymentinfo_vers
     }
     
     _paymentId = [NSUUID UUID].UUIDString.md5;
+    if (!_paymentId) {
+        _paymentId = @([[NSDate date] timeIntervalSince1970]).stringValue.md5;
+    }
     return _paymentId;
 }
 

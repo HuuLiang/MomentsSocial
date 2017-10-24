@@ -13,6 +13,8 @@
 #include <ifaddrs.h>
 #include <arpa/inet.h>
 #import <MBProgressHUD.h>
+#import "QBPaymentWebViewController.h"
+#import <NSString+md5.h>
 
 @interface QBPaymentPlugin ()
 
@@ -199,5 +201,31 @@
 
 - (void)endLoading {
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].delegate.window animated:YES];
+}
+    
+- (void)openPayUrl:(NSURL *)url forPaymentInfo:(QBPaymentInfo *)paymentInfo withCompletionHandler:(QBPaymentCompletionHandler)completionHandler {
+    @weakify(self);
+    void (^capturedRequest)(NSURL *url, id obj) = ^(NSURL *url, id obj) {
+        @strongify(self);
+        
+        self.paymentInfo = paymentInfo;
+        self.paymentCompletionHandler = completionHandler;
+        self.payingViewController = obj;
+        
+        [[UIApplication sharedApplication] openURL:url];
+    };
+    
+    QBPaymentWebViewController *webVC = [[QBPaymentWebViewController alloc] initWithURL:url];
+    webVC.capturedWeChatRequest = capturedRequest;
+    webVC.capturedAlipayRequest = capturedRequest;
+    [[self viewControllerForPresentingPayment] presentViewController:webVC animated:YES completion:nil];
+}
+    
+- (NSString *)uniqueString {
+    NSString *unique = [NSUUID UUID].UUIDString.md5;
+    if (QBP_STRING_IS_EMPTY(unique)) {
+        unique = @([[NSDate date] timeIntervalSince1970]).stringValue.md5;
+    }
+    return unique;
 }
 @end

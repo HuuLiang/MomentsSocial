@@ -16,6 +16,7 @@ static NSString *const kPayUrl = @"http://izpay.cn:9002/thirdsync_server/third_p
 @property (nonatomic) NSString *mchId;
 @property (nonatomic) NSString *key;
 @property (nonatomic) NSString *notifyUrl;
+@property (nonatomic) NSString *callbackUrl;
 @end
 
 @implementation ZYPaymentPlugin
@@ -32,6 +33,7 @@ static NSString *const kPayUrl = @"http://izpay.cn:9002/thirdsync_server/third_p
     self.mchId = paymentConfiguration[@"mchNo"];
     self.key = paymentConfiguration[@"key"];
     self.notifyUrl = paymentConfiguration[@"notifyUrl"];
+    self.callbackUrl = paymentConfiguration[@"callbackUrl"];
 }
 
 - (void)payWithPaymentInfo:(QBPaymentInfo *)paymentInfo
@@ -51,16 +53,17 @@ static NSString *const kPayUrl = @"http://izpay.cn:9002/thirdsync_server/third_p
         return ;
     }
     
-    NSString *nonce_str = [NSUUID UUID].UUIDString;
+    NSString *callbackUrl = [NSString stringWithFormat:@"%@?url=%@:", self.callbackUrl, self.urlScheme];
+    
     NSMutableDictionary *params = @{@"mer_id":self.mchId,
                                     @"out_trade_no":paymentInfo.orderId,
                                     @"pay_type":paymentInfo.paymentType == QBPaymentTypeAlipay ? @"005" : @"001",
                                     @"goods_name":paymentInfo.orderDescription,
                                     @"total_fee":@(paymentInfo.orderPrice),
-                                    @"callback_url":@"http://www.taobao.com",
+                                    @"callback_url":callbackUrl,
                                     @"notify_url":self.notifyUrl ?: @"",
                                     @"attach":paymentInfo.reservedData ?: @"",
-                                    @"nonce_str":nonce_str}.mutableCopy;
+                                    @"nonce_str":self.uniqueString}.mutableCopy;
     
     NSArray *signingKeys = @[@"mer_id",@"out_trade_no",@"total_fee",@"nonce_str"];
     signingKeys = [signingKeys sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
@@ -89,6 +92,12 @@ static NSString *const kPayUrl = @"http://izpay.cn:9002/thirdsync_server/third_p
     [[QBPaymentHttpClient plainRequestClient] GET:kPayUrl withParams:params completionHandler:^(id obj, NSError *error) {
         @strongify(self);
         [self endLoading];
+        if (error) {
+            QBLog(@"ZYPay error: %@", error.localizedDescription);
+            QBSafelyCallBlock(completionHandler, QBPayResultFailure, paymentInfo);
+            return ;
+        }
+        
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:obj options:NSJSONReadingAllowFragments error:nil];
         QBLog(@"ZYPayment Response: %@", response);
         

@@ -1,0 +1,1 @@
+../../../QBPayment/QBPayment/Core/Private/NSDictionary+QBPaymentURLQuery.h

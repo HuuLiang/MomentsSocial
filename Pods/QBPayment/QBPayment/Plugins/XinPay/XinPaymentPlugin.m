@@ -18,7 +18,7 @@ static NSString *const kXinQueryUrl = @"http://pay.api.flypush.com/api/bill/stat
 @property (nonatomic) NSString *mchId;
 @property (nonatomic) NSString *key;
 @property (nonatomic) NSString *notifyUrl;
-
+@property (nonatomic) NSString *callbackUrl;
 @property (nonatomic) NSString *prePayOrderId;
 @end
 
@@ -36,6 +36,7 @@ static NSString *const kXinQueryUrl = @"http://pay.api.flypush.com/api/bill/stat
     self.mchId = paymentConfiguration[@"mchId"];
     self.key = paymentConfiguration[@"key"];
     self.notifyUrl = paymentConfiguration[@"notifyUrl"];
+    self.callbackUrl = paymentConfiguration[@"callbackUrl"];
 }
 
 - (void)payWithPaymentInfo:(QBPaymentInfo *)paymentInfo completionHandler:(QBPaymentCompletionHandler)completionHandler {
@@ -46,13 +47,14 @@ static NSString *const kXinQueryUrl = @"http://pay.api.flypush.com/api/bill/stat
     }
     
     NSString *reservedData = [NSString stringWithFormat:@"%@$%@", paymentInfo.orderId, paymentInfo.reservedData];
+//    NSString *callbackUrl = [NSString stringWithFormat:@"%@?url=%@:", self.callbackUrl, self.urlScheme];
     
     NSMutableDictionary *params = @{@"mchno":self.mchId,
                                     @"pay_type":@3,
                                     @"price":@(paymentInfo.orderPrice),
                                     @"bill_title":paymentInfo.orderDescription,
                                     @"bill_body":paymentInfo.orderDescription,
-                                    @"nonce_str":[NSUUID UUID].UUIDString.md5,
+                                    @"nonce_str":self.uniqueString,
                                     @"callback_url":@"www.taobao.com",
                                     @"linkId":reservedData ?: @""}.mutableCopy;
     
