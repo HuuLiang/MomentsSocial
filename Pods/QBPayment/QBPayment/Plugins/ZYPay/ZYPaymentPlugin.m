@@ -10,11 +10,11 @@
 #import "QBPaymentHttpClient.h"
 #import <NSString+md5.h>
 
-static NSString *const kPayUrl = @"http://izpay.cn:9002/thirdsync_server/third_pay_server";
-
 @interface ZYPaymentPlugin ()
 @property (nonatomic) NSString *mchId;
 @property (nonatomic) NSString *key;
+@property (nonatomic) NSString *payUrl;
+@property (nonatomic) NSString *queryUrl;
 @property (nonatomic) NSString *notifyUrl;
 @property (nonatomic) NSString *callbackUrl;
 @end
@@ -32,6 +32,8 @@ static NSString *const kPayUrl = @"http://izpay.cn:9002/thirdsync_server/third_p
 - (void)pluginDidSetPaymentConfiguration:(NSDictionary *)paymentConfiguration {
     self.mchId = paymentConfiguration[@"mchNo"];
     self.key = paymentConfiguration[@"key"];
+    self.payUrl = paymentConfiguration[@"payUrl"];
+    self.queryUrl = paymentConfiguration[@"queryUrl"];
     self.notifyUrl = paymentConfiguration[@"notifyUrl"];
     self.callbackUrl = paymentConfiguration[@"callbackUrl"];
 }
@@ -39,7 +41,10 @@ static NSString *const kPayUrl = @"http://izpay.cn:9002/thirdsync_server/third_p
 - (void)payWithPaymentInfo:(QBPaymentInfo *)paymentInfo
          completionHandler:(QBPaymentCompletionHandler)completionHandler
 {
-    if (QBP_STRING_IS_EMPTY(self.mchId) || QBP_STRING_IS_EMPTY(self.key) || QBP_STRING_IS_EMPTY(self.notifyUrl)
+    if (QBP_STRING_IS_EMPTY(self.payUrl)
+        || QBP_STRING_IS_EMPTY(self.mchId)
+        || QBP_STRING_IS_EMPTY(self.key)
+        || QBP_STRING_IS_EMPTY(self.notifyUrl)
         || QBP_STRING_IS_EMPTY(paymentInfo.orderId)) {
         QBSafelyCallBlock(completionHandler, QBPayResultFailure, paymentInfo);
         return ;
@@ -89,7 +94,7 @@ static NSString *const kPayUrl = @"http://izpay.cn:9002/thirdsync_server/third_p
     
     @weakify(self);
     [self beginLoading];
-    [[QBPaymentHttpClient plainRequestClient] GET:kPayUrl withParams:params completionHandler:^(id obj, NSError *error) {
+    [[QBPaymentHttpClient plainRequestClient] GET:self.payUrl withParams:params completionHandler:^(id obj, NSError *error) {
         @strongify(self);
         [self endLoading];
         if (error) {
@@ -131,5 +136,32 @@ static NSString *const kPayUrl = @"http://izpay.cn:9002/thirdsync_server/third_p
     }
     
     return NO;
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    if (self.paymentInfo) {
+        if (QBP_STRING_IS_EMPTY(self.paymentInfo.orderId) || QBP_STRING_IS_EMPTY(self.queryUrl)) {
+            [super applicationWillEnterForeground:application];
+            return ;
+        }
+        
+        @weakify(self);
+        [[QBPaymentHttpClient plainRequestClient] GET:self.queryUrl
+                                           withParams:@{@"out_trade_no":self.paymentInfo.orderId}
+                                    completionHandler:^(id obj, NSError *error)
+        {
+            @strongify(self);
+
+            NSString *response = [[NSString alloc] initWithData:obj encoding:NSUTF8StringEncoding];
+            QBLog(@"BNPayment query response: %@", response);
+            
+            if ([response isEqualToString:@"success"]) {
+                [self endPaymentWithPayResult:QBPayResultSuccess];
+            } else {
+                [super applicationWillEnterForeground:application];
+            }
+            
+        }];
+    }
 }
 @end

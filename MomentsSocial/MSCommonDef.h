@@ -23,6 +23,9 @@ typedef NS_ENUM(NSUInteger, MSDeviceType) {
     MSDeviceType_iPhoneSE,
     MSDeviceType_iPhone7,
     MSDeviceType_iPhone7P,
+    MSDeviceType_iPhone8,
+    MSDeviceType_iPhone8P,
+    MSDeviceType_iPhoneX,
     MSDeviceType_iPad = 100
 };
 

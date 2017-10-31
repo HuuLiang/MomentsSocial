@@ -28,7 +28,7 @@
     
     UIImage *barBackgroundImg = [self.navigationBar setGradientWithSize:CGSizeMake(kScreenWidth, 64) Colors:@[kColor(@"#EF6FB0"),kColor(@"#ED455C")] direction:leftToRight];
     [self.navigationBar setBackgroundImage:barBackgroundImg forBarMetrics:UIBarMetricsDefault];
-    
+        
     self.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
     self.delegate = (id<UINavigationControllerDelegate>)self;
     

@@ -69,7 +69,7 @@ static NSString *const kYFBPopSpringAnimationTranslationYUpKeyName  = @"kYFBPopS
 - (void)downAnimation {
     POPSpringAnimation *downAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerTranslationY];
     downAnimation.fromValue = @0;
-    downAnimation.toValue = @(kWidth(160));
+    downAnimation.toValue = [MSUtil deviceType] == MSDeviceType_iPhoneX ? @(kWidth(200)) : @(kWidth(160));;
     downAnimation.springBounciness = 20.0f;
     downAnimation.springSpeed = 20.0f;
     [self.layer pop_addAnimation:downAnimation forKey:kYFBPopSpringAnimationTranslationYDownKeyName];
@@ -78,7 +78,7 @@ static NSString *const kYFBPopSpringAnimationTranslationYUpKeyName  = @"kYFBPopS
 - (void)upAnimation {
     POPSpringAnimation *downAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerTranslationY];
     downAnimation.fromValue = @0;
-    downAnimation.toValue = @(-kWidth(160));
+    downAnimation.toValue = [MSUtil deviceType] == MSDeviceType_iPhoneX ? @(-kWidth(200)) : @(-kWidth(160));;
     downAnimation.springBounciness = 20.0f;
     downAnimation.springSpeed = 20.0f;
     [self.layer pop_addAnimation:downAnimation forKey:kYFBPopSpringAnimationTranslationYUpKeyName];

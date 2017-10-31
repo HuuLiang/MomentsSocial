@@ -65,7 +65,7 @@ QBDefineLazyPropertyInitialization(MSDetailModel, response)
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     _tableView.backgroundColor = kColor(@"#f0f0f0");
     [self.view addSubview:_tableView];
-    self.tableView.contentInset = UIEdgeInsetsMake(-20, 0, 0, 0);
+    self.tableView.contentInset = [MSUtil deviceType] == MSDeviceType_iPhoneX ? UIEdgeInsetsMake(-44, 0, 0, 0) : UIEdgeInsetsMake(-20, 0, 0, 0);
     {
         [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.view);

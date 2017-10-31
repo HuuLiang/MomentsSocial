@@ -31,7 +31,7 @@
         MSContactView *contactView = [[MSContactView alloc] initWithReplyMsgInfo:replyMsg handler:^{
             [MSMessageViewController presentMessageWithUserId:replyMsg.userId nickName:replyMsg.nickName portraitUrl:replyMsg.portraitUrl inViewController:baseViewController];
         }];
-        contactView.frame = CGRectMake(0, -kWidth(200), kScreenWidth, kWidth(200));
+        contactView.frame = CGRectMake(0, -kWidth(300), kScreenWidth, kWidth(300));
         [baseViewController.view addSubview:contactView];
         [baseViewController.view bringSubviewToFront:contactView];
     });

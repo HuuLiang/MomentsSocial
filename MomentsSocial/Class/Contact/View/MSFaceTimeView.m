@@ -76,6 +76,7 @@
         self.userImgV = [[UIImageView alloc] init];
         [_userImgV sd_setImageWithURL:[NSURL URLWithString:replyMsg.portraitUrl] placeholderImage:[UIImage imageNamed:@"default_Img"]];
         _userImgV.layer.cornerRadius = 5;
+        _userImgV.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:_userImgV];
         
         self.nickLabel = [[UILabel alloc] init];

@@ -145,10 +145,16 @@ static NSString *const kMSAutoReplyMessageTimeRecordKeyName = @"kMSAutoReplyMess
         return MSDeviceType_iPhone6SP;
     } else if ([deviceName rangeOfString:@"iPhone8,4"].location == 0) {
         return MSDeviceType_iPhoneSE;
-    }else if ([deviceName rangeOfString:@"iPhone9,1"].location == 0){
+    } else if ([deviceName rangeOfString:@"iPhone9,1"].location == 0){
         return MSDeviceType_iPhone7;
-    }else if ([deviceName rangeOfString:@"iPhone9,2"].location == 0){
+    } else if ([deviceName rangeOfString:@"iPhone9,2"].location == 0){
         return MSDeviceType_iPhone7P;
+    } else if ([deviceName rangeOfString:@"iPhone10,1"].location == 0) {
+        return MSDeviceType_iPhone8;
+    } else if ([deviceName rangeOfString:@"iPhone10,2"].location == 0) {
+        return MSDeviceType_iPhone8P;
+    } else if ([deviceName rangeOfString:@"iPhone10,3"].location == 0) {
+        return MSDeviceType_iPhoneX;
     } else if ([deviceName rangeOfString:@"iPad"].location == 0) {
         return MSDeviceType_iPad;
     } else {

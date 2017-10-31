@@ -42,42 +42,42 @@ PODS:
     - FBRetainCycleDetector
   - OpenSSL (1.0.208)
   - pop (1.0.10)
-  - QBExtensions/Core (0.0.21):
+  - QBExtensions/Core (0.0.22):
     - Aspects (~> 1.4.1)
-  - QBPayment/AlipayPlugin (235):
+  - QBPayment/AlipayPlugin (237):
     - QBPayment/Core
     - QBTPL/AlipaySDK
-  - QBPayment/BBPay (235):
+  - QBPayment/BBPay (237):
     - QBPayment/Core
-  - QBPayment/BNPay (235):
+  - QBPayment/BNPay (237):
     - QBPayment/Core
     - QBTPL/WeChatSDK
-  - QBPayment/Core (235):
+  - QBPayment/Core (237):
     - AFNetworking (~> 3.1.0)
     - MBProgressHUD (~> 0.9.2)
     - QBExtensions/Core (~> 0.0.6)
-  - QBPayment/DmePay (235):
+  - QBPayment/DmePay (237):
     - QBPayment/Core
     - QBTPL/AlipaySDK
     - QBTPL/WeChatSDK
-  - QBPayment/HuiPay (235):
+  - QBPayment/HuiPay (237):
     - QBPayment/Core
     - QBTPL/AlipaySDK
     - QBTPL/WeChatSDK
-  - QBPayment/LBPay (235):
+  - QBPayment/LBPay (237):
     - QBPayment/Core
-  - QBPayment/RocketPay (235):
+  - QBPayment/RocketPay (237):
     - QBPayment/Core
-  - QBPayment/WeChatPayPlugin (235):
+  - QBPayment/WeChatPayPlugin (237):
     - QBPayment/Core
     - QBTPL/WeChatSDK
     - XMLDictionary (~> 1.4.1)
-  - QBPayment/WeiPay (235):
+  - QBPayment/WeiPay (237):
     - QBPayment/Core
-  - QBPayment/XinPay (235):
+  - QBPayment/XinPay (237):
     - QBPayment/Core
     - QBTPL/WeChatSDK
-  - QBPayment/ZYPay (235):
+  - QBPayment/ZYPay (237):
     - QBPayment/Core
     - QBTPL/AlipaySDK
     - QBTPL/WeChatSDK
@@ -130,8 +130,8 @@ SPEC CHECKSUMS:
   MLeaksFinder: 0850e2f2abc7227adc4d4e2d1992b431264eb4d5
   OpenSSL: b187269d386b07452f56af273764ea0636dd5da8
   pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
-  QBExtensions: c0204ba4c490eed81f6db30b0b68bdfbb342d8fe
-  QBPayment: c1b6cf7c0a86289e32041c42e76fc379bc5e4a11
+  QBExtensions: 535985c59af06919b6a5c952cb869b6dfcc7e272
+  QBPayment: 5455b86cb8c1a84deeddf0e2a83f7f0abe37037b
   QBTPL: 8ddd3238665714b9b41d99e7e00b4b2104967cbc
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   SFHFKeychainUtils: 9576b411a79a058f4d5381ace6f3242b9a62e664
