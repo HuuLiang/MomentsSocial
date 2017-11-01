@@ -66,6 +66,8 @@
 	<string>需要访问您的麦克风才可以发送语音消息哦。😄</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>需要访问您的相册获取照片</string>
+	<key>UILaunchStoryboardName</key>
+	<string>Launch Screen</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

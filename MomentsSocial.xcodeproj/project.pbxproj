@@ -187,6 +187,7 @@
 		EC848DE51F334CD300B47E37 /* MSCheckInFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC848DE41F334CD300B47E37 /* MSCheckInFooterView.m */; };
 		EC8EA6151F481F56009802C6 /* MSRollView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC8EA6141F481F56009802C6 /* MSRollView.m */; };
 		EC8EA6191F483528009802C6 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC8EA6181F483528009802C6 /* FXBlurView.m */; };
+		EC90C0E91FA9AEF80061029F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC90C0E81FA9AEF70061029F /* LaunchScreen.storyboard */; };
 		EC96E4611F42CC4600452C75 /* QBCustomPushAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = EC96E4601F42CC4600452C75 /* QBCustomPushAnimation.m */; };
 		ECA8A9431F37FC8200BABFF9 /* MSShakeUserView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA8A9421F37FC8200BABFF9 /* MSShakeUserView.m */; };
 		ECA8A9461F38449500BABFF9 /* MSDiscoverModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA8A9451F38449500BABFF9 /* MSDiscoverModel.m */; };
@@ -601,6 +602,7 @@
 		EC8EA6141F481F56009802C6 /* MSRollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSRollView.m; sourceTree = "<group>"; };
 		EC8EA6171F483528009802C6 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
 		EC8EA6181F483528009802C6 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
+		EC90C0E81FA9AEF70061029F /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EC96E45F1F42CC4600452C75 /* QBCustomPushAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBCustomPushAnimation.h; sourceTree = "<group>"; };
 		EC96E4601F42CC4600452C75 /* QBCustomPushAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBCustomPushAnimation.m; sourceTree = "<group>"; };
 		ECA8A9411F37FC8200BABFF9 /* MSShakeUserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSShakeUserView.h; sourceTree = "<group>"; };
@@ -1696,6 +1698,7 @@
 		ECC118D41F26D0760093E3EE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EC90C0E81FA9AEF70061029F /* LaunchScreen.storyboard */,
 				ECC118E01F26D0760093E3EE /* Assets.xcassets */,
 				ECC118E51F26D0760093E3EE /* Info.plist */,
 				ECC118D51F26D0760093E3EE /* main.m */,
@@ -2283,6 +2286,7 @@
 				EC1BFDFA1F39A787003613D6 /* msg_chat_voice_unread@2x.png in Resources */,
 				EC1BFE131F39A787003613D6 /* voice@2x.png in Resources */,
 				EC1BFE001F39A787003613D6 /* ReceiverVoiceNodePlaying002@2x.png in Resources */,
+				EC90C0E91FA9AEF80061029F /* LaunchScreen.storyboard in Resources */,
 				EC1BFE0A1F39A787003613D6 /* RecordingSignal006@2x.png in Resources */,
 				EC1BFE081F39A787003613D6 /* RecordingSignal004@2x.png in Resources */,
 				EC1BFDF01F39A787003613D6 /* MessageDisplayKitString.strings in Resources */,
