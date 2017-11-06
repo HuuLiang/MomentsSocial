@@ -18,6 +18,7 @@ pod 'MJRefresh'
 pod 'QBPayment', :subspecs => ['WeChatPayPlugin', 'AlipayPlugin', 'DmePay', 'HuiPay','ZYPay','XinPay','BNPay','BBPay','LBPay','RocketPay','WeiPay']
 
 pod 'MLeaksFinder', '~> 0.2.1'
+pod 'YYCache'
 #pod 'QBNetworking'
 #pod 'QBPayment', :subspecs => ['IappPay']
 

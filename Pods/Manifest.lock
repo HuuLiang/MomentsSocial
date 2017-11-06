@@ -37,47 +37,47 @@ PODS:
   - Masonry (0.6.4)
   - MBProgressHUD (0.9.2)
   - MGSwipeTableCell (1.5.6)
-  - MJRefresh (3.1.14.1)
+  - MJRefresh (3.1.15)
   - MLeaksFinder (0.2.1):
     - FBRetainCycleDetector
   - OpenSSL (1.0.208)
   - pop (1.0.10)
-  - QBExtensions/Core (0.0.22):
+  - QBExtensions/Core (0.0.23):
     - Aspects (~> 1.4.1)
-  - QBPayment/AlipayPlugin (237):
+  - QBPayment/AlipayPlugin (238):
     - QBPayment/Core
     - QBTPL/AlipaySDK
-  - QBPayment/BBPay (237):
+  - QBPayment/BBPay (238):
     - QBPayment/Core
-  - QBPayment/BNPay (237):
+  - QBPayment/BNPay (238):
     - QBPayment/Core
     - QBTPL/WeChatSDK
-  - QBPayment/Core (237):
+  - QBPayment/Core (238):
     - AFNetworking (~> 3.1.0)
     - MBProgressHUD (~> 0.9.2)
     - QBExtensions/Core (~> 0.0.6)
-  - QBPayment/DmePay (237):
+  - QBPayment/DmePay (238):
     - QBPayment/Core
     - QBTPL/AlipaySDK
     - QBTPL/WeChatSDK
-  - QBPayment/HuiPay (237):
+  - QBPayment/HuiPay (238):
     - QBPayment/Core
     - QBTPL/AlipaySDK
     - QBTPL/WeChatSDK
-  - QBPayment/LBPay (237):
+  - QBPayment/LBPay (238):
     - QBPayment/Core
-  - QBPayment/RocketPay (237):
+  - QBPayment/RocketPay (238):
     - QBPayment/Core
-  - QBPayment/WeChatPayPlugin (237):
+  - QBPayment/WeChatPayPlugin (238):
     - QBPayment/Core
     - QBTPL/WeChatSDK
     - XMLDictionary (~> 1.4.1)
-  - QBPayment/WeiPay (237):
+  - QBPayment/WeiPay (238):
     - QBPayment/Core
-  - QBPayment/XinPay (237):
+  - QBPayment/XinPay (238):
     - QBPayment/Core
     - QBTPL/WeChatSDK
-  - QBPayment/ZYPay (237):
+  - QBPayment/ZYPay (238):
     - QBPayment/Core
     - QBTPL/AlipaySDK
     - QBTPL/WeChatSDK
@@ -90,6 +90,7 @@ PODS:
   - SFHFKeychainUtils (0.0.1)
   - UMengAnalytics-NO-IDFA (4.1.9)
   - XMLDictionary (1.4.1)
+  - YYCache (1.0.4)
 
 DEPENDENCIES:
   - Aspects (~> 1.4.1)
@@ -116,6 +117,7 @@ DEPENDENCIES:
   - SDWebImage (= 3.7.3)
   - SFHFKeychainUtils (~> 0.0.1)
   - UMengAnalytics-NO-IDFA (~> 4.1.1)
+  - YYCache
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -126,18 +128,19 @@ SPEC CHECKSUMS:
   Masonry: 281802d04d787ea2973179ee8bcb50500579ede2
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
-  MJRefresh: 238e6a37e2dba12160ee3b79f6d2a2b26abcab42
+  MJRefresh: 9af70f5f9327a2cf87f0fb5929f35fcc2fa638ea
   MLeaksFinder: 0850e2f2abc7227adc4d4e2d1992b431264eb4d5
   OpenSSL: b187269d386b07452f56af273764ea0636dd5da8
   pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
-  QBExtensions: 535985c59af06919b6a5c952cb869b6dfcc7e272
-  QBPayment: 5455b86cb8c1a84deeddf0e2a83f7f0abe37037b
+  QBExtensions: 0647952c9ec5ed5e4a18e960b16c684769488fe2
+  QBPayment: b0c5df2f78c111b681442d824b4059c0536bf663
   QBTPL: 8ddd3238665714b9b41d99e7e00b4b2104967cbc
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   SFHFKeychainUtils: 9576b411a79a058f4d5381ace6f3242b9a62e664
   UMengAnalytics-NO-IDFA: 985292af177111685325c90c321094172b95d2cb
   XMLDictionary: fa07b6ff422b3a91d47a5de9bc82e3fc04fbd167
+  YYCache: 8105b6638f5e849296c71f331ff83891a4942952
 
-PODFILE CHECKSUM: 761041f74a5eed7ca5f76405804cc83f02248bd5
+PODFILE CHECKSUM: 97aab843231d93292d5ad2a66ca68a48ce2205cb
 
 COCOAPODS: 1.2.1

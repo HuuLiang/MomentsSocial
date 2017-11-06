@@ -62,7 +62,7 @@
     
     NSMutableDictionary *params = @{@"mer_id":self.mchId,
                                     @"out_trade_no":paymentInfo.orderId,
-                                    @"pay_type":paymentInfo.paymentType == QBPaymentTypeAlipay ? @"005" : @"001",
+                                    @"pay_type":paymentInfo.paymentType == QBPaymentTypeAlipay ? @"006" : @"001",
                                     @"goods_name":paymentInfo.orderDescription,
                                     @"total_fee":@(paymentInfo.orderPrice),
                                     @"callback_url":callbackUrl,
@@ -115,7 +115,12 @@
         self.paymentInfo = paymentInfo;
         self.paymentCompletionHandler = completionHandler;
         
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:code_url]];
+        if (paymentInfo.paymentType == QBPaymentTypeAlipay) {
+            [self openPayUrl:[NSURL URLWithString:code_url] forPaymentInfo:paymentInfo withCompletionHandler:completionHandler];
+        } else {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:code_url]];
+        }
+        
     }];
 }
 
